@@ -18,7 +18,6 @@ import { ToastService } from '../../../../../Core/Service/Toast/toast.service';
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, HttpClientModule],
   templateUrl: './crear-categoria.component.html',
-  styleUrls: ['./crear-categoria.component.css'],
 })
 export class CrearCategoriaComponent implements OnInit {
   formCategoria!: FormGroup;

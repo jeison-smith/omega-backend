@@ -43,19 +43,37 @@
         </div>
     </form>
 </div>
-<div class="adicionarElemento">
-    <button class="btn-outline-secondary" (click)="menu_popup($event)">
-        <span class="material-symbols mr-2">add_circle</span> Añadir elemento
+<div class="mt-4 mb-5 flex items-center gap-2">
+    <button
+        class="inline-flex items-center gap-2 rounded-lg border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-600 transition hover:bg-slate-100"
+        (click)="menu_popup($event)"
+    >
+        <span class="material-symbols">add_circle</span> Añadir elemento
     </button>
 
-    <div *ngIf="menuVisible" class="adicionarElemento__menu">
-        <ul>
-            <li><a (click)="agregarCampo(1)">Fecha (dd/mm/yyyy)</a></li>
-            <li><a (click)="agregarCampo(2)">Opción (Varias o única)</a></li>
-            <li><a (click)="agregarCampo(3)">Alfanumérico (Campo de texto)</a></li>
-            <li><a (click)="agregarCampo(4)">Lista desplegable</a></li>
-            <li><a (click)="agregarCampo(5)">Check Box</a></li>
-        </ul>
+    <div
+        *ngIf="menuVisible"
+        class="relative"
+    >
+        <div class="absolute left-0 top-6 z-50 w-72 rounded-xl bg-white p-4 shadow-lg">
+            <ul class="space-y-1">
+                <li>
+                    <a class="block cursor-pointer rounded-lg px-4 py-2 text-sm text-slate-700 hover:bg-slate-100" (click)="agregarCampo(1)">Fecha (dd/mm/yyyy)</a>
+                </li>
+                <li>
+                    <a class="block cursor-pointer rounded-lg px-4 py-2 text-sm text-slate-700 hover:bg-slate-100" (click)="agregarCampo(2)">Opción (Varias o única)</a>
+                </li>
+                <li>
+                    <a class="block cursor-pointer rounded-lg px-4 py-2 text-sm text-slate-700 hover:bg-slate-100" (click)="agregarCampo(3)">Alfanumérico (Campo de texto)</a>
+                </li>
+                <li>
+                    <a class="block cursor-pointer rounded-lg px-4 py-2 text-sm text-slate-700 hover:bg-slate-100" (click)="agregarCampo(4)">Lista desplegable</a>
+                </li>
+                <li>
+                    <a class="block cursor-pointer rounded-lg px-4 py-2 text-sm text-slate-700 hover:bg-slate-100" (click)="agregarCampo(5)">Check Box</a>
+                </li>
+            </ul>
+        </div>
     </div>
 
 </div>

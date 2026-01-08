@@ -1,30 +1,31 @@
-import { Component, Input } from '@angular/core';
-import { NgClass } from '@angular/common';
+import { Component, computed, input } from '@angular/core';
 
 type StatusType = 'active' | 'inactive' | 'pending' | 'open';
 
 const statusConfig: Record<StatusType, { className: string; defaultLabel: string }> = {
-  active: { className: 'badge-active', defaultLabel: 'Activo' },
-  inactive: { className: 'badge-inactive', defaultLabel: 'Inactivo' },
-  pending: { className: 'badge-pending', defaultLabel: 'Pendiente' },
-  open: { className: 'badge-info', defaultLabel: 'Abierto' },
+  active: { className: 'bg-emerald-100 text-emerald-700', defaultLabel: 'Activo' },
+  inactive: { className: 'bg-slate-100 text-slate-600', defaultLabel: 'Inactivo' },
+  pending: { className: 'bg-amber-100 text-amber-700', defaultLabel: 'Pendiente' },
+  open: { className: 'bg-sky-100 text-sky-700', defaultLabel: 'Abierto' },
 };
 
 @Component({
   selector: 'app-status-badge',
   standalone: true,
-  imports: [NgClass],
-  template: ` <span [ngClass]="className">{{ label || defaultLabel }}</span> `,
+  template: `
+    <span [class]="badgeClass()">
+      {{ label() || defaultLabel() }}
+    </span>
+  `,
 })
 export class StatusBadgeComponent {
-  @Input({ required: true }) status: StatusType = 'active';
-  @Input() label?: string;
+  readonly status = input.required<StatusType>();
+  readonly label = input<string | undefined>();
 
-  get className() {
-    return statusConfig[this.status].className;
-  }
+  readonly badgeClass = computed(() => {
+    const config = statusConfig[this.status()];
+    return `inline-flex items-center rounded-full px-2.5 py-1 text-xs font-semibold ${config.className}`;
+  });
 
-  get defaultLabel() {
-    return statusConfig[this.status].defaultLabel;
-  }
+  readonly defaultLabel = computed(() => statusConfig[this.status()].defaultLabel);
 }

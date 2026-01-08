@@ -28,7 +28,6 @@ import { PreguntaService } from '../../../../../../Core/Service/Preguntas/pregun
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, RouterModule],
   templateUrl: './vista-previa.component.html',
-  styleUrls: ['./vista-previa.component.css'],
 })
 export class VistaPreviaComponent {
   plantillaForm!: FormGroup;

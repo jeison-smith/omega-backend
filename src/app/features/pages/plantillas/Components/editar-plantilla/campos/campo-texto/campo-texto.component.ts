@@ -9,7 +9,6 @@ import { RestriccionComponent } from './restriccion/restriccion.component';
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, RestriccionComponent],
   templateUrl: './campo-texto.component.html',
-  styleUrl: './campo-texto.component.css',
 })
 export class CampoTextoComponent {
   @Input() formTexto!: FormGroup;

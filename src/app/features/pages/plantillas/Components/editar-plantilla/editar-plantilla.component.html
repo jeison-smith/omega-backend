@@ -6,28 +6,49 @@
                     <a [routerLink]="'/home/plantillas'">
                         <span class="material-symbols">arrow_back</span></a>
 
-                    <button class="btn-primary" (click)="guardarPlantilla()" [disabled]="!camposForm.valid || loading ">
-                        <div *ngIf="loading" class="spinner-black"></div>
-                        <span *ngIf="!loading" class="material-symbols mr-2">
+                    <button
+                        class="inline-flex items-center gap-2 rounded-lg bg-sky-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-sky-600 disabled:cursor-not-allowed disabled:bg-slate-300"
+                        (click)="guardarPlantilla()"
+                        [disabled]="!camposForm.valid || loading "
+                    >
+                        <div
+                            *ngIf="loading"
+                            class="h-4 w-4 animate-spin rounded-full border-2 border-white/40 border-t-white"
+                        ></div>
+                        <span *ngIf="!loading" class="material-symbols">
                             save
                         </span>
                         Guardar
                     </button>
                     @if (plantilla.estado) {
-                    <span class="badge_succses">Activo</span>
+                    <span class="inline-flex items-center rounded-full bg-emerald-100 px-2.5 py-1 text-xs font-semibold text-emerald-700">Activo</span>
                     }@else{
-                    <span class="badge_error">Inactivo</span>
+                    <span class="inline-flex items-center rounded-full bg-rose-100 px-2.5 py-1 text-xs font-semibold text-rose-700">Inactivo</span>
                     }
-                    <div class="flex align-items-center">
-                        <label class="switch mr-2">
-                            <input type="checkbox" [checked]="plantilla.estado" (change)="estadoPlantilla($event)">
-                            <span class="slider round"></span>
-                        </label> Activar o desactivar <br> formulario
+                    <div class="flex items-center gap-2 text-sm text-slate-600">
+                        <label class="relative inline-flex h-6 w-12 shrink-0 cursor-pointer items-center">
+                            <input
+                                type="checkbox"
+                                class="peer sr-only"
+                                [checked]="plantilla.estado"
+                                (change)="estadoPlantilla($event)"
+                            >
+                            <span
+                                class="relative h-6 w-12 rounded-full bg-slate-300 transition-colors peer-checked:bg-emerald-500 after:absolute after:left-0.5 after:top-0.5 after:h-5 after:w-5 after:rounded-full after:bg-white after:transition-transform peer-checked:after:translate-x-6"
+                            ></span>
+                        </label>
+                        <span>Activar o desactivar <br> formulario</span>
                     </div>
                 </div>
-                <button class="btn-outline-secondary" style="margin-left: auto;" (click)="goToVistaPrevia()">
-                    <div *ngIf="loading" class="spinner-black"></div>
-                    <span *ngIf="!loading" class="material-symbols mr-2">
+                <button
+                    class="ml-auto inline-flex items-center gap-2 rounded-lg border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-600 transition hover:bg-slate-100"
+                    (click)="goToVistaPrevia()"
+                >
+                    <div
+                        *ngIf="loading"
+                        class="h-4 w-4 animate-spin rounded-full border-2 border-slate-300 border-t-slate-600"
+                    ></div>
+                    <span *ngIf="!loading" class="material-symbols">
                         visibility
                     </span>
                     Vista previa
@@ -51,16 +72,22 @@
                 <div class="card-body__info">
                     <span class="badge_secondary">{{plantilla.proyecto}}</span>
                     <!-- Contenedor del Nombre de la Plantilla -->
-                    <div class="nombrePlantilla mt-3">
+                    <div class="mt-3 flex flex-col items-start">
                         <ng-container *ngIf="!editandoNombre">
-                            <p>
+                            <p class="flex items-center text-lg font-semibold text-slate-800">
                                 {{ plantilla.nombrePlantilla }}
-                                <span class="material-symbols" (click)="toggleEditarNombre()">edit</span>
+                                <span
+                                    class="material-symbols ml-2 cursor-pointer text-lg text-sky-500 transition hover:text-sky-700"
+                                    (click)="toggleEditarNombre()"
+                                >edit</span>
                             </p>
                         </ng-container>
 
                         <ng-container *ngIf="editandoNombre">
-                            <input type="text" [value]="nombreTemporal" class="editable-input"
+                            <input
+                                type="text"
+                                [value]="nombreTemporal"
+                                class="w-auto border-b-2 border-sky-500 bg-transparent text-xl font-bold text-black outline-none focus:border-sky-700"
                                 (input)="nombreTemporal = $any($event.target).value" (blur)="guardarNombre()"
                                 (keyup.enter)="guardarNombre()" (keyup.esc)="cancelarEdicionNombre()" />
                         </ng-container>

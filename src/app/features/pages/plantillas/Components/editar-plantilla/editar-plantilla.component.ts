@@ -22,7 +22,6 @@ import { Restriccion } from '../../../../../Core/Interfaces/Plantilla/restriccio
   standalone: true,
   imports: [ReactiveFormsModule, EditarCamposPlantillaComponent, EditarSeccionesPlantillaComponent],
   templateUrl: './editar-plantilla.component.html',
-  styleUrl: './editar-plantilla.component.css',
 })
 export class EditarPlantillaComponent {
   //@ViewChild(EditarSeccionesPlantillaComponent) editarSeccionesPlantilla!: EditarSeccionesPlantillaComponent;

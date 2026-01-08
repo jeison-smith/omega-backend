@@ -14,7 +14,6 @@ import { PaginacionComponent } from '../../../../../shared/components/paginacion
   standalone: true,
   imports: [RouterModule, PaginacionComponent],
   templateUrl: './listar-proyecto.component.html',
-  styleUrl: './listar-proyecto.component.css',
 })
 export class ListarProyectoComponent {
   listaProyectos: Proyecto[] = [];

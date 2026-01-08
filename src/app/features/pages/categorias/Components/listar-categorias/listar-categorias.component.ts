@@ -12,7 +12,6 @@ import { PaginacionComponent } from '../../../../../shared/components/paginacion
   standalone: true,
   imports: [CommonModule, RouterModule, Toast, PaginacionComponent],
   templateUrl: './listar-categorias.component.html',
-  styleUrl: './listar-categorias.component.css',
 })
 export class ListarCategoriasComponent {
   listaCategorias: any[] = [];

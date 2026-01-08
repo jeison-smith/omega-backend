@@ -16,7 +16,6 @@ import { ToastService } from '../../../../../Core/Service/Toast/toast.service';
   standalone: true,
   imports: [],
   templateUrl: './modal-crear-plantilla.component.html',
-  styleUrl: './modal-crear-plantilla.component.css',
 })
 export class ModalCrearPlantillaComponent {
   visible: boolean = false;

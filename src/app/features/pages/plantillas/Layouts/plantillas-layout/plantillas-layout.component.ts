@@ -16,6 +16,5 @@ import { ModalCrearPlantillaComponent } from '../../Components/modal-crear-plant
     ModalCrearPlantillaComponent,
   ],
   templateUrl: './plantillas-layout.component.html',
-  styleUrl: './plantillas-layout.component.css',
 })
 export class PlantillasLayoutComponent {}

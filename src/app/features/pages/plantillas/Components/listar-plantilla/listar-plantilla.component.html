@@ -1,52 +1,75 @@
-<div class="card-table">
-    <div class="btn__group--red">
-        <input type="text" placeholder="Filtra aquí" #filterInput>
-        <button (click)="valorFiltro(filterInput.value)">
-            <span class="material-symbols mr-2">
+<div class="mb-6 flex justify-end rounded-lg bg-white p-4 shadow-sm">
+    <div class="flex items-center">
+        <input
+            type="text"
+            placeholder="Filtra aquí"
+            #filterInput
+            class="h-10 min-w-[250px] rounded-l-lg border border-slate-300 border-r-0 px-4 text-sm text-slate-700 outline-none"
+        >
+        <button
+            class="inline-flex h-10 items-center gap-2 rounded-r-lg border border-purple-200 bg-purple-100 px-4 text-sm font-semibold text-slate-900 transition hover:bg-purple-200"
+            (click)="valorFiltro(filterInput.value)"
+        >
+            <span class="material-symbols">
                 search
             </span>
             Buscar</button>
     </div>
 </div>
-<div class="table-container">
-    <table class="table">
+<div class="overflow-hidden rounded-lg bg-white shadow-sm">
+    <table class="w-full border-collapse">
         <thead>
             <tr>
-                <th>N° Plantilla</th>
-                <th>Nombre</th>
-                <th>Proyecto</th>
-                <th>Categoría</th>
-                <th>Creador</th>
-                <th>Fecha de creación</th>
-                <th>Ult. actualización</th>
-                <th>Gestiones</th>
-                <th>Estado</th>
-                <th>Acción</th>
+                <th class="bg-slate-50 px-4 py-3 text-center text-sm font-semibold text-slate-700">
+                    N° Plantilla
+                </th>
+                <th class="bg-slate-50 px-4 py-3 text-center text-sm font-semibold text-slate-700">Nombre</th>
+                <th class="bg-slate-50 px-4 py-3 text-center text-sm font-semibold text-slate-700">Proyecto</th>
+                <th class="bg-slate-50 px-4 py-3 text-center text-sm font-semibold text-slate-700">Categoría</th>
+                <th class="bg-slate-50 px-4 py-3 text-center text-sm font-semibold text-slate-700">Creador</th>
+                <th class="bg-slate-50 px-4 py-3 text-center text-sm font-semibold text-slate-700">
+                    Fecha de creación
+                </th>
+                <th class="bg-slate-50 px-4 py-3 text-center text-sm font-semibold text-slate-700">
+                    Ult. actualización
+                </th>
+                <th class="bg-slate-50 px-4 py-3 text-center text-sm font-semibold text-slate-700">Gestiones</th>
+                <th class="bg-slate-50 px-4 py-3 text-center text-sm font-semibold text-slate-700">Estado</th>
+                <th class="bg-slate-50 px-4 py-3 text-center text-sm font-semibold text-slate-700">Acción</th>
             </tr>
 
         </thead>
         <tbody>
             @for (plantilla of registrosPaginados; track $index) {
-            <tr>
-                <td>{{ plantilla.id }}</td>
-                <td>{{ plantilla.nombrePlantilla }}</td>
-                <td>
+            <tr class="transition hover:bg-slate-50">
+                <td class="px-4 py-3 text-center text-sm text-slate-700">{{ plantilla.id }}</td>
+                <td class="px-4 py-3 text-center text-sm text-slate-700">{{ plantilla.nombrePlantilla }}</td>
+                <td class="px-4 py-3 text-center text-sm text-slate-700">
                     {{ plantilla.nombreProyecto }}
                 </td>
-                <td>{{ plantilla.nombreCategoria }}</td>
-                <td>{{ plantilla.nombreCreador | titlecase}}</td>
-                <td>{{ plantilla.fechaCreacion | date:"dd/MM/yyyy" }}</td>
-                <td>{{ plantilla.fechaModificacion | date:"dd/MM/yyyy"}}</td>
-                <td>{{ plantilla.gestiones}}</td>
-                <td>
+                <td class="px-4 py-3 text-center text-sm text-slate-700">{{ plantilla.nombreCategoria }}</td>
+                <td class="px-4 py-3 text-center text-sm text-slate-700">
+                    {{ plantilla.nombreCreador | titlecase}}
+                </td>
+                <td class="px-4 py-3 text-center text-sm text-slate-700">
+                    {{ plantilla.fechaCreacion | date:"dd/MM/yyyy" }}
+                </td>
+                <td class="px-4 py-3 text-center text-sm text-slate-700">
+                    {{ plantilla.fechaModificacion | date:"dd/MM/yyyy"}}
+                </td>
+                <td class="px-4 py-3 text-center text-sm text-slate-700">{{ plantilla.gestiones}}</td>
+                <td class="px-4 py-3 text-center text-sm text-slate-700">
                     @if (plantilla.estado == true) {
-                    <span class="badge_succses">Activo</span>
+                    <span class="inline-flex items-center rounded-full bg-emerald-100 px-2.5 py-1 text-xs font-semibold text-emerald-700">Activo</span>
                     }@else {
-                    <span class="badge_error">Inactivo</span>
+                    <span class="inline-flex items-center rounded-full bg-rose-100 px-2.5 py-1 text-xs font-semibold text-rose-700">Inactivo</span>
                     }
                 </td>
-                <td>
-                    <a [routerLink]="['editar-plantilla/', plantilla.id]" class="btn-small">
+                <td class="px-4 py-3 text-center text-sm text-slate-700">
+                    <a
+                        [routerLink]="['editar-plantilla/', plantilla.id]"
+                        class="inline-flex items-center rounded-lg border border-slate-300 px-3 py-1.5 text-xs font-semibold text-slate-600 transition hover:bg-slate-100"
+                    >
                         Editar
                     </a>
                     <!-- <button type="button" class="table_actions"><span class="material-symbols">more_horiz</span></button> -->

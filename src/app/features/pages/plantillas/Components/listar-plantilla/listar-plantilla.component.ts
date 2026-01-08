@@ -16,7 +16,6 @@ import { PaginacionComponent } from '../../../../../shared/components/paginacion
   standalone: true,
   imports: [ReactiveFormsModule, PaginacionComponent],
   templateUrl: './listar-plantilla.component.html',
-  styleUrl: './listar-plantilla.component.css',
 })
 export class ListarPlantillaComponent {
   listaPlantillas: Plantilla[] = [];

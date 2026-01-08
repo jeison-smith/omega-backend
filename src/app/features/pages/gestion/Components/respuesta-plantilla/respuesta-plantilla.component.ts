@@ -16,7 +16,6 @@ import { GestionService } from '../../../../../Core/Service/Gestion/gestion.serv
   standalone: true,
   imports: [RespuestaCampoComponent],
   templateUrl: './respuesta-plantilla.component.html',
-  styleUrl: './respuesta-plantilla.component.css',
 })
 export class RespuestaPlantillaComponent {
   // Use signals for form state

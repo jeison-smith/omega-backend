@@ -21,7 +21,6 @@ import { PreguntaService } from '../../../../../../Core/Service/Preguntas/pregun
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, EditarCamposPlantillaComponent],
   templateUrl: './editar-secciones-plantilla.component.html',
-  styleUrl: './editar-secciones-plantilla.component.css',
 })
 export class EditarSeccionesPlantillaComponent {
   @ViewChildren(EditarCamposPlantillaComponent)

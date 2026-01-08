@@ -1,25 +1,39 @@
-<div class="pagination">
-  <span>Registro {{ (paginaActual - 1) * registrosPorPagina + 1 }} 
-  a {{ Math.min(paginaActual * registrosPorPagina, totalRegistros) }} de {{ totalRegistros }} registros</span>
-  
-  <div class="pagination-controls">
-    <button class="prev" (click)="paginaAnterior()" [disabled]="paginaActual === 1">
-      <span class="material-symbols">arrow_back_ios</span> Atras
+<div class="flex flex-wrap items-center justify-between gap-4 rounded-lg bg-white p-4 text-sm text-slate-600 shadow-sm">
+  <span>
+    Registro {{ (paginaActual - 1) * registrosPorPagina + 1 }}
+    a {{ Math.min(paginaActual * registrosPorPagina, totalRegistros) }} de {{ totalRegistros }} registros
+  </span>
+
+  <div class="flex flex-wrap items-center gap-2">
+    <button
+      class="inline-flex items-center gap-1 rounded-lg border border-slate-200 px-3 py-1.5 text-xs font-semibold text-slate-600 transition hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-50"
+      (click)="paginaAnterior()"
+      [disabled]="paginaActual === 1"
+    >
+      <span class="material-symbols text-base">arrow_back_ios</span> Atras
     </button>
-    
+
     <ng-container *ngFor="let pagina of paginasVisibles()">
-      <button 
-        *ngIf="pagina !== '...'" 
-        (click)="cambiarPagina(pagina)" 
-        [class.active]="pagina === paginaActual" 
-        class="page">
+      <button
+        *ngIf="pagina !== '...'"
+        (click)="cambiarPagina(pagina)"
+        [class]="
+          pagina === paginaActual
+            ? 'rounded-lg bg-sky-500 px-3 py-1.5 text-xs font-semibold text-white'
+            : 'rounded-lg border border-slate-200 px-3 py-1.5 text-xs font-semibold text-slate-600 transition hover:bg-slate-100'
+        "
+      >
         {{ pagina }}
       </button>
-      <span *ngIf="pagina === '...'" class="ellipsis">...</span>
+      <span *ngIf="pagina === '...'" class="px-2 text-xs text-slate-400">...</span>
     </ng-container>
-    
-    <button class="next" (click)="paginaSiguiente()" [disabled]="paginaActual === paginas.length">
-      Siguiente <span class="material-symbols">arrow_forward_ios</span>
+
+    <button
+      class="inline-flex items-center gap-1 rounded-lg border border-slate-200 px-3 py-1.5 text-xs font-semibold text-slate-600 transition hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-50"
+      (click)="paginaSiguiente()"
+      [disabled]="paginaActual === paginas.length"
+    >
+      Siguiente <span class="material-symbols text-base">arrow_forward_ios</span>
     </button>
   </div>
 </div>

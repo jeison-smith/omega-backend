@@ -8,7 +8,6 @@ import { Restriccion } from '../../../../../../Core/Interfaces/Plantilla/restric
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './restriccion.component.html',
-  styleUrls: ['./restriccion.component.css'],
 })
 export class RestriccionComponent implements OnInit {
   @Input() formTexto!: FormGroup;

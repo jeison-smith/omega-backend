@@ -17,7 +17,6 @@ import { ToastService } from '../../../../../Core/Service/Toast/toast.service';
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, RouterModule, Dialog],
   templateUrl: './editar-usuario.component.html',
-  styleUrl: './editar-usuario.component.css',
 })
 export class EditarUsuarioComponent {
   crearUsuarioForm!: FormGroup;

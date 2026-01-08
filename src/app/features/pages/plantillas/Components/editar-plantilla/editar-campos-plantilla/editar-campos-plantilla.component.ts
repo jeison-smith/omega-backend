@@ -31,7 +31,6 @@ import { ToastService } from '../../../../../../Core/Service/Toast/toast.service
     Toast,
   ],
   templateUrl: './editar-campos-plantilla.component.html',
-  styleUrl: './editar-campos-plantilla.component.css',
 })
 export class EditarCamposPlantillaComponent {
   menuVisible: boolean = false;

@@ -7,6 +7,5 @@ import { RouterModule } from '@angular/router';
   standalone: true,
   imports: [CommonModule, RouterModule],
   templateUrl: './gestion-layout.component.html',
-  styleUrl: './gestion-layout.component.css',
 })
 export class GestionLayoutComponent {}

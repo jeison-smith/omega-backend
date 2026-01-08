@@ -12,7 +12,6 @@ import { ToastService } from '../../../../../../Core/Service/Toast/toast.service
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, RouterModule, EditarCamposPlantillaComponent],
   templateUrl: './ramificacion.component.html',
-  styleUrl: './ramificacion.component.css',
 })
 export class RamificacionComponent implements OnInit {
   @ViewChild(EditarCamposPlantillaComponent) editarCamposPlantilla!: EditarCamposPlantillaComponent;

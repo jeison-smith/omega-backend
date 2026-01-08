@@ -22,7 +22,6 @@ import { Toast } from 'primeng/toast';
 @Component({
   selector: 'preguntas-gestion',
   templateUrl: './preguntas-gestion.component.html',
-  styleUrl: './preguntas-gestion.component.css',
 })
 export class PreguntasGestionComponent {
   @Input() campo!: FormGroup;

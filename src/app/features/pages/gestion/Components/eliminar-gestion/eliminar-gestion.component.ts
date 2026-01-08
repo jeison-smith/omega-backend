@@ -12,7 +12,6 @@ import { ToastService } from '../../../../../Core/Service/Toast/toast.service';
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, RouterModule],
   templateUrl: './eliminar-gestion.component.html',
-  styleUrl: './eliminar-gestion.component.css',
 })
 export class EliminarGestionComponent {
   eliminarGestionForm!: FormGroup;

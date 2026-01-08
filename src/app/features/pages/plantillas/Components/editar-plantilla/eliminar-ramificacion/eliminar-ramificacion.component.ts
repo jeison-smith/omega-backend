@@ -9,7 +9,6 @@ import { Router } from '@angular/router';
   standalone: true,
   imports: [CommonModule, RouterModule],
   templateUrl: './eliminar-ramificacion.component.html',
-  styleUrl: './eliminar-ramificacion.component.css',
 })
 export class EliminarRamificacionComponent {
   @Output() eliminarRamificacion = new EventEmitter<void>();

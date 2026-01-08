@@ -1,59 +1,87 @@
-<div class="toolbar">
-  <div class="titulo">
-    <h2>Plantillas disponibles</h2>
+<div class="flex flex-wrap items-center justify-between gap-4 py-4">
+  <div>
+    <h2 class="text-xl font-semibold text-slate-700">Plantillas disponibles</h2>
   </div>
 
-    <div class="btn__group--blue">
-      <input type="text" placeholder="Filtra aquí" #filterInput />
-      <button (click)="valorFiltro(filterInput.value)" >
+    <div class="flex items-center gap-2">
+      <input
+        type="text"
+        placeholder="Filtra aquí"
+        #filterInput
+        class="h-10 rounded-lg border border-slate-300 px-3 text-sm text-slate-700 outline-none"
+      />
+      <button
+        class="inline-flex h-10 items-center justify-center rounded-lg border border-slate-200 bg-white px-3 text-slate-600 transition hover:bg-slate-100"
+        (click)="valorFiltro(filterInput.value)"
+      >
         <span class="material-symbols">search</span>
       </button>
-        <button (click)="listView = !listView" [class.active]="listView" title="Vista de lista">
+      <button
+        class="inline-flex h-10 items-center justify-center rounded-lg border border-slate-200 px-3 text-slate-600 transition hover:bg-slate-100"
+        (click)="listView = !listView"
+        [class]="listView ? 'bg-slate-100 text-slate-800' : ''"
+        title="Vista de lista"
+      >
         <span class="material-symbols">view_list</span>
       </button>
-      <button (click)="listView = !listView" [class.active]="!listView" class="last" title="Vista de grilla">
+      <button
+        class="inline-flex h-10 items-center justify-center rounded-lg border border-slate-200 px-3 text-slate-600 transition hover:bg-slate-100"
+        (click)="listView = !listView"
+        [class]="!listView ? 'bg-slate-100 text-slate-800' : ''"
+        title="Vista de grilla"
+      >
         <span class="material-symbols">grid_view</span>
       </button>
     </div>
   </div>
 
-<div class="contenedor">
+<div class="h-[157px] w-full overflow-y-auto rounded-xl bg-slate-100 p-8">
   <div *ngIf="listView">
   @for (plantilla of registrosPaginados; track $index) {
-        <div class="card__plantilla--gestion">
+        <div class="mb-3 flex items-center justify-between rounded-xl bg-white px-10 py-5 shadow-sm">
             <div>
-                <label>{{ plantilla.nombreProyecto }}</label>
-                <span>{{ plantilla.nombrePlantilla }}</span>
+                <label class="mb-2 block text-sm font-semibold text-slate-700">
+                  {{ plantilla.nombreProyecto }}
+                </label>
+                <span class="text-sm text-slate-600">{{ plantilla.nombrePlantilla }}</span>
             </div>
             <div>
-                <label>Creador</label>
-                <span>{{ plantilla.nombreCreador | titlecase}}</span>
+                <label class="mb-2 block text-sm font-semibold text-slate-700">Creador</label>
+                <span class="text-sm text-slate-600">{{ plantilla.nombreCreador | titlecase}}</span>
             </div>
             <div>
-                <label>Fecha ult. actualización</label>
-                <span>{{ plantilla.fechaModificacion | date:"dd/MM/yyyy"}}</span>
+                <label class="mb-2 block text-sm font-semibold text-slate-700">
+                  Fecha ult. actualización
+                </label>
+                <span class="text-sm text-slate-600">{{ plantilla.fechaModificacion | date:"dd/MM/yyyy"}}</span>
             </div>
             <div>
-                <button class="btn-primary-icon" [routerLink]="['gestion-plantilla', plantilla.id]"><span class="material-symbols mr-2"> border_color</span> Usar plantilla
+                <button
+                  class="inline-flex items-center gap-2 rounded-lg bg-sky-500 px-3 py-2 text-xs font-semibold text-white transition hover:bg-sky-600"
+                  [routerLink]="['gestion-plantilla', plantilla.id]"
+                ><span class="material-symbols"> border_color</span> Usar plantilla
                 </button>
             </div>
         </div>
     }
 </div>
 <div *ngIf="!listView">
-<div class="grid-view">
+<div class="grid grid-cols-[repeat(auto-fill,minmax(180px,1fr))] gap-3">
     @for (plantilla of registrosPaginados; track $index) {
-      <div class="card-plantilla">
+      <div class="flex min-h-[80px] flex-col justify-between rounded-lg border border-slate-200 bg-white p-3 text-xs shadow-sm transition hover:shadow-md">
 
-        <h3>{{ plantilla.nombreProyecto }}</h3>
-        <p class="subtitulo">{{ plantilla.nombrePlantilla }}</p>
+        <h3 class="text-sm font-semibold text-slate-700">{{ plantilla.nombreProyecto }}</h3>
+        <p class="mb-2 text-xs text-slate-500">{{ plantilla.nombrePlantilla }}</p>
 
-        <div class="info-row">
+        <div class="mb-3 flex flex-wrap justify-between gap-1 text-slate-600">
           <span><strong>Creador:</strong> {{ plantilla.nombreCreador | titlecase }}</span>
           <span><strong>Últ. actualización:</strong> {{ plantilla.fechaModificacion | date:'dd/MM/yyyy' }}</span>
         </div>
-          <button class="btn-primary-icon" [routerLink]="['gestion-plantilla', plantilla.id]">
-            <span class="material-symbols mr-2">border_color</span>Usar plantilla
+          <button
+            class="inline-flex items-center gap-2 rounded-lg bg-sky-500 px-3 py-2 text-xs font-semibold text-white transition hover:bg-sky-600"
+            [routerLink]="['gestion-plantilla', plantilla.id]"
+          >
+            <span class="material-symbols">border_color</span>Usar plantilla
           </button>
       </div>
     }

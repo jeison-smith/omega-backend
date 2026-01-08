@@ -30,7 +30,6 @@ import { GestionService } from '../../../../../Core/Service/Gestion/gestion.serv
 @Component({
   selector: 'gestion-plantilla',
   templateUrl: './gestion-plantilla.component.html',
-  styleUrl: './gestion-plantilla.component.css',
 })
 export class GestionPlantillaComponent {
   plantillaForm!: FormGroup;

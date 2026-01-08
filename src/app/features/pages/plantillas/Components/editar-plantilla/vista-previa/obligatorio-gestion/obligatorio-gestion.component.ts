@@ -6,6 +6,5 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './obligatorio-gestion.component.html',
-  styleUrl: './obligatorio-gestion.component.css',
 })
 export class ObligatorioGestionComponent {}

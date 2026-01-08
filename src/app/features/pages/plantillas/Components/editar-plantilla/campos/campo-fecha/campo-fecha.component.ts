@@ -7,7 +7,6 @@ import { ReactiveFormsModule, FormGroup } from '@angular/forms';
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './campo-fecha.component.html',
-  styleUrl: './campo-fecha.component.css',
 })
 export class CampoFechaComponent {
   @Input() formFecha!: FormGroup;

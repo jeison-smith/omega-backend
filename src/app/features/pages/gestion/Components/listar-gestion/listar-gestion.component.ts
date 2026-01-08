@@ -16,7 +16,6 @@ import { take } from 'rxjs';
   standalone: true,
   imports: [CommonModule, RouterModule, EliminarGestionComponent],
   templateUrl: './listar-gestion.component.html',
-  styleUrl: './listar-gestion.component.css',
 })
 export class ListarGestionComponent {
   listaRespuestas: Gestion[] = [];

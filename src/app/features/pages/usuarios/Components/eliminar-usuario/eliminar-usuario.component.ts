@@ -11,7 +11,6 @@ import { UsuarioService } from '../../../../../Core/Service/Usuario/usuario.serv
   standalone: true,
   imports: [CommonModule, Dialog],
   templateUrl: './eliminar-usuario.component.html',
-  styleUrl: './eliminar-usuario.component.css',
 })
 export class EliminarUsuarioComponent {
   visible: boolean = false;

@@ -5,7 +5,6 @@ import { ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angu
   standalone: true,
   imports: [],
   templateUrl: './respuesta-campo.component.html',
-  styleUrl: './respuesta-campo.component.css',
 })
 export class RespuestaCampoComponent {
   @Input() campo!: any; // plain JS object provided by parent signal

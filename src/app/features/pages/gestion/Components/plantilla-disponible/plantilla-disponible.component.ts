@@ -8,7 +8,6 @@ import { ToastService } from '../../../../../Core/Service/Toast/toast.service';
 @Component({
   selector: 'plantilla-disponible',
   templateUrl: './plantilla-disponible.component.html',
-  styleUrl: './plantilla-disponible.component.css',
 })
 export class PlantillaDisponibleComponent {
   listaPlantillas: Plantilla[] = [];

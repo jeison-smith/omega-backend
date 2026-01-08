@@ -15,7 +15,6 @@ import { UsuarioService } from '../../../../../Core/Service/Usuario/usuario.serv
   standalone: true,
   imports: [RouterModule],
   templateUrl: './crear-proyecto.component.html',
-  styleUrl: './crear-proyecto.component.css',
 })
 export class CrearProyectoComponent {
   crearProyectoForm!: FormGroup;

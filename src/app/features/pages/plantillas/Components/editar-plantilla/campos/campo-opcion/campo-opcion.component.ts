@@ -17,7 +17,6 @@ import { PreguntaService } from '../../../../../../../Core/Service/Preguntas/pre
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, RouterModule],
   templateUrl: './campo-opcion.component.html',
-  styleUrl: './campo-opcion.component.css',
 })
 export class CampoOpcionComponent {
   @Input() formOpciones!: FormGroup;

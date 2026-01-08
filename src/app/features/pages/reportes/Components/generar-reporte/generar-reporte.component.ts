@@ -19,7 +19,6 @@ import { ToastService } from '../../../../../Core/Service/Toast/toast.service';
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './generar-reporte.component.html',
-  styleUrl: './generar-reporte.component.css',
 })
 export class GenerarReporteComponent implements OnInit {
   listaPlantilla: { id: number; nombre: string }[] = [];

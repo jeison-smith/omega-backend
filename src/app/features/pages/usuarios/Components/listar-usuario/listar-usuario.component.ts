@@ -20,7 +20,6 @@ import { PaginacionComponent } from '../../../../../shared/components/paginacion
     PaginacionComponent,
   ],
   templateUrl: 'listar-usuario.component.html',
-  styleUrl: 'listar-usuario.component.css',
 })
 export class ListarUsuarioComponent {
   listaUsuarios: Usuario[] = [];

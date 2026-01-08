@@ -1,33 +1,59 @@
-<div class="container">
-    <div class="login">
-        <div class="login__body">
-            <div class="login__body-header">
-                <img src="images/Logo-Atlantic.png" alt="logo Atlantic">
-            </div>
-            <div *ngIf="preproduccion" class="preproduccion-mini">
-                <label>AMBIENTE DE PRE-PRODUCCION</label>
-            </div>
-            <div class="login__form">
-                <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-                    <div class="field col">
-                        <label for="usuario">Usuario</label>
-                        <input id="usuario" type="text" formControlName="usuario" class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round-xl appearance-none outline-none focus:border-primary w-full">
-                        <div class="mt-2 alerta" *ngIf="loginForm.get('usuario')?.invalid && loginForm.get('usuario')?.touched">
-                            Este campo es obligatorio.
-                          </div>
-                    </div>
-                    <div class="field col">
-                        <label for="contraseña">Contraseña</label>
-                        <input id="password" type="password" formControlName="password" class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round-xl appearance-none outline-none focus:border-primary w-full">
-                        <div class="mt-2 alerta" *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
-                            Este campo es obligatorio.
-                          </div>
-                    </div>
-                    <div class="field col">
-                        <button [disabled]="!loginForm.valid" type="submit" class="btn__login"> <i class="pi pi-spin pi-spinner" *ngIf="loading === true"></i> Iniciar sesión</button>
-                    </div>
-                </form>
-            </div>
+<div
+  class="flex min-h-screen w-full items-center justify-center bg-gradient-to-r from-emerald-400 to-lime-100 px-4"
+>
+  <div class="w-full max-w-md rounded-2xl bg-white shadow-lg">
+    <div class="flex flex-col gap-6 px-10 py-10">
+      <div class="flex justify-center">
+        <img src="images/Logo-Atlantic.png" alt="logo Atlantic" class="h-12" />
+      </div>
+      <div
+        *ngIf="preproduccion()"
+        class="rounded-lg bg-amber-100 px-3 py-2 text-center text-xs font-semibold text-amber-700"
+      >
+        AMBIENTE DE PRE-PRODUCCION
+      </div>
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="space-y-5">
+        <div class="space-y-1.5">
+          <label for="usuario" class="text-sm font-medium text-slate-700">Usuario</label>
+          <input
+            id="usuario"
+            type="text"
+            formControlName="usuario"
+            class="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-200"
+          />
+          <div
+            class="text-xs text-red-600"
+            *ngIf="loginForm.get('usuario')?.invalid && loginForm.get('usuario')?.touched"
+          >
+            Este campo es obligatorio.
+          </div>
         </div>
+        <div class="space-y-1.5">
+          <label for="password" class="text-sm font-medium text-slate-700">Contraseña</label>
+          <input
+            id="password"
+            type="password"
+            formControlName="password"
+            class="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-200"
+          />
+          <div
+            class="text-xs text-red-600"
+            *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched"
+          >
+            Este campo es obligatorio.
+          </div>
+        </div>
+        <div class="pt-2">
+          <button
+            [disabled]="!canSubmit()"
+            type="submit"
+            class="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-sky-400 px-4 py-2 text-base font-semibold text-slate-900 transition hover:bg-sky-500 disabled:cursor-not-allowed disabled:bg-sky-100 disabled:text-slate-400"
+          >
+            <i class="pi pi-spin pi-spinner" *ngIf="loading()"></i>
+            Iniciar sesión
+          </button>
+        </div>
+      </form>
     </div>
+  </div>
 </div>
