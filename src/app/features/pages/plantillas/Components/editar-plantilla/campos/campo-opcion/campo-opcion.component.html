@@ -48,10 +48,11 @@
                                                             Ramificar
                                                 </button>
                                                 <div style="white-space: nowrap; align-items: center; display: flex; font-size: 12px;">
-                                                    <div *ngIf="opcion.get('campos')?.value">
-                                                        <label>{{ totalSubpreguntas(opcion) }} Sub-preguntas</label>
-                                                      </div>
-                                                
+                                                    @if (opcion.get('campos')?.value) {
+                                                      <div>
+                                                          <label>{{ totalSubpreguntas(opcion) }} Sub-preguntas</label>
+                                                        </div>
+                                                    }
                                             </div>
                                             
                                               
@@ -78,10 +79,11 @@
                                                             Ramificar
                                                 </button>
                                                 <div style="white-space: nowrap; align-items: center; display: flex; font-size: 12px;">
-                                                    <div *ngIf="opcion.get('campos')?.value">
-                                                        <label>{{ totalSubpreguntas(opcion) }} Sub-preguntas</label>
-                                                      </div>
-                                                
+                                                    @if (opcion.get('campos')?.value) {
+                                                      <div>
+                                                          <label>{{ totalSubpreguntas(opcion) }} Sub-preguntas</label>
+                                                        </div>
+                                                    }
                                             </div>
 
                                                 

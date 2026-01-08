@@ -26,7 +26,6 @@ import { Toast } from 'primeng/toast';
   standalone: true,
   imports: [ReactiveFormsModule],
   templateUrl: './campos-vista-previa.component.html',
-  styleUrl: './campos-vista-previa.component.css',
 })
 export class CamposVistaPreviaComponent {
   @Input() campo!: FormGroup;

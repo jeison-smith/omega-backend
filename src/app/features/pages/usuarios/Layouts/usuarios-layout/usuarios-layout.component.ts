@@ -16,6 +16,5 @@ import { CrearUsuarioComponent } from '../../Components/crear-usuario/crear-usua
     CrearUsuarioComponent,
   ],
   templateUrl: './usuarios-layout.component.html',
-  styleUrl: './usuarios-layout.component.css',
 })
 export class UsuariosLayoutComponent {}

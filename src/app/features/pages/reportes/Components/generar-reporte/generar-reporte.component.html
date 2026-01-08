@@ -47,11 +47,12 @@
             </div>
             <button type="submit" (click)="descargarExcel()" class="btn-excel" 
         style="height: 40px; margin-top: 7px;" 
-        [disabled]="!crearExcelPlantillaForm.valid || loading">
-    <span *ngIf="!(loading)" class="material-symbols mr-2">
-        file_download
-    </span>
-    <i class="pi pi-spin pi-spinner" *ngIf="loading"> </i>
+        [disabled]="!crearExcelPlantillaForm.valid || loading()">
+    @if (!(loading())) {
+      <span class="material-symbols mr-2">file_download</span>
+    } @else {
+      <i class="pi pi-spin pi-spinner"></i>
+    }
         Descargar información
 </button>
         </div>

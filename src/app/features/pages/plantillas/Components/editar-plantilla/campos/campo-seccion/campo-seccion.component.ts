@@ -7,7 +7,6 @@ import { ReactiveFormsModule, FormGroup } from '@angular/forms';
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './campo-seccion.component.html',
-  styleUrl: './campo-seccion.component.css',
 })
 export class CampoSeccionComponent {
   @Input() formSeccion!: FormGroup;

@@ -3,8 +3,7 @@ import { AbstractControl, FormArray, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'campos-gestion',
-  templateUrl: './campos-gestion.component.html',
-  styleUrl: './campos-gestion.component.css'
+  templateUrl: './campos-gestion.component.html'
 })
 export class CamposGestionComponent {
   @Input() campo!: FormGroup;

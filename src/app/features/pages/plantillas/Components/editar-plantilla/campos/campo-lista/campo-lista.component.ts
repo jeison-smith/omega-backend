@@ -8,7 +8,6 @@ import { PreguntaService } from '../../../../../../../Core/Service/Preguntas/pre
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './campo-lista.component.html',
-  styleUrl: './campo-lista.component.css',
 })
 export class CampoListaComponent {
   @Input() formlista!: FormGroup;

@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, NgZone, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, NgZone, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { saveAs } from 'file-saver';
@@ -19,12 +19,11 @@ import { ToastService } from '../../../../../Core/Service/Toast/toast.service';
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './generar-reporte.component.html',
-  styleUrl: './generar-reporte.component.css',
 })
 export class GenerarReporteComponent implements OnInit {
   listaPlantilla: { id: number; nombre: string }[] = [];
   crearExcelPlantillaForm!: FormGroup;
-  loading = false;
+  loading = signal(false);
 
   constructor(
     private fb: FormBuilder,
@@ -67,7 +66,7 @@ export class GenerarReporteComponent implements OnInit {
   }
 
   descargarExcel(): void {
-    this.loading = true;
+    this.loading.set(true);
     this.ref.detectChanges();
     this.gestionService
       .exportarExcel(
@@ -80,7 +79,7 @@ export class GenerarReporteComponent implements OnInit {
         (response: Blob) => {
           // Guardamos el archivo Excel de manera inmediata
           setTimeout(() => {
-            this.loading = false;
+            this.loading.set(false);
             this.ref.detectChanges();
             saveAs(
               response,
@@ -94,7 +93,7 @@ export class GenerarReporteComponent implements OnInit {
           } else {
             this.toastMessage.showError(error);
           }
-          this.loading = false;
+          this.loading.set(false);
           this.ref.detectChanges();
         }
       );

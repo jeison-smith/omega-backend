@@ -2,8 +2,7 @@ import { ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angu
 
 @Component({
   selector: 'shared-paginacion',
-  templateUrl: './paginacion.component.html',
-  styleUrl: './paginacion.component.css'
+  templateUrl: './paginacion.component.html'
 })
 export class PaginacionComponent {
 

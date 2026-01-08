@@ -8,6 +8,5 @@ import { GenerarReporteComponent } from '../../Components/generar-reporte/genera
   standalone: true,
   imports: [CommonModule, RouterModule, GenerarReporteComponent],
   templateUrl: './reportes-layout.component.html',
-  styleUrl: './reportes-layout.component.css',
 })
 export class ReportesLayoutComponent {}

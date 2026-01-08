@@ -34,9 +34,9 @@
           disabled
           class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round-xl appearance-none outline-none focus:border-primary w-full"
         />
-        <p *ngIf="errorMessage" class="mt-2" style="color: #a52118; font-size: 12px">
-          {{ errorMessage }}
-        </p>
+        @if (errorMessage()) {
+          <p class="mt-2 text-xs text-red-600">{{ errorMessage() }}</p>
+        }
       </div>
       <div class="field col-6">
         <label for="lastname2" class="label-subtext">Rol</label>
@@ -72,22 +72,22 @@
             <!-- Flecha hacia abajo -->
           </button>
 
-          <div
-            *ngIf="isDropdownOpen"
-            class="dropdown-list"
-            style="
-              position: absolute;
-              width: 100%;
-              max-height: 200px;
-              overflow-y: auto;
-              background-color: white;
-              border: 1px solid #777;
-              border-radius: 0px;
-              margin-top: 0px;
-              z-index: 999;
-              box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-            "
-          >
+          @if (isDropdownOpen) {
+            <div
+              class="dropdown-list"
+              style="
+                position: absolute;
+                width: 100%;
+                max-height: 200px;
+                overflow-y: auto;
+                background-color: white;
+                border: 1px solid #777;
+                border-radius: 0px;
+                margin-top: 0px;
+                z-index: 999;
+                box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+              "
+            >
             <div style="padding: 8px">
               <input
                 type="text"
@@ -115,18 +115,21 @@
               />
               <span>{{ proyecto.nombre }}</span>
             </div>
-          </div>
+            </div>
+          }
         </div>
       </div>
       <div class="field col-12" style="margin-top: 0; margin-bottom: 0">
         <label class="label-subtext">Proyectos vinculados:</label>
       </div>
       <div class="selected-tags rect-gray">
-        <div *ngIf="selectedProyectos.length == 0" style="text-align: center; width: 100%">
-          <label style="color: gray; margin: 0"
-            >El usuario no está vinculado a ningún proyecto</label
-          >
-        </div>
+        @if (selectedProyectos.length == 0) {
+          <div style="text-align: center; width: 100%">
+            <label style="color: gray; margin: 0"
+              >El usuario no está vinculado a ningún proyecto</label
+            >
+          </div>
+        }
         <div *ngFor="let tag of selectedProyectos" class="tag rect-primary">
           {{ tag.nombre }}
           <span (click)="removeFromSelected(tag)" class="remove-tag material-symbols text-white"
@@ -138,7 +141,9 @@
     <div class="flex justify-content-end gap-2 mt-5">
       <button type="button" class="btn-outline-blue1" (click)="cerrarModal()">Cancelar</button>
       <button [disabled]="!crearUsuarioForm?.valid" type="submit" class="btn-primary">
-        <div *ngIf="loading" class="spinner-black"></div>
+        @if (loading()) {
+          <div class="spinner-black"></div>
+        }
         Guardar
       </button>
     </div>
@@ -180,9 +185,9 @@
           [disabled]="true"
           class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round-xl appearance-none outline-none focus:border-primary w-full"
         />
-        <p *ngIf="errorMessage" class="mt-2" style="color: #a52118; font-size: 12px">
-          {{ errorMessage }}
-        </p>
+        @if (errorMessage()) {
+          <p class="mt-2 text-xs text-red-600">{{ errorMessage() }}</p>
+        }
       </div>
       <div class="field col-6">
         <label for="lastname2" class="label-subtext">Rol</label>
@@ -214,22 +219,22 @@
             <!-- Flecha hacia abajo -->
           </button>
 
-          <div
-            *ngIf="isDropdownOpen"
-            class="dropdown-list"
-            style="
-              position: absolute;
-              width: 100%;
-              max-height: 200px;
-              overflow-y: auto;
-              background-color: white;
-              border: 1px solid #777;
-              border-radius: 0px;
-              margin-top: 0px;
-              z-index: 999;
-              box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-            "
-          >
+          @if (isDropdownOpen) {
+            <div
+              class="dropdown-list"
+              style="
+                position: absolute;
+                width: 100%;
+                max-height: 200px;
+                overflow-y: auto;
+                background-color: white;
+                border: 1px solid #777;
+                border-radius: 0px;
+                margin-top: 0px;
+                z-index: 999;
+                box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+              "
+            >
             <div style="padding: 8px">
               <input
                 type="text"
@@ -253,18 +258,21 @@
               />
               <span>{{ proyecto.nombre }}</span>
             </div>
-          </div>
+            </div>
+          }
         </div>
       </div>
       <div class="field col-12" style="margin-top: 0; margin-bottom: 0">
         <label class="label-subtext">Proyectos vinculados:</label>
       </div>
       <div class="selected-tags rect-gray">
-        <div *ngIf="selectedProyectos.length == 0" style="text-align: center; width: 100%">
-          <label style="color: gray; margin: 0"
-            >El usuario no está vinculado a ningún proyecto</label
-          >
-        </div>
+        @if (selectedProyectos.length == 0) {
+          <div style="text-align: center; width: 100%">
+            <label style="color: gray; margin: 0"
+              >El usuario no está vinculado a ningún proyecto</label
+            >
+          </div>
+        }
         <div *ngFor="let tag of selectedProyectos" class="tag rect-primary">
           {{ tag.nombre }}
           <span (click)="removeFromSelected(tag)" class="remove-tag material-symbols text-white"
@@ -276,7 +284,9 @@
     <div class="flex justify-content-end gap-2 mt-5">
       <button type="button" class="btn-outline-blue1" (click)="cerrarModal()">Cancelar</button>
       <button [disabled]="!crearUsuarioForm.valid" type="submit" class="btn-primary">
-        <div *ngIf="loading" class="spinner-black"></div>
+        @if (loading()) {
+          <div class="spinner-black"></div>
+        }
         Guardar
       </button>
     </div>

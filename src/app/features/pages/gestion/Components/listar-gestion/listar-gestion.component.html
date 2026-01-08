@@ -1,99 +1,174 @@
-<div class="dashboard-container">
-    <div class="dashboard-title">Plantillas y Categorias</div>
-    <div class="dashboard-subtitle">Selecciona la categoria y luego la plantilla en la lista desplegable.</div>
+<div class="rounded-xl bg-slate-50 p-5">
+    <div class="text-2xl font-bold text-slate-800">Plantillas y Categorias</div>
+    <div class="mb-8 text-slate-500">
+        Selecciona la categoria y luego la plantilla en la lista desplegable.
+    </div>
 
     <!-- Tabs for Categories with Horizontal Scroll -->
-    <div class="category-tabs-container" *ngIf="categories.length > 0">
-        <div class="category-tabs">
-            <button *ngFor="let cat of categories" class="tab-btn" [class.active]="selectedCategory?.id === cat.id"
-                (click)="selectCategory(cat)">
-                {{ cat.nombre || cat.nombreProyecto || cat.proyecto || 'Sin nombre' }}
-            </button>
-        </div>
-    </div>
+    @if (categories.length > 0) {
+      <div class="mb-5 overflow-x-auto whitespace-nowrap pb-2">
+          <div class="inline-flex gap-4 px-1">
+              @for (cat of categories; track cat.id) {
+                <button
+                    class="min-w-[150px] rounded-lg px-6 py-3 text-sm font-medium shadow-sm transition"
+                    [class]="
+                        selectedCategory?.id === cat.id
+                            ? 'bg-sky-500 text-white shadow-md'
+                            : 'bg-white text-slate-500'
+                    "
+                    (click)="selectCategory(cat)"
+                >
+                    {{ cat.nombre || cat.nombreProyecto || cat.proyecto || 'Sin nombre' }}
+                </button>
+              }
+          </div>
+      </div>
+    }
 
     <!-- Dropdown for Templates -->
-    <div class="template-selector">
-        <div class="search-input-wrapper" (click)="toggleDropdown($event)">
-            <input type="text" placeholder="Buscar y seleccionar Plantilla..."
-                [value]="selectedTemplate?.nombrePlantilla || searchText" (input)="filterTemplates($event)" readonly>
+    <div class="relative max-w-full">
+        <div
+            class="flex cursor-pointer items-center rounded-lg border border-slate-200 bg-white px-4 py-3"
+            (click)="toggleDropdown($event)"
+        >
+            <input
+                type="text"
+                placeholder="Buscar y seleccionar Plantilla..."
+                class="w-full border-0 text-sm text-slate-700 outline-none"
+                [value]="selectedTemplate?.nombrePlantilla || searchText"
+                (input)="filterTemplates($event)"
+                readonly
+            >
             <!-- Readonly to act as dropdown trigger primarily, or remove readonly to allowing typing filter -->
-            <span class="material-symbols dropdown-icon">unfold_more</span>
+            <span class="material-symbols text-slate-400">unfold_more</span>
         </div>
 
-        <div class="templates-list" *ngIf="showDropdown">
-            <div class="category-header" *ngIf="selectedCategory">
-                {{ selectedCategory.nombre || selectedCategory.nombreProyecto || selectedCategory.proyecto }}
-            </div>
-
-            <ng-container *ngIf="filteredTemplates.length > 0; else noTemplates">
-                <div *ngFor="let template of filteredTemplates" class="template-item"
-                    (click)="selectTemplate(template)">
-                    {{ template.nombrePlantilla }}
+        @if (showDropdown) {
+          <div
+              class="absolute left-0 right-0 top-full z-50 mt-2 max-h-[300px] overflow-y-auto rounded-lg border border-slate-200 bg-white shadow-lg"
+          >
+              @if (selectedCategory) {
+                <div class="sticky top-0 bg-sky-900 px-4 py-3 text-sm font-semibold text-white">
+                    {{ selectedCategory.nombre || selectedCategory.nombreProyecto || selectedCategory.proyecto }}
                 </div>
-            </ng-container>
-            <ng-template #noTemplates>
-                <div class="p-3 text-gray-500 text-center">No se encontraron plantillas.</div>
-            </ng-template>
-        </div>
+              }
+
+              @if (filteredTemplates.length > 0) {
+                  @for (template of filteredTemplates; track template.id) {
+                    <div
+                        class="cursor-pointer border-l-4 border-transparent px-4 py-3 text-sm text-slate-600 transition hover:border-sky-500 hover:bg-slate-50 hover:pl-6 hover:text-sky-500"
+                        (click)="selectTemplate(template)"
+                    >
+                        {{ template.nombrePlantilla }}
+                    </div>
+                  }
+              } @else {
+                <div class="p-3 text-center text-sm text-slate-400">
+                    No se encontraron plantillas.
+                </div>
+              }
+          </div>
+        }
     </div>
 </div>
 
-<div class="titulo">
-    <h2>Mis casos</h2>
+<div class="mb-5">
+    <h2 class="text-xl font-semibold text-slate-800">Mis casos</h2>
 </div>
-<div class="card-table">
-    <div class="btn__group--red">
-        <input type="text" placeholder="Filtra aquí" #filterInput>
-        <button (click)="valorFiltro(filterInput.value)">
-            <span class="material-symbols mr-2">
+<div class="mb-6 flex justify-end rounded-lg bg-white p-6 shadow-sm">
+    <div class="flex items-center">
+        <input
+            type="text"
+            placeholder="Filtra aquí"
+            #filterInput
+            class="h-10 min-w-[250px] rounded-l-lg border border-slate-300 border-r-0 px-4 text-sm text-slate-700 outline-none"
+        >
+        <button
+            class="inline-flex h-10 items-center gap-2 rounded-r-lg border border-purple-200 bg-purple-100 px-4 text-sm font-semibold text-slate-900 transition hover:bg-purple-200"
+            (click)="valorFiltro(filterInput.value)"
+        >
+            <span class="material-symbols">
                 search
             </span>
             Buscar</button>
     </div>
 </div>
-<div class="table-container">
-    <table class="table">
+<div class="overflow-hidden rounded-lg bg-white shadow-sm">
+    <table class="w-full border-collapse">
         <thead>
             <tr>
-                <th>ID caso</th>
-                <th>Nombre plantilla</th>
-                <th>Fecha de inicio</th>
-                <th>Fecha ult. actualización</th>
-                <th>Estado</th>
-                <th>Acción</th>
+                <th class="bg-slate-100 px-4 py-3 text-center text-sm font-bold text-slate-900">ID caso</th>
+                <th class="bg-slate-100 px-4 py-3 text-center text-sm font-bold text-slate-900">
+                    Nombre plantilla
+                </th>
+                <th class="bg-slate-100 px-4 py-3 text-center text-sm font-bold text-slate-900">
+                    Fecha de inicio
+                </th>
+                <th class="bg-slate-100 px-4 py-3 text-center text-sm font-bold text-slate-900">
+                    Fecha ult. actualización
+                </th>
+                <th class="bg-slate-100 px-4 py-3 text-center text-sm font-bold text-slate-900">Estado</th>
+                <th class="bg-slate-100 px-4 py-3 text-center text-sm font-bold text-slate-900">Acción</th>
             </tr>
 
         </thead>
         <tbody>
             @for (respuestas of registrosPaginados; track $index) {
-            <tr>
-                <td>{{ respuestas.qFlowId }}</td>
-                <td>{{ respuestas.nombrePlantilla }}</td>
-                <td>{{ respuestas.fechaInicio | date:"dd/MM/yyyy"}}</td>
-                <td>{{ respuestas.ultActualizacion | date:"dd/MM/yyyy"}}</td>
-                <td>
+            <tr class="transition hover:bg-slate-50">
+                <td class="px-4 py-3 text-center text-sm text-slate-700">{{ respuestas.qFlowId }}</td>
+                <td class="px-4 py-3 text-center text-sm text-slate-700">
+                    {{ respuestas.nombrePlantilla }}
+                </td>
+                <td class="px-4 py-3 text-center text-sm text-slate-700">
+                    {{ respuestas.fechaInicio | date:"dd/MM/yyyy"}}
+                </td>
+                <td class="px-4 py-3 text-center text-sm text-slate-700">
+                    {{ respuestas.ultActualizacion | date:"dd/MM/yyyy"}}
+                </td>
+                <td class="px-4 py-3 text-center text-sm text-slate-700">
                     @if (respuestas.estado == true) {
-                    <span class="badge_warning">Abierto</span>
+                    <span
+                        class="inline-flex items-center rounded-md bg-amber-400 px-3 py-1 text-xs font-normal text-black"
+                    >
+                        Abierto
+                    </span>
                     }@else {
-                    <span class="badge_error">Cerrado</span>
+                    <span
+                        class="inline-flex items-center rounded-md bg-rose-100 px-3 py-1 text-xs font-semibold text-rose-700"
+                    >
+                        Cerrado
+                    </span>
                     }
                 </td>
-                <td class="action-cell">
-                    <div class="action-menu-container">
-                        <button class="btn-icon-menu" (click)="toggleMenu(respuestas.id, $event)">
+                <td class="relative px-4 py-3 text-center text-sm text-slate-700">
+                    <div class="relative inline-block">
+                        <button
+                            class="rounded-full p-1 text-slate-500 transition hover:bg-slate-100 hover:text-slate-800"
+                            (click)="toggleMenu(respuestas.id, $event)"
+                        >
                             <span class="material-symbols">more_horiz</span>
                         </button>
 
-                        <div class="action-dropdown" *ngIf="menuAbiertoId === respuestas.id">
-                            <button class="dropdown-item" [routerLink]="['respuesta-plantilla/', respuestas.id]">
-                                <span class="material-symbols icon-sm">edit</span> Gestionar
-                            </button>
-                            <button class="dropdown-item delete" *ngIf="!(this.idRol == 'operativo')"
-                                (click)="mostrarEliminar(respuestas.id)">
-                                <span class="material-symbols icon-sm">delete</span> Eliminar
-                            </button>
-                        </div>
+                        @if (menuAbiertoId === respuestas.id) {
+                          <div
+                              class="absolute right-full top-1/2 z-[9999] mr-1 -translate-y-1/2 whitespace-nowrap rounded-lg border border-slate-200 bg-white py-1 shadow-lg"
+                          >
+                              <button
+                                  class="flex w-full items-center gap-2 px-4 py-2 text-left text-sm font-semibold text-black transition hover:bg-slate-50"
+                                  [routerLink]="['respuesta-plantilla/', respuestas.id]"
+                              >
+                                  <span class="material-symbols text-base">edit</span> Gestionar
+                              </button>
+                              @if (!(this.idRol == 'operativo')) {
+                                <button
+                                    class="flex w-full items-center gap-2 px-4 py-2 text-left text-sm font-semibold text-red-600 transition hover:bg-red-50"
+                                    (click)="mostrarEliminar(respuestas.id)"
+                                >
+                                    <span class="material-symbols text-base">delete</span> Eliminar
+                                </button>
+                              }
+                          </div>
+                        }
                     </div>
                 </td>
             </tr>

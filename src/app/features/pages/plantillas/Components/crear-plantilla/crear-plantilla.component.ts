@@ -7,7 +7,6 @@ import { ModalService } from '../../../../../Core/Service/Modal/modal.service';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './crear-plantilla.component.html',
-  styleUrl: './crear-plantilla.component.css',
 })
 export class CrearPlantillaComponent {
   constructor(private modalService: ModalService) {}

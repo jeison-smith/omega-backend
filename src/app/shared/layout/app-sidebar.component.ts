@@ -1,6 +1,6 @@
 import { Component, signal, computed, inject } from '@angular/core';
 import { RouterLink, RouterLinkActive, Router } from '@angular/router';
-import { NgClass, NgFor, NgIf } from '@angular/common';
+import { NgClass } from '@angular/common';
 
 const menuItems = [
   { title: 'Usuarios', url: '/usuarios', icon: 'users' },
@@ -14,7 +14,7 @@ const menuItems = [
 @Component({
   selector: 'app-sidebar',
   standalone: true,
-  imports: [RouterLink, RouterLinkActive, NgClass, NgFor, NgIf],
+  imports: [RouterLink, RouterLinkActive, NgClass],
   template: `
     <aside
       class="h-screen bg-sidebar flex flex-col transition-all duration-300 ease-in-out sticky top-0"
@@ -27,16 +27,19 @@ const menuItems = [
           >
             <span class="text-white font-bold text-sm">A</span>
           </div>
-          <div *ngIf="!collapsed()" class="animate-fade-in">
-            <h1 class="font-bold text-sidebar-foreground text-lg leading-tight">atlantic</h1>
-            <p class="text-[10px] text-sidebar-muted leading-none">Quantum Innovations</p>
-          </div>
+          @if (!collapsed()) {
+            <div class="animate-fade-in">
+              <h1 class="font-bold text-sidebar-foreground text-lg leading-tight">atlantic</h1>
+              <p class="text-[10px] text-sidebar-muted leading-none">Quantum Innovations</p>
+            </div>
+          }
         </div>
       </div>
 
       <nav class="flex-1 py-4 px-2 overflow-y-auto">
         <ul class="space-y-1">
-          <li *ngFor="let item of menuItems">
+          @for (item of menuItems; track item.url) {
+            <li>
             <a
               [routerLink]="item.url"
               routerLinkActive="bg-primary text-primary-foreground shadow-md"
@@ -48,11 +51,12 @@ const menuItems = [
               }"
             >
               <i [class]="'pi pi-' + item.icon + ' w-5 h-5 flex-shrink-0'"></i>
-              <span *ngIf="!collapsed()" class="font-medium text-sm animate-fade-in">{{
-                item.title
-              }}</span>
+              @if (!collapsed()) {
+                <span class="font-medium text-sm animate-fade-in">{{ item.title }}</span>
+              }
             </a>
           </li>
+          }
         </ul>
       </nav>
 
@@ -65,7 +69,9 @@ const menuItems = [
           <i
             [class]="'pi ' + (collapsed() ? 'pi-chevron-right' : 'pi-chevron-left') + ' w-5 h-5'"
           ></i>
-          <span *ngIf="!collapsed()" class="text-sm">Colapsar</span>
+          @if (!collapsed()) {
+            <span class="text-sm">Colapsar</span>
+          }
         </button>
       </div>
     </aside>

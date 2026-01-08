@@ -1,43 +1,39 @@
-import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { RouterModule } from '@angular/router';
-import { AuthService } from '../../../../Core/Service/Auth/auth.service';
-import { Router } from '@angular/router';
-import { ToastService } from '../../../../Core/Service/Toast/toast.service';
+import { Component, computed, inject, signal } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Router, RouterModule } from '@angular/router';
 import { take } from 'rxjs';
+import { AuthService } from '../../../../Core/Service/Auth/auth.service';
+import { ToastService } from '../../../../Core/Service/Toast/toast.service';
 
 @Component({
   selector: 'app-login',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, RouterModule],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.css',
 })
 export class LoginComponent {
-  loginForm!: FormGroup;
-  loading: boolean = false;
-  preproduccion: boolean = false;
+  private readonly router = inject(Router);
+  private readonly authService = inject(AuthService);
+  private readonly toastMessage = inject(ToastService);
 
-  constructor(
-    private fb: FormBuilder,
-    private router: Router,
-    private authService: AuthService,
-    private toastMessage: ToastService
-  ) {}
+  readonly loginForm = new FormGroup({
+    usuario: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
+    password: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
+  });
 
-  ngOnInit(): void {
-    this.loginForm = this.fb.group({
-      usuario: ['', Validators.required],
-      password: ['', Validators.required],
-    });
+  readonly loading = signal(false);
+  readonly preproduccion = signal(
+    window.location.hostname === 'falconpreprod.atlanticqi.com'
+  );
 
-    var dominio = window.location.hostname;
-    console.log(dominio);
-    if (dominio == 'falconpreprod.atlanticqi.com') {
-      this.preproduccion = true;
-    }
-  }
+  private readonly formStatus = toSignal(this.loginForm.statusChanges, {
+    initialValue: this.loginForm.status,
+  });
+  readonly canSubmit = computed(
+    () => this.formStatus() === 'VALID' && !this.loading()
+  );
 
   private redireccionRol(infoUser: any): void {
     const rol = infoUser.rol?.toLowerCase();
@@ -51,10 +47,10 @@ export class LoginComponent {
 
   onSubmit(): void {
     if (this.loginForm.valid) {
-      this.loading = true; //activamos el loading...
+      this.loading.set(true); //activamos el loading...
       this.loginForm.disable();
 
-      const { usuario, password } = this.loginForm.value;
+      const { usuario, password } = this.loginForm.getRawValue();
 
       this.authService
         .autenticar({ usuario, password })
@@ -69,7 +65,7 @@ export class LoginComponent {
             this.toastMessage.showError(error.message); // Mostrar mensaje en el toast
             this.loginForm.reset();
             this.loginForm.enable();
-            this.loading = false;
+            this.loading.set(false);
           },
         });
     }
