@@ -1,0 +1,43 @@
+<!-- Modal crear plantilla -->
+<p-dialog header="Crear plantilla" [modal]="true" [(visible)]="visible" [style]="{ width: '40rem' }" (onHide)="cerrarModal()">
+    <form [formGroup]="crearPlantillaForm" (ngSubmit)="crearPlantilla()">
+        <div class="formgrid grid">
+            <div class="field col">
+                <label for="nombre" class="label-text">Nombre de la plantilla*</label>
+                <input id="nombre" type="text" formControlName="nombre" (input)="validarPlantillaDuplicada(crearPlantillaForm.get('nombre')?.value)" class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round-xl appearance-none outline-none focus:border-primary w-full" [ngClass]="{'border-red-500': errorMessage, 'focus:border-red-500':errorMessage}">
+                <p *ngIf="errorMessage" class="mt-2" style="color: #A52118; font-size: 12px;">{{ errorMessage }}</p>
+            </div>
+            <div class="field col">
+                <label for="lastname2" class="label-text">Proyecto</label>
+                <select name="idProyecto" id="idProyecto" formControlName="idProyecto"
+                    class="w-full text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round-xl outline-none focus:border-primary"
+                    style="appearance: auto">
+                    <option value="" [disabled]="true">Selecciona</option>
+                     @for (item of listaProyectos; track $index) {
+                        <option value="{{item.id}}">{{item.nombre}}</option>
+                     }
+                </select>
+            </div>
+                <div class="field col">
+                    <label for="categoria" class="label-text">Categorías</label>
+                  <select id="categoria" formControlName="idCategoria"
+                    class="w-full text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round-xl outline-none focus:border-primary"
+                    style="appearance: auto">
+
+                    <option value="" disabled selected>Selecciona</option>
+
+                    @for (cat of listaCategorias; track $index) {
+                     <option value="{{cat.id}}">{{cat.nombre}}</option>
+                    }
+                  </select>
+                </div>
+
+        </div>
+        <div class="flex justify-content-end gap-2 mt-5">
+            <button type="button" class="btn-outline-purple1" (click)="cerrarModal()">Cancelar</button>
+            <button [disabled]="!crearPlantillaForm.valid || errorMessage !== ''"  type="submit" class="btn-primary">
+                <div *ngIf="loading" class="spinner-black" ></div> 
+                Guardar</button>
+        </div>
+    </form>
+</p-dialog>

@@ -1,0 +1,21 @@
+<button class="btn-danger-icon"
+                        style="
+                        transform: scale(0.9);  
+                        position: relative; 
+                        bottom: 5px;" (click)="eliminarCampos()">
+                        <span class="material-symbols-outlined mr-2">delete</span>
+                        Eliminar
+                    </button>
+
+<p-dialog header="Eliminar" [modal]="true" [(visible)]="visible" [style]="{width: '40rem'}" (onHide)="cancelar()">
+    <div>
+        <p>¿Estás seguro de que deseas eliminar la ramificación y a las preguntas asociadas a ella?</p>
+    </div>
+    <div class="flex justify-content-end gap-2 mt-5">
+        <button type="button" class="btn-outline-blue1" (click)="cancelar()">Cancelar</button>
+        <button [disabled]="loading" type="submit" class="btn-danger" (click)="eliminarGestion()">
+            <div *ngIf="loading" class="spinner"></div> 
+            Eliminar
+        </button>
+    </div>
+</p-dialog>

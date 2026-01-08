@@ -1,0 +1,62 @@
+<div class="toolbar">
+  <div class="titulo">
+    <h2>Plantillas disponibles</h2>
+  </div>
+
+    <div class="btn__group--blue">
+      <input type="text" placeholder="Filtra aquí" #filterInput />
+      <button (click)="valorFiltro(filterInput.value)" >
+        <span class="material-symbols">search</span>
+      </button>
+        <button (click)="listView = !listView" [class.active]="listView" title="Vista de lista">
+        <span class="material-symbols">view_list</span>
+      </button>
+      <button (click)="listView = !listView" [class.active]="!listView" class="last" title="Vista de grilla">
+        <span class="material-symbols">grid_view</span>
+      </button>
+    </div>
+  </div>
+
+<div class="contenedor">
+  <div *ngIf="listView">
+  @for (plantilla of registrosPaginados; track $index) {
+        <div class="card__plantilla--gestion">
+            <div>
+                <label>{{ plantilla.nombreProyecto }}</label>
+                <span>{{ plantilla.nombrePlantilla }}</span>
+            </div>
+            <div>
+                <label>Creador</label>
+                <span>{{ plantilla.nombreCreador | titlecase}}</span>
+            </div>
+            <div>
+                <label>Fecha ult. actualización</label>
+                <span>{{ plantilla.fechaModificacion | date:"dd/MM/yyyy"}}</span>
+            </div>
+            <div>
+                <button class="btn-primary-icon" [routerLink]="['gestion-plantilla', plantilla.id]"><span class="material-symbols mr-2"> border_color</span> Usar plantilla
+                </button>
+            </div>
+        </div>
+    }
+</div>
+<div *ngIf="!listView">
+<div class="grid-view">
+    @for (plantilla of registrosPaginados; track $index) {
+      <div class="card-plantilla">
+
+        <h3>{{ plantilla.nombreProyecto }}</h3>
+        <p class="subtitulo">{{ plantilla.nombrePlantilla }}</p>
+
+        <div class="info-row">
+          <span><strong>Creador:</strong> {{ plantilla.nombreCreador | titlecase }}</span>
+          <span><strong>Últ. actualización:</strong> {{ plantilla.fechaModificacion | date:'dd/MM/yyyy' }}</span>
+        </div>
+          <button class="btn-primary-icon" [routerLink]="['gestion-plantilla', plantilla.id]">
+            <span class="material-symbols mr-2">border_color</span>Usar plantilla
+          </button>
+      </div>
+    }
+  </div>
+</div>
+</div>

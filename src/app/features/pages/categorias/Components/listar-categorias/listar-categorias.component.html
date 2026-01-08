@@ -1,0 +1,99 @@
+<!-- Contenedor Principal Centrado -->
+<div class="page-container">
+    <!-- Botón Crear Categoría -->
+    <div class="mb-4">
+        <button class="btn-primary" (click)="navegarACrearCategoria()">
+            <span class="material-symbols mr-2">add</span>
+            Crear Categoría
+        </button>
+    </div>
+
+    <!-- Buscador -->
+    <div class="card-table">
+        <div class="btn__group--red">
+            <input type="text" placeholder="Filtra aquí" #filterInput>
+            <button (click)="filtrar(filterInput.value)">
+                <span class="material-symbols mr-2">search</span>
+                Buscar
+            </button>
+        </div>
+    </div>
+
+    <!-- Tabla de Categorías -->
+    <div class="table-container">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Nombre</th>
+                    <th>Creador</th>
+                    <th>Fecha de creación</th>
+                    <th>Últ. actualización</th>
+                    <th>Estado</th>
+                    <th>Acción</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @for (item of registrosPaginados; track item.id) {
+                <tr>
+                    <!-- ID -->
+                    <td>{{ item.id }}</td>
+
+                    <!-- Nombre -->
+                    <td>{{ item.nombre }}</td>
+
+                    <!-- Creador -->
+                    <td>{{ item.creadorNombre }}</td>
+
+                    <!-- Fecha de Creación -->
+                    <td>{{ item.fechaCreacion | date:"dd/MM/yyyy" }}</td>
+
+                    <!-- Última Actualización -->
+                    <td>{{ item.fechaModificacion | date:"dd/MM/yyyy" }}</td>
+
+                    <!-- Estado con Toggle -->
+                    <td>
+                        <div class="estado-cell">
+                            <span [class]="item.estado ? 'badge_succses' : 'badge_error'">
+                                {{ item.estado ? 'Activo' : 'Inactivo' }}
+                            </span>
+
+                            <!-- Toggle Switch -->
+                            <label class="switch">
+                                <input type="checkbox" [checked]="item.estado"
+                                    (change)="cambiarEstado(item.id, !item.estado)">
+                                <span class="slider"></span>
+                            </label>
+
+                            <span class="estado-text">
+                                Activar o desactivar proyecto
+                            </span>
+                        </div>
+                    </td>
+
+                    <!-- Acción: Crear Plantilla -->
+                    <td>
+                        <button class="btn-primary btn-sm" (click)="navegarACrearPlantilla(item.id)"
+                            [disabled]="!item.estado">
+                            <span class="material-symbols mr-1">add</span>
+                            Crear Categoría
+                        </button>
+                    </td>
+                </tr>
+                } @empty {
+                <tr>
+                    <td colspan="7" class="text-center py-4 text-gray-500">
+                        No se encontraron categorías
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+
+        <!-- Paginación -->
+        <shared-paginacion [datos]="listaCategorias" [totalRegistros]="totalRegistros"
+            [registrosPorPagina]="registrosPorPagina" (cambioPagina)="onPaginaCambiada($event)">
+        </shared-paginacion>
+    </div>
+</div>

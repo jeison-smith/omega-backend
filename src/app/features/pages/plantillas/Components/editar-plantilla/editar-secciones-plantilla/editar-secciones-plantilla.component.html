@@ -1,0 +1,33 @@
+<form [formGroup]="seccionesForm">
+  <div formArrayName="campos">
+    <div class="card__section" *ngIf="seccionesArray.length > 0">
+      <div *ngFor="let seccion of seccionesArray.controls; let i = index" [formGroupName]="i" class="mb-4">
+
+        <!-- Header -->
+        <div class="card__section-header" *ngIf="seccion.get('id')?.value">
+          <div class="section-texts">
+            <div class="section-title">
+              {{ seccion.get('nombre')?.value || 'Sin título' }}
+            </div>
+            <div class="section-description">
+              {{ seccion.get('descripcion')?.value || '' }}
+            </div>
+          </div>
+          <span [class.rotate]="!seccionColapsada[i]"
+                class="card__icon"
+                (click)="toggleSeccion(i)">▶</span>
+        </div>
+
+        <div formArrayName="campos">
+        <editar-campos-plantilla
+          [camposs]="getCamposArray(i)"
+          [class.hidden]="seccionColapsada[i]"      
+          (actualizarCampos)="triggerActualizarCampos()"
+          [esRamificacion]="false">
+        </editar-campos-plantilla>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+

@@ -1,0 +1,25 @@
+<div class="pagination">
+  <span>Registro {{ (paginaActual - 1) * registrosPorPagina + 1 }} 
+  a {{ Math.min(paginaActual * registrosPorPagina, totalRegistros) }} de {{ totalRegistros }} registros</span>
+  
+  <div class="pagination-controls">
+    <button class="prev" (click)="paginaAnterior()" [disabled]="paginaActual === 1">
+      <span class="material-symbols">arrow_back_ios</span> Atras
+    </button>
+    
+    <ng-container *ngFor="let pagina of paginasVisibles()">
+      <button 
+        *ngIf="pagina !== '...'" 
+        (click)="cambiarPagina(pagina)" 
+        [class.active]="pagina === paginaActual" 
+        class="page">
+        {{ pagina }}
+      </button>
+      <span *ngIf="pagina === '...'" class="ellipsis">...</span>
+    </ng-container>
+    
+    <button class="next" (click)="paginaSiguiente()" [disabled]="paginaActual === paginas.length">
+      Siguiente <span class="material-symbols">arrow_forward_ios</span>
+    </button>
+  </div>
+</div>

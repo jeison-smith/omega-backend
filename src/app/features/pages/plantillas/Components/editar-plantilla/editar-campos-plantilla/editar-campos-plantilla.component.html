@@ -1,0 +1,61 @@
+<div class="camposPlantilla">
+    <form [formGroup]="camposForm">
+        <div formArrayName="campos">
+            <ng-container *ngFor="let campo of camposArray.controls; let i = index" [formGroupName]="i">
+                @if(campo.get('estado')?.value === true){
+
+                @switch (campo.get('tipo')?.value) {
+                @case (1) {
+                <!-- Componente para tipo = 1 (Campo Fecha) -->
+                <campo-fecha [formFecha]="getFormGroup(i)" (eliminar)="eliminarCampo(i)"
+                    [totalCampos]="camposActivos().length" (moverArriba)="arriba(i)" (moverAbajo)="abajo(i)"
+                    [ramificado]="esRamificacion" [posicionCampo]="campo.get('orden')?.value">
+                </campo-fecha>
+                }
+                @case (2) {
+                <!-- Componente para tipo = 2 (Opción) -->
+                <campo-opcion [formOpciones]="getFormGroup(i)" (eliminar)="eliminarCampo(i)"
+                    [totalCampos]="camposActivos().length" (moverArriba)="arriba(i)" (moverAbajo)="abajo(i)"
+                    [posicionCampo]="campo.get('orden')?.value" (actualizarCampos)="ActualizarCampos()"
+                    [ramificado]="esRamificacion">
+                </campo-opcion>
+                }
+                @case (3) {
+                <!-- Componente para tipo = 3 (Alfanumérico) -->
+                <campo-texto [formTexto]="getFormGroup(i)" (eliminar)="eliminarCampo(i)"
+                    [totalCampos]="camposActivos().length" (moverArriba)="arriba(i)" (moverAbajo)="abajo(i)"
+                    [posicionCampo]="campo.get('orden')?.value" [ramificado]="esRamificacion">
+                </campo-texto>
+                }
+                @case (4) {
+                <!-- Componente para tipo = 4 (Lista Desplegable) -->
+                <campo-lista [formlista]="getFormGroup(i)" (eliminar)="eliminarCampo(i)"
+                    [totalCampos]="camposActivos().length" (moverArriba)="arriba(i)" (moverAbajo)="abajo(i)"
+                    [posicionCampo]="campo.get('orden')?.value" [ramificado]="esRamificacion">
+                </campo-lista>
+                }
+
+
+                }
+                }
+
+            </ng-container>
+        </div>
+    </form>
+</div>
+<div class="adicionarElemento">
+    <button class="btn-outline-secondary" (click)="menu_popup($event)">
+        <span class="material-symbols mr-2">add_circle</span> Añadir elemento
+    </button>
+
+    <div *ngIf="menuVisible" class="adicionarElemento__menu">
+        <ul>
+            <li><a (click)="agregarCampo(1)">Fecha (dd/mm/yyyy)</a></li>
+            <li><a (click)="agregarCampo(2)">Opción (Varias o única)</a></li>
+            <li><a (click)="agregarCampo(3)">Alfanumérico (Campo de texto)</a></li>
+            <li><a (click)="agregarCampo(4)">Lista desplegable</a></li>
+            <li><a (click)="agregarCampo(5)">Check Box</a></li>
+        </ul>
+    </div>
+
+</div>

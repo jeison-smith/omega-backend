@@ -1,0 +1,63 @@
+<div class="card-table">
+    <div class="btn__group--red">
+        <input type="text" placeholder="Filtra aquí" #filterInput>
+        <button (click)="valorFiltro(filterInput.value)">
+            <span class="material-symbols mr-2">
+                search
+            </span>
+            Buscar</button>
+    </div>
+</div>
+<div class="table-container">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nombre</th>
+                <th>Creador</th>
+                <th>Fecha de creación</th>
+                <th>Ult. actualización</th>
+                <th>Estado</th>
+                <th>Acción</th>
+            </tr>
+
+        </thead>
+        <tbody>
+            @for (proyecto of registrosPaginados; track $index) {
+            <tr>
+                <td>{{ proyecto.id }}</td>
+                <td>{{ proyecto.nombre }}</td>
+                <td>{{ proyecto.nombreCreador | titlecase}}</td>
+                <td>{{ proyecto.fechaCreacion | date:"dd/MM/yyyy" }}</td>
+                <td>{{ proyecto.fechaModificacion | date:"dd/MM/yyyy"}}</td>
+                <td class="flex align-items-center">
+                    @if (proyecto.estado == true) {
+                    <span class="badge_succses mr-2">Activo</span>
+                    }@else {
+                    <span class="badge_error mr-2">Inactivo</span>
+                    }
+                    <label class="switch mr-2">
+                        <input type="checkbox" [checked]="proyecto?.estado"
+                            (change)="estadoProyecto($event, proyecto.id)">
+                        <span class="slider round"></span>
+                    </label> Activar o desactivar proyecto
+                </td>
+                <!-- ACCIÓN -->
+                <td>
+                    <button class="p-button p-button-sm p-button-info" (click)="redirigircategoria(proyecto.id)">
+                        <i class="pi pi-file-edit mr-1"></i>
+                        Crear Categoria
+                    </button>
+                </td>
+
+
+            </tr>
+            }
+
+        </tbody>
+    </table>
+
+    <shared-paginacion [datos]="listaProyectos" [totalRegistros]="totalRegistros" [registrosPorPagina]="10"
+        (cambioPagina)="onPaginaCambiada($event)">
+        >
+    </shared-paginacion>

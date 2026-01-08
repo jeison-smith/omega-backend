@@ -1,0 +1,62 @@
+<div class="card-table">
+    <div class="btn__group--red">
+        <input type="text" placeholder="Filtra aquí" #filterInput>
+        <button (click)="valorFiltro(filterInput.value)">
+            <span class="material-symbols mr-2">
+                search
+            </span>
+            Buscar</button>
+    </div>
+</div>
+<div class="table-container">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>N° Plantilla</th>
+                <th>Nombre</th>
+                <th>Proyecto</th>
+                <th>Categoría</th>
+                <th>Creador</th>
+                <th>Fecha de creación</th>
+                <th>Ult. actualización</th>
+                <th>Gestiones</th>
+                <th>Estado</th>
+                <th>Acción</th>
+            </tr>
+
+        </thead>
+        <tbody>
+            @for (plantilla of registrosPaginados; track $index) {
+            <tr>
+                <td>{{ plantilla.id }}</td>
+                <td>{{ plantilla.nombrePlantilla }}</td>
+                <td>
+                    {{ plantilla.nombreProyecto }}
+                </td>
+                <td>{{ plantilla.nombreCategoria }}</td>
+                <td>{{ plantilla.nombreCreador | titlecase}}</td>
+                <td>{{ plantilla.fechaCreacion | date:"dd/MM/yyyy" }}</td>
+                <td>{{ plantilla.fechaModificacion | date:"dd/MM/yyyy"}}</td>
+                <td>{{ plantilla.gestiones}}</td>
+                <td>
+                    @if (plantilla.estado == true) {
+                    <span class="badge_succses">Activo</span>
+                    }@else {
+                    <span class="badge_error">Inactivo</span>
+                    }
+                </td>
+                <td>
+                    <a [routerLink]="['editar-plantilla/', plantilla.id]" class="btn-small">
+                        Editar
+                    </a>
+                    <!-- <button type="button" class="table_actions"><span class="material-symbols">more_horiz</span></button> -->
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+
+    <shared-paginacion [datos]="listaPlantillas" [totalRegistros]="totalRegistros" [registrosPorPagina]="10"
+        (cambioPagina)="onPaginaCambiada($event)">
+        >
+    </shared-paginacion>

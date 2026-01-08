@@ -1,0 +1,33 @@
+<div class="container">
+    <div class="login">
+        <div class="login__body">
+            <div class="login__body-header">
+                <img src="images/Logo-Atlantic.png" alt="logo Atlantic">
+            </div>
+            <div *ngIf="preproduccion" class="preproduccion-mini">
+                <label>AMBIENTE DE PRE-PRODUCCION</label>
+            </div>
+            <div class="login__form">
+                <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+                    <div class="field col">
+                        <label for="usuario">Usuario</label>
+                        <input id="usuario" type="text" formControlName="usuario" class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round-xl appearance-none outline-none focus:border-primary w-full">
+                        <div class="mt-2 alerta" *ngIf="loginForm.get('usuario')?.invalid && loginForm.get('usuario')?.touched">
+                            Este campo es obligatorio.
+                          </div>
+                    </div>
+                    <div class="field col">
+                        <label for="contraseña">Contraseña</label>
+                        <input id="password" type="password" formControlName="password" class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round-xl appearance-none outline-none focus:border-primary w-full">
+                        <div class="mt-2 alerta" *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
+                            Este campo es obligatorio.
+                          </div>
+                    </div>
+                    <div class="field col">
+                        <button [disabled]="!loginForm.valid" type="submit" class="btn__login"> <i class="pi pi-spin pi-spinner" *ngIf="loading === true"></i> Iniciar sesión</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

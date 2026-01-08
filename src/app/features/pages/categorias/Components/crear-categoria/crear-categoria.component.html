@@ -1,0 +1,167 @@
+<!-- Contenedor Principal Centrado -->
+<div class="page-container">
+  <!-- Botón Crear Categoría -->
+  <div class="mb-4">
+    <button class="btn-primary" (click)="showDialog()">
+      <span class="material-symbols mr-2">add</span>
+      Crear Categoría
+    </button>
+  </div>
+
+  <!-- Buscador -->
+  <div class="card-table">
+    <div class="btn__group--red">
+      <input type="text" placeholder="Filtra aquí" [(ngModel)]="filtro" (input)="buscar()">
+      <button>
+        <span class="material-symbols mr-2">search</span>
+        Buscar
+      </button>
+    </div>
+  </div>
+
+  <!-- Tabla de Categorías -->
+  <div class="table-container">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Id</th>
+          <th>Nombre</th>
+          <th>Proyecto</th>
+          <th>Creador</th>
+          <th>Fecha de creación</th>
+          <th>Últ. actualización</th>
+          <th>Estado</th>
+          <th>Acción</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let cat of categoriasPaginadas">
+          <!-- ID -->
+          <td>{{ cat.id }}</td>
+
+          <!-- Nombre -->
+          <td>{{ cat.nombre }}</td>
+
+          <!-- Proyecto -->
+          <td>{{ cat.proyectoNombre }}</td>
+
+          <!-- Creador -->
+          <td>{{ obtenerNombreUsuario(cat.usuarioCreador) }}</td>
+
+          <!-- Fecha de Creación -->
+          <td>{{ cat.fechaCreacion | date:"dd/MM/yyyy" }}</td>
+
+          <!-- Última Actualización -->
+          <td>{{ cat.fechaModificacion ? (cat.fechaModificacion | date:"dd/MM/yyyy") : '—' }}</td>
+
+          <!-- Estado con Toggle -->
+          <td>
+            <div class="estado-cell">
+              <span [class]="cat.estado ? 'badge_succses' : 'badge_error'">
+                {{ cat.estado ? 'Activo' : 'Inactivo' }}
+              </span>
+
+              <!-- Toggle Switch -->
+              <label class="switch">
+                <input type="checkbox" [checked]="cat.estado" (change)="cambiarEstado(cat.id, !cat.estado)">
+                <span class="slider"></span>
+              </label>
+
+              <span class="estado-text">
+                Activar o desactivar proyecto
+              </span>
+            </div>
+          </td>
+
+          <!-- Acción: Crear Plantilla -->
+          <td>
+            <button class="btn-primary btn-sm" (click)="redirigirPlantillas(cat.id)" [disabled]="!cat.estado">
+              <span class="material-symbols mr-1">add</span>
+              Crear Plantilla
+            </button>
+          </td>
+        </tr>
+
+        <tr *ngIf="categoriasPaginadas.length === 0">
+          <td colspan="8" class="text-center py-4 text-gray-500">
+            No hay categorías registradas.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Paginación con componente compartido -->
+    <shared-paginacion [datos]="categorias" [totalRegistros]="totalRegistros" [registrosPorPagina]="10"
+      (cambioPagina)="onPaginaCambiada($event)">
+    </shared-paginacion>
+  </div>
+</div>
+<!-- ============================= -->
+<!--      MODAL CREAR CATEGORÍA   -->
+<!-- ============================= -->
+
+
+<p-dialog header="Crear Categoría" [modal]="true" [(visible)]="visible" [style]="{width: '40rem'}"
+  (onHide)="cerrarModal()">
+
+  <form [formGroup]="formCategoria" (ngSubmit)="guardarCategoria()">
+
+    <div class="formgrid grid">
+
+      <!-- NOMBRE DE LA CATEGORÍA -->
+      <div class="field col-4">
+        <label class="label-text">Nombre de la categoría*</label>
+
+        <input type="text" formControlName="nombreCategoria"
+          (input)="validarCategoriaDuplicada(formCategoria.get('nombreCategoria')?.value)"
+          class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round-xl appearance-none outline-none focus:border-primary w-full"
+          [ngClass]="{
+            'border-red-500': errorMessage || (formCategoria.get('nombreCategoria')?.invalid && formCategoria.get('nombreCategoria')?.touched),
+            'focus:border-red-500': errorMessage
+          }">
+
+        <!-- Mensaje de error de validación requerida -->
+        <p *ngIf="formCategoria.get('nombreCategoria')?.invalid && formCategoria.get('nombreCategoria')?.touched && !errorMessage"
+          class="mt-2" style="color: #A52118; font-size: 12px;">
+          El nombre es obligatorio.
+        </p>
+
+        <!-- Mensaje de error de categoría duplicada -->
+        <p *ngIf="errorMessage" class="mt-2" style="color: #A52118; font-size: 12px;">
+          {{ errorMessage }}
+        </p>
+      </div>
+
+      <!-- PROYECTO -->
+      <div class="field col-4">
+        <label class="label-text">Nombre del proyecto*</label>
+        <select formControlName="idProyecto" class="w-full text-base p-2 border-1 surface-border border-round-xl">
+          <option value="">Seleccione</option>
+          <option *ngFor="let p of proyectosDisponibles" [value]="p.id">{{ p.nombre }}</option>
+        </select>
+      </div>
+
+      <!-- ESTADO -->
+      <div class="field col-4">
+        <label class="label-text">Estado*</label>
+        <select formControlName="estado" class="w-full p-2 border-1 border-round-xl">
+          <option [ngValue]="true">Activo</option>
+          <option [ngValue]="false">Inactivo</option>
+        </select>
+      </div>
+
+    </div>
+
+    <!-- BOTONES -->
+    <div class="flex justify-content-end gap-2 mt-5">
+      <button type="button" class="btn-outline-purple1" (click)="cerrarModal()">Cancelar</button>
+      <button type="submit" class="btn-primary" [disabled]="!formCategoria.valid || errorMessage !== ''">
+        <div *ngIf="loading" class="spinner-black"></div>
+        Guardar
+      </button>
+    </div>
+
+  </form>
+
+</p-dialog>

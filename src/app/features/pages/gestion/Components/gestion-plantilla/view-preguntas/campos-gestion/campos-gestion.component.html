@@ -1,0 +1,11 @@
+<div *ngFor="let opcion of getOpciones(campo).controls; let i = index; trackBy: trackByFn">
+    <div *ngIf="opcion.get('campos')?.value?.length > 0 && selectedOptions.has(opcion.get('id')?.value)">
+<div formArrayName="campos">
+    <div *ngFor="let childCampo of getCamposArray(opcion).controls; let j = index">
+      <div [formGroupName]="j">
+        <preguntas-gestion [campo]="castToFormGroup(childCampo)" [idVisualRamificado]="idVisualRamificado+'.'+(j+1).toString()"></preguntas-gestion>
+      </div>
+    </div>
+  </div>
+    </div>
+</div>

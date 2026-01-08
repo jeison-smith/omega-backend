@@ -1,0 +1,71 @@
+<!-- Modal Editar Usuario -->
+<p-dialog header="Editar usuario" [modal]="true" [(visible)]="visible" [style]="{ width: '40rem' }" (onHide)="cerrarModal()">
+    <form [formGroup]="crearUsuarioForm" (ngSubmit)="editarUsuario()">
+        <div class="formgrid grid">
+            <div class="field col-6">
+                <label for="documento" class="label-subtext">ID del usuario</label>
+                <input id="documento" formControlName="id" type="text" class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round-xl appearance-none outline-none focus:border-primary w-full">
+            </div>
+            <div class="field col-6">
+                <label for="nombreUsuario" class="label-subtext">Nombre de usuario</label>
+                <input id="nombreUsuario" formControlName="nombreUsuario" type="text" [disabled]="true" class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round-xl appearance-none outline-none focus:border-primary w-full">
+                <p *ngIf="errorMessage" class="mt-2" style="color: #A52118; font-size: 12px;">{{ errorMessage }}</p>
+            </div>
+            <div class="field col-6">
+                <label for="lastname2" class="label-subtext">Rol</label>
+                <select name="" id="" formControlName="idRol"
+                    class="w-full text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round-xl outline-none focus:border-primary"
+                    style="appearance: auto">
+                    <option value="" [disabled]="true">Selecciona</option>
+                    <option value="2">Administrativo</option>
+                    <option value="3">Operativo</option>
+                </select>
+            </div>
+            <div class="field col-6">
+                <label for="lastname2" class="label-subtext">Vincular proyecto(s)</label>
+                <div class="dropdown-container" style="width: 100%; position: relative;">
+                    <button 
+                      type="button" 
+                      class="dropdown-btn w-full text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round-xl outline-none focus:border-primary flex items-center"
+                      style="position: relative;"
+                      (click)="abrirListaProyectos($event)"> 
+                      <span class="select-text " style="padding: 1px;">Selecciona</span>
+                      <span class="material-symbols" style="margin-left: auto; padding: 0px !important;">expand_more</span> <!-- Flecha hacia abajo -->
+                    </button>
+                  
+                    <div *ngIf="isDropdownOpen" class="dropdown-list" style="position: absolute; width: 100%; max-height: 200px; overflow-y: auto; background-color: white; border: 1px solid #777; border-radius: 0px; margin-top: 0px; z-index: 999; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);">
+                        <div style="padding: 8px;">
+                        <input type="text" placeholder="Selecciona" formControlName="searchTerm" style="width: 100%; padding: 4px; border-radius: 7px; border: 1px solid #ccc;">
+                        <span class="material-symbols" style="position: absolute; right: 10px; top: 6%;">search</span>
+                        </div>
+                        <div *ngFor="let proyecto of proyectosFiltrados()" class="dropdown-item" style="padding: 8px;">
+                        <input type="checkbox" (change)="onCheckboxChange(proyecto)" [checked]="isChecked(proyecto)">
+                        <span>{{ proyecto.nombre }}</span>
+                      </div>
+                    </div>
+                  </div>
+            </div>
+            <div class="field col-12" style="margin-top: 0; margin-bottom: 0;">
+                <label class="label-subtext">Proyectos vinculados:</label>
+            </div>
+            <div class="selected-tags rect-gray">
+                <div *ngIf="selectedProyectos.length == 0" style="text-align: center; width: 100%;">
+                    <label style="color: gray; margin: 0;">El usuario no está vinculado a ningún proyecto</label>
+                </div>
+                <div *ngFor="let tag of selectedProyectos" class="tag rect-primary">
+                  {{ tag.nombre }} 
+                  <span (click)="removeFromSelected(tag)" class="remove-tag material-symbols text-white">close</span>
+                </div>
+              </div>
+
+        </div>
+        <div class="flex justify-content-end gap-2 mt-5">
+            <button type="button" class="btn-outline-blue1" (click)="cerrarModal()">Cancelar</button>
+            <button [disabled]="!crearUsuarioForm.valid" type="submit" class="btn-primary">
+                <div *ngIf="loading" class="spinner" ></div> 
+                Guardar</button>
+        </div>
+    </form>
+    
+    
+</p-dialog>

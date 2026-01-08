@@ -1,0 +1,38 @@
+<div class="card" style="display: flex; gap: 10px; background-color: #e8eefa;">
+    <label>Restricciones</label>
+    
+    <form [formGroup]="restriccionForm">
+      <div class="form-container" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;">
+        
+        <!-- Primer select: tipoRestriccion -->
+        <div class="form-item">
+          <select formControlName="tipoRestriccion" (change)="getOpcionesRestriccion()" class="w-full text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round-xl outline-none focus:border-primary">
+            <option value="0" disabled>Selecciona</option>
+            <option value="1">Numérico</option>
+            <!--
+            <option value="2">Texto</option>
+            <option value="3">Límite de caracteres</option>
+          -->
+          </select>
+        </div>
+  
+        <div class="form-item">
+          <select formControlName="idRestriccion" (change)="activarCampos()" (blur)="guardarActualizacion()" class="w-full text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round-xl outline-none focus:border-primary">
+            
+            <option *ngFor="let restriccion of listaRestricciones" [value]="restriccion.Id">
+              {{ restriccion.Descripcion }}
+            </option>
+          </select>
+        </div>
+  
+        <div class="form-item">
+          <input formControlName="campo1" (blur)="guardarActualizacion()" *ngIf="camposDisponibles >= 1" id="campo1" type="text" step="1" (input)="onlyInteger($event)" class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round-xl appearance-none outline-none focus:border-primary w-full" placeholder="" />
+        </div>
+      
+        <div class="form-item">
+          <input formControlName="campo2" (blur)="guardarActualizacion()" *ngIf="camposDisponibles >= 2" id="campo2" type="text" step="1" (input)="onlyInteger($event)" class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round-xl appearance-none outline-none focus:border-primary w-full" placeholder="" />
+        </div>
+      </div>
+    </form>
+  </div>
+  

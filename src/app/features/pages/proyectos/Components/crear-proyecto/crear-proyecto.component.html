@@ -1,0 +1,43 @@
+<div class="card">
+    <button class="btn-primary-icon" (click)="showDialog()" label="Show">
+        <span class="material-symbols mr-2">
+            person_add
+        </span>
+        Crear proyecto
+    </button>
+</div>
+
+
+<!-- Modal crear proyecto -->
+<p-dialog header="Crear proyecto" [modal]="true" [(visible)]="visible" [style]="{ width: '40rem' }"
+    (onHide)="cerrarModal()">
+    <form [formGroup]="crearProyectoForm" (ngSubmit)="crearProyecto()">
+        <div class="formgrid grid">
+            <div class="field col">
+                <label for="nombreProyecto" class="label-text">Nombre del proyecto*</label>
+                <input id="nombreProyecto" formControlName="nombre"
+                    (input)="validarProyectoDuplicado(crearProyectoForm.get('nombre')?.value)" type="text"
+                    class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round-xl appearance-none outline-none focus:border-primary w-full"
+                    [ngClass]="{'border-red-500': errorMessage, 'focus:border-red-500':errorMessage}">
+                <p *ngIf="errorMessage" class="mt-2" style="color: #A52118; font-size: 12px;">{{ errorMessage }}</p>
+            </div>
+            <div class="field col">
+                <label for="lastname2" class="label-text">Estado*</label>
+                <select name="estado" id="estado" formControlName="estado"
+                    class="w-full text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round-xl outline-none focus:border-primary"
+                    style="appearance: auto">
+                    <option [ngValue]="true" selected>Activo</option>
+                    <option [ngValue]="false">Inactivo</option>
+                </select>
+            </div>
+        </div>
+        <div class="flex justify-content-end gap-2 mt-5">
+            <button type="button" class="btn-outline-purple1" (click)="cerrarModal()">Cancelar</button>
+
+            <button [disabled]="!crearProyectoForm.valid || errorMessage !== ''" type="submit" class="btn-primary">
+                <div *ngIf="loading" class="spinner-black"></div>
+                Guardar
+            </button>
+        </div>
+    </form>
+</p-dialog>

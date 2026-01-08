@@ -1,0 +1,110 @@
+<div class="dashboard-container">
+    <div class="dashboard-title">Plantillas y Categorias</div>
+    <div class="dashboard-subtitle">Selecciona la categoria y luego la plantilla en la lista desplegable.</div>
+
+    <!-- Tabs for Categories with Horizontal Scroll -->
+    <div class="category-tabs-container" *ngIf="categories.length > 0">
+        <div class="category-tabs">
+            <button *ngFor="let cat of categories" class="tab-btn" [class.active]="selectedCategory?.id === cat.id"
+                (click)="selectCategory(cat)">
+                {{ cat.nombre || cat.nombreProyecto || cat.proyecto || 'Sin nombre' }}
+            </button>
+        </div>
+    </div>
+
+    <!-- Dropdown for Templates -->
+    <div class="template-selector">
+        <div class="search-input-wrapper" (click)="toggleDropdown($event)">
+            <input type="text" placeholder="Buscar y seleccionar Plantilla..."
+                [value]="selectedTemplate?.nombrePlantilla || searchText" (input)="filterTemplates($event)" readonly>
+            <!-- Readonly to act as dropdown trigger primarily, or remove readonly to allowing typing filter -->
+            <span class="material-symbols dropdown-icon">unfold_more</span>
+        </div>
+
+        <div class="templates-list" *ngIf="showDropdown">
+            <div class="category-header" *ngIf="selectedCategory">
+                {{ selectedCategory.nombre || selectedCategory.nombreProyecto || selectedCategory.proyecto }}
+            </div>
+
+            <ng-container *ngIf="filteredTemplates.length > 0; else noTemplates">
+                <div *ngFor="let template of filteredTemplates" class="template-item"
+                    (click)="selectTemplate(template)">
+                    {{ template.nombrePlantilla }}
+                </div>
+            </ng-container>
+            <ng-template #noTemplates>
+                <div class="p-3 text-gray-500 text-center">No se encontraron plantillas.</div>
+            </ng-template>
+        </div>
+    </div>
+</div>
+
+<div class="titulo">
+    <h2>Mis casos</h2>
+</div>
+<div class="card-table">
+    <div class="btn__group--red">
+        <input type="text" placeholder="Filtra aquí" #filterInput>
+        <button (click)="valorFiltro(filterInput.value)">
+            <span class="material-symbols mr-2">
+                search
+            </span>
+            Buscar</button>
+    </div>
+</div>
+<div class="table-container">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID caso</th>
+                <th>Nombre plantilla</th>
+                <th>Fecha de inicio</th>
+                <th>Fecha ult. actualización</th>
+                <th>Estado</th>
+                <th>Acción</th>
+            </tr>
+
+        </thead>
+        <tbody>
+            @for (respuestas of registrosPaginados; track $index) {
+            <tr>
+                <td>{{ respuestas.qFlowId }}</td>
+                <td>{{ respuestas.nombrePlantilla }}</td>
+                <td>{{ respuestas.fechaInicio | date:"dd/MM/yyyy"}}</td>
+                <td>{{ respuestas.ultActualizacion | date:"dd/MM/yyyy"}}</td>
+                <td>
+                    @if (respuestas.estado == true) {
+                    <span class="badge_warning">Abierto</span>
+                    }@else {
+                    <span class="badge_error">Cerrado</span>
+                    }
+                </td>
+                <td class="action-cell">
+                    <div class="action-menu-container">
+                        <button class="btn-icon-menu" (click)="toggleMenu(respuestas.id, $event)">
+                            <span class="material-symbols">more_horiz</span>
+                        </button>
+
+                        <div class="action-dropdown" *ngIf="menuAbiertoId === respuestas.id">
+                            <button class="dropdown-item" [routerLink]="['respuesta-plantilla/', respuestas.id]">
+                                <span class="material-symbols icon-sm">edit</span> Gestionar
+                            </button>
+                            <button class="dropdown-item delete" *ngIf="!(this.idRol == 'operativo')"
+                                (click)="mostrarEliminar(respuestas.id)">
+                                <span class="material-symbols icon-sm">delete</span> Eliminar
+                            </button>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            }
+
+        </tbody>
+    </table>
+
+    <shared-paginacion [datos]="listaRespuestas" [totalRegistros]="totalRegistros" [registrosPorPagina]="10"
+        (cambioPagina)="onPaginaCambiada($event)">
+        >
+    </shared-paginacion>
+
+    <eliminar-gestion></eliminar-gestion>

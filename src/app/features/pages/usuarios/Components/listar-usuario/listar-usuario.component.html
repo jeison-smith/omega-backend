@@ -1,0 +1,57 @@
+<div class="card-table">
+    <div class="btn__group--red">
+        <input type="text" placeholder="Filtra aquí" #filterInput>
+        <button (click)="valorFiltro(filterInput.value)">
+            <span class="material-symbols mr-2">
+                search
+            </span>
+            Buscar</button>
+    </div>
+</div>
+<div class="table-container">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Rol</th>
+                <th>Identificación</th>
+                <th>Nombre usuario</th>
+                <th>Cargo</th>
+                <th>Fecha creación</th>
+                <th>Acción</th>
+            </tr>
+
+        </thead>
+        <tbody>
+            @for (usuario of registrosPaginados; track $index) {
+            <tr>
+                <td>{{ usuario.rol | titlecase}}</td>
+                <td>{{ usuario.id }}</td>
+                <td>{{ usuario.nombre | titlecase}}</td>
+                <td>{{ usuario.cargo | titlecase}}</td>
+                <td>{{ usuario.fechaCreacion | date:"dd/MM/yyyy"}}</td>
+                <td><button class="table_actions" (click)="menu_popup($index, $event)"><span
+                            class="material-symbols">more_horiz</span>
+                        <div class="popup-menu" *ngIf="isMenuOpen == $index" #popupMenu>
+                            <ul>
+                                <li><a (click)="mostrarEditar(usuario.idUsuario)"><span
+                                            class="material-symbols">edit</span>Editar</a></li>
+                                <li><a style="color: #a4241c;" (click)="mostrarEliminar(usuario.idUsuario)"><span
+                                            class="material-symbols">delete</span>Eliminar</a></li>
+
+                            </ul>
+                        </div>
+                    </button></td>
+            </tr>
+            }
+
+        </tbody>
+    </table>
+
+    <shared-paginacion [datos]="listaUsuarios" [totalRegistros]="totalRegistros" [registrosPorPagina]="10"
+        (cambioPagina)="onPaginaCambiada($event)">
+        >
+    </shared-paginacion>
+</div>
+
+<eliminar-usuario></eliminar-usuario>
+<editar-usuario></editar-usuario>

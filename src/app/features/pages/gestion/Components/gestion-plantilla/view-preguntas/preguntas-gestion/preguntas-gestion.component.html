@@ -1,0 +1,99 @@
+<div [formGroup]="campo" class="campo-container">
+    <!-- Se decide qué plantilla renderizar según el tipo -->
+    <div class="flex justify-content-center mt-4">
+        <div class="card__plantilla">
+            <div class="card__plantilla-header">
+                <div class="numero">
+                    <h1>{{idVisualRamificado}}</h1>
+                </div>
+            </div>
+            <div class="card__plantilla-body">
+                <!-- CAMPO FECHA -->
+                <div class="field" *ngIf="campo.get('tipo')?.value === 1" class="campo">
+
+                    <label>{{ campo.get('etiqueta')?.value }}</label><br>
+                    <input type="date" formControlName="valor"
+                        class="w-3 text-base text-color surface-overlay p-2 mt-5 border-1 border-solid surface-border border-round-xl appearance-none outline-none focus:border-primary w-full" />
+                    <p *ngIf="campo.get('requerido')?.value && campo.get('valor')?.value == ''" class="mt-1 font-bold">
+                        <obligatorio-gestion></obligatorio-gestion>
+                    </p>
+                </div>
+                <div class="field" *ngIf="campo.get('tipo')?.value === 2" class="campo">
+                    <label>{{ campo.get('etiqueta')?.value }}</label>
+                    <!-- Única respuesta: Radio Buttons -->
+                    <div *ngIf="!campo.get('multirespuesta')?.value" class="mt-5">
+                        <div class="field-radiobutton" *ngFor="let opcion of getOpciones(campo).controls">
+                            <input type="radio" [value]="opcion.get('id')?.value" formControlName="valor"
+                                (change)="opcionPresionada(opcion.get('id')?.value, $event, true)" />
+                            <label>{{ opcion.get('etiqueta')?.value }}</label>
+                        </div>
+                    </div>
+
+                    <!-- Varias respuestas: Checkboxes -->
+                    <div *ngIf="campo.get('multirespuesta')?.value" class="mt-5">
+                        <div class="field-checkbox" *ngFor="let opcion of getOpciones(campo).controls; let i = index">
+                            <input type="checkbox" [formControl]="getSeleccionadoControl(opcion)"
+                                (change)="opcionPresionada(opcion.get('id')?.value, $event, true)" />
+                            <label>{{ opcion.get('etiqueta')?.value }}</label>
+                        </div>
+                    </div>
+                    <p *ngIf="campo.get('requerido')?.value && this.selectedOptions.size == 0" class="mt-1 font-bold">
+                        <obligatorio-gestion></obligatorio-gestion>
+                    </p>
+                </div>
+
+
+                <!-- CAMPO TEXTO -->
+                <div class="field" *ngIf="campo.get('tipo')?.value === 3" class="campo">
+                    <label>{{ campo.get('etiqueta')?.value }}</label>
+                    @if (campo.get('numerico')?.value) {
+                    <input formControlName="valor" type="text" [placeholder]="campo.get('placeholder')?.value"
+                        class="text-base text-color surface-overlay p-2 mt-5 border-1 border-solid surface-border border-round-xl appearance-none outline-none focus:border-primary w-full"
+                        step="1" (input)="onlyInteger($event)">
+                    }@else {
+                    <input formControlName="valor" type="text" [placeholder]="campo.get('placeholder')?.value"
+                        (focus)="inputFocused.emit(campo)"
+                        class="text-base text-color surface-overlay p-2 mt-5 border-1 border-solid surface-border border-round-xl appearance-none outline-none focus:border-primary w-full">
+                    }
+                    <p *ngIf="campo.get('requerido')?.value && campo.get('valor')?.value == ''" class="mt-1 font-bold">
+                        <obligatorio-gestion></obligatorio-gestion>
+                    </p>
+                </div>
+
+                <!-- CAMPO lISTA DESPLEGABLE -->
+                <div class="field" *ngIf="campo.get('tipo')?.value === 4" class="campo">
+                    <label>{{ campo.get('etiqueta')?.value }}</label><br>
+                    <select name="" id="" formControlName="valor"
+                        class="w-3 text-base text-color surface-overlay p-2 mt-5 border-1 border-solid surface-border border-round-xl outline-none focus:border-primary">
+                        <option value="" [disabled]="true">Selecciona</option>
+                        <option *ngFor="let opcion of getOpciones(campo).controls" [value]="opcion.get('id')?.value">
+                            {{ opcion.get('etiqueta')?.value }}
+                        </option>
+                    </select>
+                    <p *ngIf="campo.get('requerido')?.value && campo.get('valor')?.value == ''" class="mt-1 font-bold">
+                        <obligatorio-gestion></obligatorio-gestion>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div formArrayName="opciones">
+        <div *ngFor="let opcion of opciones.controls; let i = index">
+            <div [formGroupName]="i">
+                <div formArrayName="campos">
+                    <ng-container *ngFor="let campoHijo of getCamposArray(opcion).controls; let j = index">
+                        <div *ngIf="selectedOptions.has(opcion.get('id')?.value)" [formGroupName]="j">
+                            <preguntas-gestion [campo]="castToFormGroup(campoHijo)"
+                                [idVisualRamificado]="idVisualRamificado+'.'+(j+1).toString()"
+                                (onDatosCargados)="actualizarObligatorios()"></preguntas-gestion>
+                        </div>
+                    </ng-container>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

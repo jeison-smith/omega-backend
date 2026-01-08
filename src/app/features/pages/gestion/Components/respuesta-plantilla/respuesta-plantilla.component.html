@@ -1,0 +1,84 @@
+<div class="flex justify-content-center mt-6">
+  <div class="col-10">
+    <div class="card-edit">
+      <div class="card-header">
+        <div class="card-back">
+          <button type="button" class="link-like" (click)="regreso()">
+            <span class="material-symbols">arrow_back</span>
+          </button>
+        </div>
+      </div>
+      <div class="card-body__gestion">
+        <div class="table-container__plantilla">
+          <table class="table-plantilla">
+            <thead>
+              <tr>
+                <th>N° Plantilla</th>
+                <th>{{ plantillaRaw.proyecto }}</th>
+                <th>Creador</th>
+                <th>Fecha de creación</th>
+                <th>Fecha de inicio</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>{{ plantillaRaw.id }}</td>
+                <td>{{ plantillaRaw.nombrePlantilla }}</td>
+                <td>{{ plantillaRaw.nombreCreador | titlecase }}</td>
+                <td>{{ plantillaRaw.fechaCreacion | date : 'dd/MM/yyyy' }}</td>
+                <td>{{ plantillaRaw.fechaModificacion | date : 'dd/MM/yyyy' }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="flex justify-content-center">
+  <div class="col-10">
+    <div class="gestion-plantilla">
+      <form (submit)="$event.preventDefault()">
+        @if (seccionesArray.length > 0) { @for (let seccion of seccionesArray; let i = index) {
+        <div class="card__section">
+          @if (seccion.id) {
+          <div class="card__section-header">
+            <div class="section-texts">
+              <div class="section-title">{{ seccion.nombre || 'Sin título' }}</div>
+              <div class="section-description">{{ seccion.descripcion || '' }}</div>
+            </div>
+            <span
+              [class.rotate]="isSeccionColapsada(i)"
+              class="card__icon"
+              (click)="toggleSeccion(i)"
+              >▶</span
+            >
+          </div>
+          }
+
+          <div class="card__seccion-body" [class.hidden]="!isSeccionColapsada(i)">
+            @for (let campo of seccion.campos; let j = index) {
+            <div>
+              <app-respuesta-campo
+                [campo]="campo"
+                [idVisualRamificado]="(j + 1).toString()"
+              ></app-respuesta-campo>
+            </div>
+            }
+          </div>
+        </div>
+        } }
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="flex justify-content-center mt-1 mb-2">
+  <div class="col-10">
+    <div class="card flex justify-content-end">
+      <button class="btn-blue-info mr-4" type="button" (click)="copiarInfo()">Copiar</button>
+      <button class="btn-outline-secondary mr-4" (click)="regreso()">Cancelar</button>
+    </div>
+  </div>
+</div>

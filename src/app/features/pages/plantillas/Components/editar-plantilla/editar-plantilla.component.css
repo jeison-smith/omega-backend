@@ -1,0 +1,47 @@
+
+
+  .nombrePlantilla {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .nombrePlantilla p {
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+  }
+  
+  .nombrePlantilla .material-symbols {
+    cursor: pointer;
+    margin-left: 8px;
+    font-size: 20px;
+    color: #007bff;
+    transition: color 0.2s ease;
+  }
+  
+  .nombrePlantilla .material-symbols:hover {
+    color: #0056b3;
+  }
+  
+  .editable-input {
+    font-size: 1.5rem;
+    font-weight: bold;
+    padding: 0;
+    border: none;
+    border-bottom: 2px solid #007bff;
+    outline: none;
+    width: auto;
+    color: #000;
+  }
+  
+  .editable-input:focus {
+    border-bottom: 2px solid #0056b3;
+  }
+  
+  .editable-input::placeholder {
+    color: #aaa;
+  }
+  

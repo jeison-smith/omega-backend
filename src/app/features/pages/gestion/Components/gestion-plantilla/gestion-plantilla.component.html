@@ -1,0 +1,168 @@
+<form [formGroup]="plantillaForm" class="flex justify-content-center mt-6">
+   <div class="col-12 grid">
+
+      <!-- LEFT COLUMN: Main Form -->
+      <div class="col-8">
+
+         <!-- Header Info Card -->
+         <div class="card-edit mb-3">
+            <div class="card-header">
+               <div class="card-back">
+                  <a [routerLink]="'/home/gestion'"><span class="material-symbols">arrow_back</span></a>
+               </div>
+            </div>
+            <div class="card-body__gestion">
+               <div class="table-container__plantilla">
+                  <table class="table-plantilla">
+                     <thead>
+                        <tr>
+                           <th>N° Plantilla</th>
+                           <th>{{plantilla?.proyecto}}</th>
+                           <th>Creador</th>
+                           <th>Fecha de creación</th>
+                           <th>Fecha de inicio</th>
+                        </tr>
+                     </thead>
+                     <tbody>
+                        <tr>
+                           <td>{{plantilla?.id}}</td>
+                           <td>{{plantilla?.nombrePlantilla}}</td>
+                           <td>{{plantilla?.nombreCreador | titlecase}}</td>
+                           <td>{{plantilla?.fechaCreacion | date:"dd/MM/yyyy"}}</td>
+                           <td>{{plantilla?.fechaModificacion| date:"dd/MM/yyyy"}}</td>
+                        </tr>
+                     </tbody>
+                  </table>
+               </div>
+            </div>
+         </div>
+
+         <!-- Sections Form -->
+         <div formArrayName="secciones">
+            <div *ngIf="formListo && seccionesArray.length > 0">
+               <div *ngFor="let seccion of seccionesArray.controls; let i=index" [formGroupName]="i">
+                  <div class="card__section">
+                     <div class="card__section-header" *ngIf="seccion.get('id')?.value">
+                        <div class="section-texts">
+                           <div class="section-title">
+                              {{ seccion.get('nombre')?.value || 'Sin título' }}
+                           </div>
+                           <div class="section-description">
+                              {{ seccion.get('descripcion')?.value || '' }}
+                           </div>
+                        </div>
+                        <span [class.rotate]="seccionColapsada[i]" class="card__icon" (click)="toggleSeccion(i)"></span>
+                     </div>
+
+                     <div class="card__seccion-body" *ngIf="formListo" [class.hidden]="!seccionColapsada[i]">
+                        <div formArrayName="campos">
+                           <div *ngFor="let campo of getCamposArray(i).controls; let j = index; trackBy: trackByIndex"
+                              [formGroupName]="j">
+                              <preguntas-gestion [campo]="castToFormGroup(campo)"
+                                 [idVisualRamificado]="(j + 1).toString()" (inputFocused)="handleInputFocus($event)">
+                              </preguntas-gestion>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+
+         <!-- Summary Section -->
+         <div class="card__plantilla mt-4">
+            <div class="card__plantilla-body">
+               <div class="field" class="campo">
+                  <label class="font-bold" *ngIf="mostrarResumen">Resumen</label>
+                  <textarea id="" type="text" rows="8" formControlName="resumen" *ngIf="mostrarResumen" readonly
+                     class="text-base text-color surface-overlay p-2 mt-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"></textarea>
+
+                  <div style="display: flex; justify-content: flex-end; margin-top: 1rem;">
+                     <button type="button" (click)="copiarResumen()" class="btn-outline-secondary mr-4"
+                        *ngIf="mostrarResumen">
+                        Copiar
+                     </button>
+                     <button type="button" (click)="resumen()" class="btn-outline-secondary mr-4">
+                        Generar resumen
+                     </button>
+                  </div>
+               </div>
+            </div>
+         </div>
+
+         <!-- Actions -->
+         <div class="flex justify-content-end mt-4 mb-5">
+            <button type="button" (click)="redirectToGestion()" class="btn-outline-secondary mr-4">Cancelar</button>
+            <button class="btn-primary" type="button" (click)="guardarFormulario()"
+               [disabled]="!plantillaForm.valid || loading">
+               <i class="spinner-black" *ngIf="loading"></i>
+               Guardar</button>
+         </div>
+
+      </div>
+
+      <!-- RIGHT COLUMN: Lateral Options -->
+      <div class="col-4">
+         <div class="card-edit sticky-top">
+            <div class="card-header flex justify-content-between align-items-center">
+               <span class="font-bold text-lg">{{plantilla?.nombrePlantilla}}</span>
+               <button type="button" class="btn-outline-secondary btn-sm" (click)="toggleModalOpcion()">
+                  <span class="material-symbols text-sm mr-1">add_circle</span> Añadir Opción
+               </button>
+            </div>
+            <div class="card-body__gestion p-3">
+               <div *ngIf="opcionesLaterales.length === 0" class="text-center text-gray-500">
+                  No hay opciones adicionales.
+               </div>
+               <div *ngFor="let op of opcionesLaterales; let k=index"
+                  class="field-checkbox mb-3 flex align-items-center">
+                  <input type="checkbox" [checked]="op.chequeado" (change)="alternarChequeo(k)" class="mr-2"
+                     style="width: 18px; height: 18px;">
+                  <label class="flex-grow-1 cursor-pointer" (click)="alternarChequeo(k)">{{op.titulo}}</label>
+                  <span class="material-symbols text-red-500 cursor-pointer hover:bg-gray-100 p-1 border-round"
+                     style="font-size: 1.2rem;" (click)="eliminarOpcionLateral(k)">delete</span>
+               </div>
+            </div>
+         </div>
+      </div>
+
+   </div>
+</form>
+
+
+<!-- MODAL: Añadir Opción usando p-dialog -->
+<p-dialog header="Añadir Opción a: {{plantilla?.nombrePlantilla}}" [modal]="true" [(visible)]="mostrarModalOpcion"
+   [style]="{ width: '50rem' }" (onHide)="cerrarModalOpcion()">
+
+   <div class="formgrid grid">
+      <!-- Texto de la opción -->
+      <div class="field col-12">
+         <label for="textoOpcion" class="label-text">Texto de la opción*</label>
+         <input id="textoOpcion" type="text" [value]="nuevoTituloOpcion"
+            (input)="nuevoTituloOpcion = $any($event.target).value"
+            class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round-xl appearance-none outline-none focus:border-primary w-full"
+            placeholder="Escribe el nombre corto aquí...">
+      </div>
+
+      <!-- Texto a imprimir -->
+      <div class="field col-12">
+         <label for="textoImprimir" class="label-text">Texto a imprimir*</label>
+         <textarea id="textoImprimir" rows="4" [value]="nuevoTextoImprimir"
+            (input)="nuevoTextoImprimir = $any($event.target).value"
+            class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round-xl appearance-none outline-none focus:border-primary w-full"
+            style="resize: vertical; min-height: 100px;"
+            placeholder="Escribe el texto detallado que se insertará..."></textarea>
+      </div>
+   </div>
+
+   <!-- Botones -->
+   <div class="flex justify-content-end gap-2 mt-5">
+      <button type="button" class="btn-outline-purple1" (click)="cerrarModalOpcion()">
+         Cancelar
+      </button>
+      <button type="button" class="btn-primary" (click)="agregarOpcionLateral()">
+         Añadir
+      </button>
+   </div>
+
+</p-dialog>

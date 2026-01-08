@@ -1,0 +1,249 @@
+.section-texts {
+  display: flex;
+  flex-direction: column;
+}
+
+.section-title {
+  font-weight: 600;
+  font-size: 1rem;
+  color: #2a4365
+}
+
+.section-description {
+  font-size: 0.85rem;
+  color: #2b6cb0;
+  margin-top: 2px;
+  font-weight: normal;
+}
+
+/* Modal Styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex !important;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: fadeIn 0.2s ease-in-out;
+}
+
+.modal-content {
+  background-color: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  animation: slideIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Sticky Sidebar */
+.sticky-top {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 1rem;
+  z-index: 99;
+}
+
+/* Checkbox & List Styles */
+.field-checkbox {
+  display: flex;
+  align-items: center;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+/* Utility Overrides */
+.text-lg {
+  font-size: 1.125rem;
+}
+
+.text-xl {
+  font-size: 1.25rem;
+}
+
+.text-sm {
+  font-size: 0.875rem;
+}
+
+.font-bold {
+  font-weight: 700;
+}
+
+.text-gray-500 {
+  color: #6b7280;
+}
+
+.text-red-500 {
+  color: #ef4444;
+}
+
+.hover\:bg-gray-100:hover {
+  background-color: #f3f4f6;
+}
+
+.border-round {
+  border-radius: 0.25rem;
+}
+
+.p-1 {
+  padding: 0.25rem;
+}
+
+.p-2 {
+  padding: 0.5rem;
+}
+
+.p-3 {
+  padding: 0.75rem;
+}
+
+.p-4 {
+  padding: 1rem;
+}
+
+.mb-3 {
+  margin-bottom: 0.75rem;
+}
+
+.mb-4 {
+  margin-bottom: 1rem;
+}
+
+.mt-4 {
+  margin-top: 1rem;
+}
+
+.gap-2 {
+  gap: 0.5rem;
+}
+
+.w-full {
+  width: 100%;
+}
+
+
+/* Override Modal Styles for custom look */
+.modal-content {
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.modal-content .card-header {
+  background-color: #fff;
+  /* White header */
+  border-bottom: 1px solid #e0e0e0;
+  padding: 1.5rem;
+}
+
+.modal-content .card-body {
+  padding: 2rem;
+}
+
+/* Form Fields in Modal */
+.modal-content .field label {
+  font-size: 0.95rem;
+  color: #333;
+  font-weight: 600;
+}
+
+.modal-content .field input,
+.modal-content .field textarea {
+  border: 1px solid #ced4da;
+  border-radius: 6px;
+  padding: 0.75rem;
+  font-size: 1rem;
+  transition: border-color 0.2s;
+  width: 100%;
+  /* Ensure full width */
+  box-sizing: border-box;
+  /* Include padding in width */
+}
+
+.modal-content .field input:focus,
+.modal-content .field textarea:focus {
+  border-color: #0ea5e9;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(14, 165, 233, 0.2);
+}
+
+/* Modal Buttons */
+.modal-content .btn-primary {
+  background-color: #0ea5e9;
+  /* Sky Blue */
+  border: none;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.modal-content .btn-primary:hover {
+  background-color: #0284c7;
+}
+
+.modal-content .btn-outline-secondary {
+  background-color: transparent;
+  border: 1px solid #64748b;
+  color: #64748b;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.modal-content .btn-outline-secondary:hover {
+  background-color: #f1f5f9;
+  color: #334155;
+}
+
+.modal-content .btn-primary-dark {
+  background-color: #1e3a8a;
+  /* Dark Blue from reference */
+  border: none;
+  color: white;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.modal-content .btn-primary-dark:hover {
+  background-color: #1e40af;
+}
+
+.modal-content input:focus,
+.modal-content textarea:focus {
+  border-color: #1e3a8a !important;
+  /* Blue border on focus */
+  box-shadow: 0 0 0 1px #1e3a8a !important;
+}

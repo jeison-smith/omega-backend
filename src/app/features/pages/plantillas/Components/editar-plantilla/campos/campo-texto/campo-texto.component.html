@@ -1,0 +1,48 @@
+<div class="flex justify-content-center mt-4">
+    <div class="card__plantilla">
+        <div class="card__plantilla-header">
+            <div class="numero">
+                <h1>{{posicionCampo}}</h1>
+            </div>
+            <div class="acciones">
+                <button class="mr-5" (click)="eliminarCampo()"><span class="material-symbols">delete</span></button>
+                <button class="mr-5" (click)="moverCampoArriba()" [disabled]="posicionCampo === 1"><span class="material-symbols">arrow_upward</span></button>
+                <button (click)="moverCampoAbajo()" [disabled]="posicionCampo === totalCampos"><span class="material-symbols">arrow_downward</span></button>
+            </div>
+        </div> 
+        <div class="card__plantilla-body">
+            <div class="formgrid" [formGroup]="formTexto">
+                <div class="field col">
+                    <label for="">Pregunta*</label>
+                    <input formControlName="etiqueta" id="" type="text" class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round-xl appearance-none outline-none focus:border-primary w-full" placeholder="Escribe aquí la pregunta">
+                </div>
+                <div class="field col">
+                    <input formControlName="descripcion" id="" type="text" class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round-xl appearance-none outline-none focus:border-primary w-full" placeholder="Escribe aquí un subtítulo o información adicional">
+                </div>
+                <div class="field col">
+                    <textarea type="text" rows="4" placeholder="Escribe aqui la respuesta" class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round-xl appearance-none outline-none focus:border-primary w-full" disabled></textarea>
+                </div>
+                <div class="field col" *ngIf="ifRestriccion">
+                    <restriccion [formTexto]="getFormTexto()" ></restriccion>
+                  </div>
+                  
+                  
+                <div class="flex justify-content-end align-items-center">
+                    <label class="switch mr-2">
+                        <input type="checkbox" [checked]="ifRestriccion" (change)="changeRestriccion()">
+                        <span class="slider round"></span>
+                    </label>
+             <div class="mr-5">Añadir restricción</div>
+             
+                <label class="switch mr-2">
+                    <input type="checkbox" formControlName="requerido">
+                    <span  class="slider round"></span>
+                  </label> Obligatoria
+            
+                </div>
+            </div>
+            
+        </div> 
+    </div>
+</div>
+
