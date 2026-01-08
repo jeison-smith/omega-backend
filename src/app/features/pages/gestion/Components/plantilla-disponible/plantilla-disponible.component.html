@@ -36,7 +36,7 @@
   </div>
 
 <div class="h-[157px] w-full overflow-y-auto rounded-xl bg-slate-100 p-8">
-  <div *ngIf="listView">
+  @if (listView) {
   @for (plantilla of registrosPaginados; track $index) {
         <div class="mb-3 flex items-center justify-between rounded-xl bg-white px-10 py-5 shadow-sm">
             <div>
@@ -64,8 +64,8 @@
             </div>
         </div>
     }
-</div>
-<div *ngIf="!listView">
+}
+@if (!listView) {
 <div class="grid grid-cols-[repeat(auto-fill,minmax(180px,1fr))] gap-3">
     @for (plantilla of registrosPaginados; track $index) {
       <div class="flex min-h-[80px] flex-col justify-between rounded-lg border border-slate-200 bg-white p-3 text-xs shadow-sm transition hover:shadow-md">
@@ -86,5 +86,5 @@
       </div>
     }
   </div>
-</div>
+}
 </div>

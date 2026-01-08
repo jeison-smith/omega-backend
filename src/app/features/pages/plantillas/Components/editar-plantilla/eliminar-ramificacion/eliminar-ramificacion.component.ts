@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, EventEmitter, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Output, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -14,7 +14,7 @@ export class EliminarRamificacionComponent {
   @Output() eliminarRamificacion = new EventEmitter<void>();
 
   visible: boolean = false;
-  loading: boolean = false;
+  loading = signal(false);
 
   constructor(private router: Router, private ref: ChangeDetectorRef) {}
 

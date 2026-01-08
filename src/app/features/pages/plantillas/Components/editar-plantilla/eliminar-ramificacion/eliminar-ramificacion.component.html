@@ -13,8 +13,10 @@
     </div>
     <div class="flex justify-content-end gap-2 mt-5">
         <button type="button" class="btn-outline-blue1" (click)="cancelar()">Cancelar</button>
-        <button [disabled]="loading" type="submit" class="btn-danger" (click)="eliminarGestion()">
-            <div *ngIf="loading" class="spinner"></div> 
+        <button [disabled]="loading()" type="submit" class="btn-danger" (click)="eliminarGestion()">
+            @if (loading()) {
+              <div class="spinner"></div> 
+            }
             Eliminar
         </button>
     </div>

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Dialog } from 'primeng/dialog';
 
@@ -14,7 +14,7 @@ import { UsuarioService } from '../../../../../Core/Service/Usuario/usuario.serv
 })
 export class EliminarUsuarioComponent {
   visible: boolean = false;
-  loading: boolean = false;
+  loading = signal(false);
   id: number = -1;
 
   constructor(private toastMessage: ToastService, private usuarioService: UsuarioService) {}
@@ -29,7 +29,7 @@ export class EliminarUsuarioComponent {
   }
 
   eliminarUsuario() {
-    this.loading = true;
+    this.loading.set(true);
     this.usuarioService
       .eliminarUsuario(this.id)
       .pipe(take(1))
@@ -44,10 +44,10 @@ export class EliminarUsuarioComponent {
               window.location.reload();
             }, 1500);
           }
-          this.loading = false;
+          this.loading.set(false);
         },
         error: (error) => {
-          this.loading = false;
+          this.loading.set(false);
           this.toastMessage.showError(
             error || 'Ocurrio un error inesperado, comunicate con soporte de aplicaciones'
           );

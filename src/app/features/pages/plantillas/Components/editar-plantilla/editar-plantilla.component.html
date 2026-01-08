@@ -11,13 +11,13 @@
                         (click)="guardarPlantilla()"
                         [disabled]="!camposForm.valid || loading "
                     >
-                        <div
-                            *ngIf="loading"
-                            class="h-4 w-4 animate-spin rounded-full border-2 border-white/40 border-t-white"
-                        ></div>
-                        <span *ngIf="!loading" class="material-symbols">
-                            save
-                        </span>
+                        @if (loading) {
+                          <div
+                              class="h-4 w-4 animate-spin rounded-full border-2 border-white/40 border-t-white"
+                          ></div>
+                        } @else {
+                          <span class="material-symbols">save</span>
+                        }
                         Guardar
                     </button>
                     @if (plantilla.estado) {
@@ -44,13 +44,13 @@
                     class="ml-auto inline-flex items-center gap-2 rounded-lg border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-600 transition hover:bg-slate-100"
                     (click)="goToVistaPrevia()"
                 >
-                    <div
-                        *ngIf="loading"
-                        class="h-4 w-4 animate-spin rounded-full border-2 border-slate-300 border-t-slate-600"
-                    ></div>
-                    <span *ngIf="!loading" class="material-symbols">
-                        visibility
-                    </span>
+                    @if (loading) {
+                      <div
+                          class="h-4 w-4 animate-spin rounded-full border-2 border-slate-300 border-t-slate-600"
+                      ></div>
+                    } @else {
+                      <span class="material-symbols">visibility</span>
+                    }
                     Vista previa
                 </button>
                 <!-- <div class="card-actions">
@@ -73,24 +73,22 @@
                     <span class="badge_secondary">{{plantilla.proyecto}}</span>
                     <!-- Contenedor del Nombre de la Plantilla -->
                     <div class="mt-3 flex flex-col items-start">
-                        <ng-container *ngIf="!editandoNombre">
-                            <p class="flex items-center text-lg font-semibold text-slate-800">
-                                {{ plantilla.nombrePlantilla }}
-                                <span
-                                    class="material-symbols ml-2 cursor-pointer text-lg text-sky-500 transition hover:text-sky-700"
-                                    (click)="toggleEditarNombre()"
-                                >edit</span>
-                            </p>
-                        </ng-container>
-
-                        <ng-container *ngIf="editandoNombre">
-                            <input
-                                type="text"
-                                [value]="nombreTemporal"
-                                class="w-auto border-b-2 border-sky-500 bg-transparent text-xl font-bold text-black outline-none focus:border-sky-700"
-                                (input)="nombreTemporal = $any($event.target).value" (blur)="guardarNombre()"
-                                (keyup.enter)="guardarNombre()" (keyup.esc)="cancelarEdicionNombre()" />
-                        </ng-container>
+                        @if (!editandoNombre) {
+                          <p class="flex items-center text-lg font-semibold text-slate-800">
+                              {{ plantilla.nombrePlantilla }}
+                              <span
+                                  class="material-symbols ml-2 cursor-pointer text-lg text-sky-500 transition hover:text-sky-700"
+                                  (click)="toggleEditarNombre()"
+                              >edit</span>
+                          </p>
+                        } @else {
+                          <input
+                              type="text"
+                              [value]="nombreTemporal"
+                              class="w-auto border-b-2 border-sky-500 bg-transparent text-xl font-bold text-black outline-none focus:border-sky-700"
+                              (input)="nombreTemporal = $any($event.target).value" (blur)="guardarNombre()"
+                              (keyup.enter)="guardarNombre()" (keyup.esc)="cancelarEdicionNombre()" />
+                        }
                     </div>
                     <!-- <p class="nombrePlantilla mt-3">
                         {{plantilla?.nombrePlantilla}}

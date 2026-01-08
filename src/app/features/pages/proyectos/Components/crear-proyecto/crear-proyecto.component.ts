@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -19,9 +19,9 @@ import { UsuarioService } from '../../../../../Core/Service/Usuario/usuario.serv
 export class CrearProyectoComponent {
   crearProyectoForm!: FormGroup;
   creaProyecto!: CrearProyecto;
-  errorMessage: string = '';
+  errorMessage = signal('');
   visible: boolean = false;
-  loading: boolean = false;
+  loading = signal(false);
   usuarioActual: any = null; // Usuario en sesión
   usuarios: any[] = []; // Lista para buscar ID si falla sesión
 
@@ -81,7 +81,7 @@ export class CrearProyectoComponent {
       return;
     }
 
-    this.loading = true;
+    this.loading.set(true);
     this.creaProyecto = {
       ...this.crearProyectoForm.value,
       idUsuario: idUsuarioFinal, // Usar el ID encontrado o de sesión
@@ -99,10 +99,10 @@ export class CrearProyectoComponent {
             window.location.reload();
           }, 1500);
         }
-        this.loading = false;
+          this.loading.set(false);
       },
       error: (error) => {
-        this.loading = false;
+          this.loading.set(false);
         this.toastMessage.showError(error);
         this.crearProyectoForm.enable();
         console.error('Error al crear proyecto:', error);
@@ -112,7 +112,7 @@ export class CrearProyectoComponent {
 
   cerrarModal(): void {
     this.visible = false;
-    this.errorMessage = '';
+    this.errorMessage.set('');
     this.crearProyectoForm.reset();
   }
 
@@ -122,9 +122,9 @@ export class CrearProyectoComponent {
         next: (response) => {
           if (response) {
             if (response.response) {
-              this.errorMessage = 'Ya existe un proyecto con este nombre';
+          this.errorMessage.set('Ya existe un proyecto con este nombre');
             } else {
-              this.errorMessage = '';
+          this.errorMessage.set('');
             }
           }
         },

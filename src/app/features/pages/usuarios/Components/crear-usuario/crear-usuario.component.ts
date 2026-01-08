@@ -1,4 +1,4 @@
-import { Component, HostListener } from '@angular/core';
+import { Component, HostListener, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
@@ -21,8 +21,8 @@ import { Dialog } from 'primeng/dialog';
 export class CrearUsuarioComponent {
   crearUsuarioForm!: FormGroup;
   creaUsuario!: CrearUsuario;
-  loading: boolean = false;
-  errorMessage!: string;
+  loading = signal(false);
+  errorMessage = signal('');
   visible: boolean = false;
   availableProyectos: { id: string; nombre: string; selected: boolean }[] = [];
   selectedProyectos: { id: string; nombre: string; selected: boolean }[] = [];
@@ -109,7 +109,7 @@ export class CrearUsuarioComponent {
   }
 
   crearUsuario(): void {
-    this.loading = true;
+    this.loading.set(true);
     this.creaUsuario = this.crearUsuarioForm.value;
     this.creaUsuario.idProyecto = this.selectedProyectos.map((proyecto) => proyecto.id);
     this.usuarioService.crearUsuario(this.creaUsuario).subscribe({
@@ -122,10 +122,10 @@ export class CrearUsuarioComponent {
             window.location.reload();
           }, 1500);
         }
-        this.loading = false;
+        this.loading.set(false);
       },
       error: (error) => {
-        this.loading = false;
+        this.loading.set(false);
         // console.log(error)
         this.toastMessage.showError(
           error || 'Ocurrio un error inesperado, comunicate con soporte de aplicaciones'
@@ -135,21 +135,21 @@ export class CrearUsuarioComponent {
   }
 
   validarUsuario(id: string) {
-    this.errorMessage = '';
+    this.errorMessage.set('');
     this.usuarioService
       .validarUsuario(id)
       .pipe(take(1))
       .subscribe({
         next: (response) => {
           if (response) {
-            this.errorMessage = '';
+            this.errorMessage.set('');
             this.crearUsuarioForm.patchValue({ nombreUsuario: response.nombre });
           } else {
             this.crearUsuarioForm.patchValue({ nombreUsuario: 'Usuario no encontrado' });
           }
         },
         error: (error) => {
-          this.errorMessage = 'Usuario no encontrado';
+          this.errorMessage.set('Usuario no encontrado');
           this.crearUsuarioForm.patchValue({ nombreUsuario: '' });
         },
       });
@@ -157,7 +157,7 @@ export class CrearUsuarioComponent {
 
   cerrarModal(): void {
     this.visible = false;
-    this.errorMessage = '';
+    this.errorMessage.set('');
     this.crearUsuarioForm.reset();
     this.selectedProyectos = [];
     this.availableProyectos = [];

@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectorRef, Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { RouterModule } from '@angular/router';
@@ -17,7 +17,7 @@ export class EliminarGestionComponent {
   eliminarGestionForm!: FormGroup;
 
   visible: boolean = false;
-  loading: boolean = false;
+  loading = signal(false);
   idGestion: number = -1;
 
   constructor(
@@ -46,7 +46,7 @@ export class EliminarGestionComponent {
   }
 
   eliminarGestion() {
-    this.loading = true;
+    this.loading.set(true);
     this.ref.detectChanges();
     const eliminarGestion = {
       idRespuestaPlantilla: this.idGestion,
@@ -60,7 +60,7 @@ export class EliminarGestionComponent {
           //console.log(response)
           this.toastMessage.showSuccess('Registro eliminado correctamente');
           this.idGestion = -1;
-          this.loading = false;
+          this.loading.set(false);
           this.ref.detectChanges();
           setTimeout(() => {
             window.location.reload();
@@ -68,7 +68,7 @@ export class EliminarGestionComponent {
           this.visible = false;
         },
         error: (error) => {
-          this.loading = false;
+          this.loading.set(false);
           this.toastMessage.showError(error);
         },
       });

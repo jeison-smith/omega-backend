@@ -1,4 +1,4 @@
-import { Component, HostListener } from '@angular/core';
+import { Component, HostListener, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
@@ -22,8 +22,8 @@ export class EditarUsuarioComponent {
   crearUsuarioForm!: FormGroup;
   creaUsuario!: CrearUsuario;
   id: number = -1;
-  loading: boolean = false;
-  errorMessage!: string;
+  loading = signal(false);
+  errorMessage = signal('');
   visible: boolean = false;
   availableProyectos: { id: string; nombre: string; selected: boolean }[] = [];
   selectedProyectos: { id: string; nombre: string; selected: boolean }[] = [];
@@ -115,7 +115,7 @@ export class EditarUsuarioComponent {
       .subscribe({
         next: (response) => {
           if (response) {
-            this.errorMessage = '';
+            this.errorMessage.set('');
             this.crearUsuarioForm.patchValue({ id: response.id });
             this.crearUsuarioForm.patchValue({ nombreUsuario: response.nombre });
             this.crearUsuarioForm.patchValue({ idRol: response.idRol });
@@ -128,11 +128,11 @@ export class EditarUsuarioComponent {
           } else {
             this.crearUsuarioForm.patchValue({ nombreUsuario: 'Usuario no encontrado' });
           }
-          this.loading = false;
+          this.loading.set(false);
         },
         error: (error) => {
-          this.loading = false;
-          this.errorMessage = 'Usuario no encontrado';
+          this.loading.set(false);
+          this.errorMessage.set('Usuario no encontrado');
           this.crearUsuarioForm.patchValue({ nombreUsuario: '' });
         },
       });
@@ -177,7 +177,7 @@ export class EditarUsuarioComponent {
   }
 
   editarUsuario(): void {
-    this.loading = true;
+    this.loading.set(true);
     this.creaUsuario = {
       id: this.id.toString(),
       nombre: this.crearUsuarioForm.get('nombreUsuario')?.value,
@@ -199,10 +199,10 @@ export class EditarUsuarioComponent {
               window.location.reload();
             }, 1500);
           }
-          this.loading = false;
+          this.loading.set(false);
         },
         error: (error) => {
-          this.loading = false;
+          this.loading.set(false);
           // console.log(error)
           this.toastMessage.showError(
             error || 'Ocurrio un error inesperado, comunicate con soporte de aplicaciones'

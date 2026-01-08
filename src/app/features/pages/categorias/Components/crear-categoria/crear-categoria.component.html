@@ -121,11 +121,13 @@
           </td>
         </tr>
 
-        <tr *ngIf="categoriasPaginadas.length === 0">
-          <td colspan="8" class="py-4 text-center text-sm text-slate-400">
-            No hay categorías registradas.
-          </td>
-        </tr>
+        @if (categoriasPaginadas.length === 0) {
+          <tr>
+            <td colspan="8" class="py-4 text-center text-sm text-slate-400">
+              No hay categorías registradas.
+            </td>
+          </tr>
+        }
       </tbody>
     </table>
 
@@ -140,7 +142,7 @@
 <!-- ============================= -->
 
 
-<p-dialog header="Crear Categoría" [modal]="true" [(visible)]="visible" [style]="{width: '40rem'}"
+<p-dialog header="Crear Categoría" [modal]="true" [visible]="visible()" (visibleChange)="visible.set($event)" [style]="{width: '40rem'}"
   (onHide)="cerrarModal()">
 
   <form [formGroup]="formCategoria" (ngSubmit)="guardarCategoria()">
@@ -155,20 +157,19 @@
           (input)="validarCategoriaDuplicada(formCategoria.get('nombreCategoria')?.value)"
           class="w-full rounded-xl border border-slate-200 bg-white p-2 text-sm text-slate-700 outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-200"
           [ngClass]="{
-            'border-red-500': errorMessage || (formCategoria.get('nombreCategoria')?.invalid && formCategoria.get('nombreCategoria')?.touched),
-            'focus:border-red-500': errorMessage
+            'border-red-500': errorMessage() || (formCategoria.get('nombreCategoria')?.invalid && formCategoria.get('nombreCategoria')?.touched),
+            'focus:border-red-500': errorMessage()
           }">
 
         <!-- Mensaje de error de validación requerida -->
-        <p *ngIf="formCategoria.get('nombreCategoria')?.invalid && formCategoria.get('nombreCategoria')?.touched && !errorMessage"
-          class="mt-2 text-xs text-red-600">
-          El nombre es obligatorio.
-        </p>
+        @if (formCategoria.get('nombreCategoria')?.invalid && formCategoria.get('nombreCategoria')?.touched && !errorMessage()) {
+          <p class="mt-2 text-xs text-red-600">El nombre es obligatorio.</p>
+        }
 
         <!-- Mensaje de error de categoría duplicada -->
-        <p *ngIf="errorMessage" class="mt-2 text-xs text-red-600">
-          {{ errorMessage }}
-        </p>
+        @if (errorMessage()) {
+          <p class="mt-2 text-xs text-red-600">{{ errorMessage() }}</p>
+        }
       </div>
 
       <!-- PROYECTO -->
@@ -209,9 +210,11 @@
       <button
         type="submit"
         class="inline-flex items-center gap-2 rounded-lg bg-sky-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-sky-600 disabled:cursor-not-allowed disabled:bg-slate-300"
-        [disabled]="!formCategoria.valid || errorMessage !== ''"
+        [disabled]="!formCategoria.valid || errorMessage() !== ''"
       >
-        <div *ngIf="loading" class="h-4 w-4 animate-spin rounded-full border-2 border-white/40 border-t-white"></div>
+        @if (loading()) {
+          <div class="h-4 w-4 animate-spin rounded-full border-2 border-white/40 border-t-white"></div>
+        }
         Guardar
       </button>
     </div>

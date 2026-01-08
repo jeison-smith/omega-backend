@@ -18,8 +18,10 @@
                 <input id="nombreProyecto" formControlName="nombre"
                     (input)="validarProyectoDuplicado(crearProyectoForm.get('nombre')?.value)" type="text"
                     class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round-xl appearance-none outline-none focus:border-primary w-full"
-                    [ngClass]="{'border-red-500': errorMessage, 'focus:border-red-500':errorMessage}">
-                <p *ngIf="errorMessage" class="mt-2" style="color: #A52118; font-size: 12px;">{{ errorMessage }}</p>
+                    [ngClass]="{'border-red-500': errorMessage(), 'focus:border-red-500':errorMessage()}">
+                @if (errorMessage()) {
+                  <p class="mt-2 text-xs text-red-600">{{ errorMessage() }}</p>
+                }
             </div>
             <div class="field col">
                 <label for="lastname2" class="label-text">Estado*</label>
@@ -34,8 +36,10 @@
         <div class="flex justify-content-end gap-2 mt-5">
             <button type="button" class="btn-outline-purple1" (click)="cerrarModal()">Cancelar</button>
 
-            <button [disabled]="!crearProyectoForm.valid || errorMessage !== ''" type="submit" class="btn-primary">
-                <div *ngIf="loading" class="spinner-black"></div>
+            <button [disabled]="!crearProyectoForm.valid || errorMessage() !== ''" type="submit" class="btn-primary">
+                @if (loading()) {
+                  <div class="spinner-black"></div>
+                }
                 Guardar
             </button>
         </div>

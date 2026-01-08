@@ -31,15 +31,17 @@
                 <td>{{ usuario.fechaCreacion | date:"dd/MM/yyyy"}}</td>
                 <td><button class="table_actions" (click)="menu_popup($index, $event)"><span
                             class="material-symbols">more_horiz</span>
-                        <div class="popup-menu" *ngIf="isMenuOpen == $index" #popupMenu>
-                            <ul>
-                                <li><a (click)="mostrarEditar(usuario.idUsuario)"><span
-                                            class="material-symbols">edit</span>Editar</a></li>
-                                <li><a style="color: #a4241c;" (click)="mostrarEliminar(usuario.idUsuario)"><span
-                                            class="material-symbols">delete</span>Eliminar</a></li>
+                        @if (isMenuOpen == $index) {
+                          <div class="popup-menu" #popupMenu>
+                              <ul>
+                                  <li><a (click)="mostrarEditar(usuario.idUsuario)"><span
+                                              class="material-symbols">edit</span>Editar</a></li>
+                                  <li><a style="color: #a4241c;" (click)="mostrarEliminar(usuario.idUsuario)"><span
+                                              class="material-symbols">delete</span>Eliminar</a></li>
 
-                            </ul>
-                        </div>
+                              </ul>
+                          </div>
+                        }
                     </button></td>
             </tr>
             }

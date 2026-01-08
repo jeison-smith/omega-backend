@@ -1,10 +1,12 @@
 <form [formGroup]="seccionesForm">
   <div formArrayName="campos">
-    <div class="card__section" *ngIf="seccionesArray.length > 0">
+    @if (seccionesArray.length > 0) {
+      <div class="card__section">
       <div *ngFor="let seccion of seccionesArray.controls; let i = index" [formGroupName]="i" class="mb-4">
 
         <!-- Header -->
-        <div class="card__section-header" *ngIf="seccion.get('id')?.value">
+        @if (seccion.get('id')?.value) {
+        <div class="card__section-header">
           <div class="section-texts">
             <div class="section-title">
               {{ seccion.get('nombre')?.value || 'Sin título' }}
@@ -17,6 +19,7 @@
                 class="card__icon"
                 (click)="toggleSeccion(i)">▶</span>
         </div>
+        }
 
         <div formArrayName="campos">
         <editar-campos-plantilla
@@ -27,7 +30,7 @@
         </editar-campos-plantilla>
         </div>
       </div>
-    </div>
+      </div>
+    }
   </div>
 </form>
-

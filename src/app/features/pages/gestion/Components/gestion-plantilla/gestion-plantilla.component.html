@@ -39,10 +39,11 @@
 
          <!-- Sections Form -->
          <div formArrayName="secciones">
-            <div *ngIf="formListo && seccionesArray.length > 0">
+            @if (formListo && seccionesArray.length > 0) {
                <div *ngFor="let seccion of seccionesArray.controls; let i=index" [formGroupName]="i">
                   <div class="card__section">
-                     <div class="card__section-header" *ngIf="seccion.get('id')?.value">
+                     @if (seccion.get('id')?.value) {
+                       <div class="card__section-header">
                         <div class="flex flex-col">
                            <div class="text-base font-semibold text-slate-800">
                               {{ seccion.get('nombre')?.value || 'Sin título' }}
@@ -53,8 +54,10 @@
                         </div>
                         <span [class.rotate]="seccionColapsada[i]" class="card__icon" (click)="toggleSeccion(i)"></span>
                      </div>
+                     }
 
-                     <div class="card__seccion-body" *ngIf="formListo" [class.hidden]="!seccionColapsada[i]">
+                     @if (formListo) {
+                       <div class="card__seccion-body" [class.hidden]="!seccionColapsada[i]">
                         <div formArrayName="campos">
                            <div *ngFor="let campo of getCamposArray(i).controls; let j = index; trackBy: trackByIndex"
                               [formGroupName]="j">
@@ -64,28 +67,32 @@
                            </div>
                         </div>
                      </div>
+                     }
                   </div>
                </div>
-            </div>
+            }
          </div>
 
          <!-- Summary Section -->
          <div class="card__plantilla mt-4">
             <div class="card__plantilla-body">
                <div class="field" class="campo">
-                  <label class="text-sm font-semibold text-slate-700" *ngIf="mostrarResumen">Resumen</label>
-                  <textarea id="" type="text" rows="8" formControlName="resumen" *ngIf="mostrarResumen" readonly
-                     class="mt-2 w-full rounded-lg border border-slate-200 bg-white p-2 text-sm text-slate-700 outline-none"></textarea>
+                  @if (mostrarResumen) {
+                    <label class="text-sm font-semibold text-slate-700">Resumen</label>
+                    <textarea id="" type="text" rows="8" formControlName="resumen" readonly
+                       class="mt-2 w-full rounded-lg border border-slate-200 bg-white p-2 text-sm text-slate-700 outline-none"></textarea>
+                  }
 
                   <div class="mt-4 flex justify-end">
-                     <button
-                        type="button"
-                        (click)="copiarResumen()"
-                        class="mr-4 rounded-lg border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-600 transition hover:bg-slate-100"
-                        *ngIf="mostrarResumen"
-                     >
-                        Copiar
-                     </button>
+                     @if (mostrarResumen) {
+                       <button
+                          type="button"
+                          (click)="copiarResumen()"
+                          class="mr-4 rounded-lg border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-600 transition hover:bg-slate-100"
+                       >
+                          Copiar
+                       </button>
+                     }
                      <button
                         type="button"
                         (click)="resumen()"
@@ -113,10 +120,11 @@
                (click)="guardarFormulario()"
                [disabled]="!plantillaForm.valid || loading"
             >
-               <i
-                  class="h-4 w-4 animate-spin rounded-full border-2 border-white/40 border-t-white"
-                  *ngIf="loading"
-               ></i>
+               @if (loading) {
+                 <i
+                    class="h-4 w-4 animate-spin rounded-full border-2 border-white/40 border-t-white"
+                 ></i>
+               }
                Guardar</button>
          </div>
 
@@ -136,9 +144,11 @@
                </button>
             </div>
             <div class="card-body__gestion p-3">
-               <div *ngIf="opcionesLaterales.length === 0" class="text-center text-sm text-slate-400">
-                  No hay opciones adicionales.
-               </div>
+               @if (opcionesLaterales.length === 0) {
+                 <div class="text-center text-sm text-slate-400">
+                    No hay opciones adicionales.
+                 </div>
+               }
                <div *ngFor="let op of opcionesLaterales; let k=index"
                   class="mb-3 flex items-center">
                   <input

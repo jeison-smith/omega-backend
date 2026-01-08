@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectorRef, Component, signal } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { Router } from '@angular/router';
@@ -19,8 +19,8 @@ import { ToastService } from '../../../../../Core/Service/Toast/toast.service';
 })
 export class ModalCrearPlantillaComponent {
   visible: boolean = false;
-  loading: boolean = false;
-  errorMessage: string = '';
+  loading = signal(false);
+  errorMessage = signal('');
 
   listaProyectos: ProyectoDisponible[] = [];
   listaCategorias: any[] = [];
@@ -114,7 +114,7 @@ export class ModalCrearPlantillaComponent {
 
   // Crear plantilla
   crearPlantilla() {
-    this.loading = true;
+    this.loading.set(true);
     this.creaPlantilla = this.crearPlantillaForm.value;
     this.crearPlantillaForm.disable();
     var suscripcion = this.plantillaService
@@ -129,10 +129,10 @@ export class ModalCrearPlantillaComponent {
               this.router.navigate(['/home/plantillas']);
             }, 500);
           }
-          this.loading = false;
+          this.loading.set(false);
         },
         error: (error) => {
-          this.loading = false;
+          this.loading.set(false);
           this.crearPlantillaForm.enable();
           this.toastMessage.showError(error);
         },
@@ -144,9 +144,9 @@ export class ModalCrearPlantillaComponent {
       this.plantillaService.validarDuplicado(nombre).subscribe({
         next: (response) => {
           if (response.response) {
-            this.errorMessage = 'Ya existe una plantilla con este nombre';
+            this.errorMessage.set('Ya existe una plantilla con este nombre');
           } else {
-            this.errorMessage = '';
+            this.errorMessage.set('');
           }
         },
       });
@@ -155,7 +155,7 @@ export class ModalCrearPlantillaComponent {
 
   cerrarModal(): void {
     this.visible = false;
-    this.errorMessage = '';
+    this.errorMessage.set('');
     this.crearPlantillaForm.reset();
   }
 

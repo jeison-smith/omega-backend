@@ -4,8 +4,10 @@
     </div>
     <div class="flex justify-content-end gap-2 mt-5">
         <button type="button" class="btn-outline-blue1" (click)="cancelar()">Cancelar</button>
-        <button [disabled]="loading"  type="button" class="btn-danger" (click)="eliminarUsuario()">
-            <div *ngIf="loading" class="spinner" ></div> 
+        <button [disabled]="loading()"  type="button" class="btn-danger" (click)="eliminarUsuario()">
+            @if (loading()) {
+              <div class="spinner"></div> 
+            }
             Eliminar</button>
     </div>
   </p-dialog>

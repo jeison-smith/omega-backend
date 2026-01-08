@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 //import { CrearCategoria } from '../../../../Core/Interfaces/Categoria/categoria';
@@ -24,13 +24,13 @@ export class CrearCategoriaComponent implements OnInit {
   proyectosDisponibles: any[] = [];
   categorias: any[] = [];
   usuarios: any[] = [];
-  visible: boolean = false;
-  loading: boolean = false;
+  visible = signal(false);
+  loading = signal(false);
 
   //modalAbierto = false;
   estaGuardando = false;
   filtro: string = '';
-  errorMessage: string = ''; // Mensaje de error para categorías duplicadas
+  errorMessage = signal(''); // Mensaje de error para categorías duplicadas
   usuarioActual: any = null; // Usuario en sesión
   categoriasPaginadas: any[] = []; // Categorías de la página actual
   totalRegistros: number = 0; // Total de registros
@@ -101,12 +101,12 @@ export class CrearCategoriaComponent implements OnInit {
   }
 
   cerrarModal() {
-    this.visible = false;
+    this.visible.set(false);
   }
 
   showDialog() {
-    this.visible = true;
-    this.errorMessage = ''; // Limpiar mensaje de error al abrir el modal
+    this.visible.set(true);
+    this.errorMessage.set(''); // Limpiar mensaje de error al abrir el modal
   }
 
   // ======================================================
@@ -114,7 +114,7 @@ export class CrearCategoriaComponent implements OnInit {
   // ======================================================
   validarCategoriaDuplicada(nombreCategoria: string | null) {
     if (!nombreCategoria || nombreCategoria.trim() === '') {
-      this.errorMessage = '';
+      this.errorMessage.set('');
       return;
     }
 
@@ -124,9 +124,9 @@ export class CrearCategoriaComponent implements OnInit {
     );
 
     if (existe) {
-      this.errorMessage = 'Ya existe una categoría con este nombre';
+      this.errorMessage.set('Ya existe una categoría con este nombre');
     } else {
-      this.errorMessage = '';
+      this.errorMessage.set('');
     }
   }
 
@@ -245,8 +245,8 @@ export class CrearCategoriaComponent implements OnInit {
     }
 
     // Validar que no exista error de categoría duplicada
-    if (this.errorMessage !== '') {
-      this.toast.showError(this.errorMessage);
+    if (this.errorMessage() !== '') {
+      this.toast.showError(this.errorMessage());
       return;
     }
 

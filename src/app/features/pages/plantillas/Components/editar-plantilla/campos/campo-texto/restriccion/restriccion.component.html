@@ -26,11 +26,15 @@
         </div>
   
         <div class="form-item">
-          <input formControlName="campo1" (blur)="guardarActualizacion()" *ngIf="camposDisponibles >= 1" id="campo1" type="text" step="1" (input)="onlyInteger($event)" class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round-xl appearance-none outline-none focus:border-primary w-full" placeholder="" />
+          @if (camposDisponibles >= 1) {
+            <input formControlName="campo1" (blur)="guardarActualizacion()" id="campo1" type="text" step="1" (input)="onlyInteger($event)" class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round-xl appearance-none outline-none focus:border-primary w-full" placeholder="" />
+          }
         </div>
       
         <div class="form-item">
-          <input formControlName="campo2" (blur)="guardarActualizacion()" *ngIf="camposDisponibles >= 2" id="campo2" type="text" step="1" (input)="onlyInteger($event)" class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round-xl appearance-none outline-none focus:border-primary w-full" placeholder="" />
+          @if (camposDisponibles >= 2) {
+            <input formControlName="campo2" (blur)="guardarActualizacion()" id="campo2" type="text" step="1" (input)="onlyInteger($event)" class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round-xl appearance-none outline-none focus:border-primary w-full" placeholder="" />
+          }
         </div>
       </div>
     </form>

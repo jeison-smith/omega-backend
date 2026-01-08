@@ -22,9 +22,11 @@
                 <div class="field col">
                     <textarea type="text" rows="4" placeholder="Escribe aqui la respuesta" class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round-xl appearance-none outline-none focus:border-primary w-full" disabled></textarea>
                 </div>
-                <div class="field col" *ngIf="ifRestriccion">
-                    <restriccion [formTexto]="getFormTexto()" ></restriccion>
-                  </div>
+                @if (ifRestriccion) {
+                  <div class="field col">
+                      <restriccion [formTexto]="getFormTexto()" ></restriccion>
+                    </div>
+                }
                   
                   
                 <div class="flex justify-content-end align-items-center">
@@ -45,4 +47,3 @@
         </div> 
     </div>
 </div>
-

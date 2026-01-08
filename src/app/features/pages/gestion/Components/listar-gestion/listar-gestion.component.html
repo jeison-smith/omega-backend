@@ -5,22 +5,25 @@
     </div>
 
     <!-- Tabs for Categories with Horizontal Scroll -->
-    <div class="mb-5 overflow-x-auto whitespace-nowrap pb-2" *ngIf="categories.length > 0">
-        <div class="inline-flex gap-4 px-1">
-            <button
-                *ngFor="let cat of categories"
-                class="min-w-[150px] rounded-lg px-6 py-3 text-sm font-medium shadow-sm transition"
-                [class]="
-                    selectedCategory?.id === cat.id
-                        ? 'bg-sky-500 text-white shadow-md'
-                        : 'bg-white text-slate-500'
-                "
-                (click)="selectCategory(cat)"
-            >
-                {{ cat.nombre || cat.nombreProyecto || cat.proyecto || 'Sin nombre' }}
-            </button>
-        </div>
-    </div>
+    @if (categories.length > 0) {
+      <div class="mb-5 overflow-x-auto whitespace-nowrap pb-2">
+          <div class="inline-flex gap-4 px-1">
+              @for (cat of categories; track cat.id) {
+                <button
+                    class="min-w-[150px] rounded-lg px-6 py-3 text-sm font-medium shadow-sm transition"
+                    [class]="
+                        selectedCategory?.id === cat.id
+                            ? 'bg-sky-500 text-white shadow-md'
+                            : 'bg-white text-slate-500'
+                    "
+                    (click)="selectCategory(cat)"
+                >
+                    {{ cat.nombre || cat.nombreProyecto || cat.proyecto || 'Sin nombre' }}
+                </button>
+              }
+          </div>
+      </div>
+    }
 
     <!-- Dropdown for Templates -->
     <div class="relative max-w-full">
@@ -40,32 +43,32 @@
             <span class="material-symbols text-slate-400">unfold_more</span>
         </div>
 
-        <div
-            class="absolute left-0 right-0 top-full z-50 mt-2 max-h-[300px] overflow-y-auto rounded-lg border border-slate-200 bg-white shadow-lg"
-            *ngIf="showDropdown"
-        >
-            <div
-                class="sticky top-0 bg-sky-900 px-4 py-3 text-sm font-semibold text-white"
-                *ngIf="selectedCategory"
-            >
-                {{ selectedCategory.nombre || selectedCategory.nombreProyecto || selectedCategory.proyecto }}
-            </div>
-
-            <ng-container *ngIf="filteredTemplates.length > 0; else noTemplates">
-                <div
-                    *ngFor="let template of filteredTemplates"
-                    class="cursor-pointer border-l-4 border-transparent px-4 py-3 text-sm text-slate-600 transition hover:border-sky-500 hover:bg-slate-50 hover:pl-6 hover:text-sky-500"
-                    (click)="selectTemplate(template)"
-                >
-                    {{ template.nombrePlantilla }}
+        @if (showDropdown) {
+          <div
+              class="absolute left-0 right-0 top-full z-50 mt-2 max-h-[300px] overflow-y-auto rounded-lg border border-slate-200 bg-white shadow-lg"
+          >
+              @if (selectedCategory) {
+                <div class="sticky top-0 bg-sky-900 px-4 py-3 text-sm font-semibold text-white">
+                    {{ selectedCategory.nombre || selectedCategory.nombreProyecto || selectedCategory.proyecto }}
                 </div>
-            </ng-container>
-            <ng-template #noTemplates>
+              }
+
+              @if (filteredTemplates.length > 0) {
+                  @for (template of filteredTemplates; track template.id) {
+                    <div
+                        class="cursor-pointer border-l-4 border-transparent px-4 py-3 text-sm text-slate-600 transition hover:border-sky-500 hover:bg-slate-50 hover:pl-6 hover:text-sky-500"
+                        (click)="selectTemplate(template)"
+                    >
+                        {{ template.nombrePlantilla }}
+                    </div>
+                  }
+              } @else {
                 <div class="p-3 text-center text-sm text-slate-400">
                     No se encontraron plantillas.
                 </div>
-            </ng-template>
-        </div>
+              }
+          </div>
+        }
     </div>
 </div>
 
@@ -146,24 +149,26 @@
                             <span class="material-symbols">more_horiz</span>
                         </button>
 
-                        <div
-                            class="absolute right-full top-1/2 z-[9999] mr-1 -translate-y-1/2 whitespace-nowrap rounded-lg border border-slate-200 bg-white py-1 shadow-lg"
-                            *ngIf="menuAbiertoId === respuestas.id"
-                        >
-                            <button
-                                class="flex w-full items-center gap-2 px-4 py-2 text-left text-sm font-semibold text-black transition hover:bg-slate-50"
-                                [routerLink]="['respuesta-plantilla/', respuestas.id]"
-                            >
-                                <span class="material-symbols text-base">edit</span> Gestionar
-                            </button>
-                            <button
-                                class="flex w-full items-center gap-2 px-4 py-2 text-left text-sm font-semibold text-red-600 transition hover:bg-red-50"
-                                *ngIf="!(this.idRol == 'operativo')"
-                                (click)="mostrarEliminar(respuestas.id)"
-                            >
-                                <span class="material-symbols text-base">delete</span> Eliminar
-                            </button>
-                        </div>
+                        @if (menuAbiertoId === respuestas.id) {
+                          <div
+                              class="absolute right-full top-1/2 z-[9999] mr-1 -translate-y-1/2 whitespace-nowrap rounded-lg border border-slate-200 bg-white py-1 shadow-lg"
+                          >
+                              <button
+                                  class="flex w-full items-center gap-2 px-4 py-2 text-left text-sm font-semibold text-black transition hover:bg-slate-50"
+                                  [routerLink]="['respuesta-plantilla/', respuestas.id]"
+                              >
+                                  <span class="material-symbols text-base">edit</span> Gestionar
+                              </button>
+                              @if (!(this.idRol == 'operativo')) {
+                                <button
+                                    class="flex w-full items-center gap-2 px-4 py-2 text-left text-sm font-semibold text-red-600 transition hover:bg-red-50"
+                                    (click)="mostrarEliminar(respuestas.id)"
+                                >
+                                    <span class="material-symbols text-base">delete</span> Eliminar
+                                </button>
+                              }
+                          </div>
+                        }
                     </div>
                 </td>
             </tr>
