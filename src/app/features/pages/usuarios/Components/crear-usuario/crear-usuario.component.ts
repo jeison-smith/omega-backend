@@ -1,4 +1,4 @@
-import { Component, HostListener, signal } from '@angular/core';
+import { Component, HostListener, WritableSignal, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
@@ -19,7 +19,7 @@ import { Dialog } from 'primeng/dialog';
   templateUrl: './crear-usuario.component.html',
 })
 export class CrearUsuarioComponent {
-  crearUsuarioForm!: FormGroup;
+  crearUsuarioForm!: WritableSignal<FormGroup>;
   creaUsuario!: CrearUsuario;
   loading = signal(false);
   errorMessage = signal('');
@@ -40,16 +40,18 @@ export class CrearUsuarioComponent {
     private usuarioService: UsuarioService,
     private proyectoService: ProyectoService,
     private toastMessage: ToastService
-  ) {}
+  ) {
+    this.crearUsuarioForm = signal(
+      this.fb.group({
+        id: ['', Validators.required],
+        nombreUsuario: [{ value: '', disabled: true }],
+        idRol: ['', Validators.required],
+        searchTerm: [''],
+      })
+    );
+  }
 
   ngOnInit(): void {
-    this.crearUsuarioForm = this.fb.group({
-      id: ['', Validators.required],
-      nombreUsuario: [{ value: '', disabled: true }],
-      idRol: ['', Validators.required],
-      searchTerm: [''],
-    });
-
     this.obtenerProyectos();
   }
 
@@ -61,7 +63,7 @@ export class CrearUsuarioComponent {
   }
 
   proyectosFiltrados() {
-    const searchTerm = this.crearUsuarioForm.get('searchTerm')?.value?.toLowerCase() || '';
+    const searchTerm = this.crearUsuarioForm().get('searchTerm')?.value?.toLowerCase() || '';
     return this.availableProyectos.filter((proyecto) =>
       proyecto.nombre.toLowerCase().includes(searchTerm)
     );
@@ -96,7 +98,7 @@ export class CrearUsuarioComponent {
 
   // Mostrar los proyectos seleccionados
   getSelectedProyectos() {
-    const proyectosSeleccionadosGroup = this.crearUsuarioForm.get(
+    const proyectosSeleccionadosGroup = this.crearUsuarioForm().get(
       'proyectosSeleccionados'
     ) as FormGroup;
 
@@ -110,7 +112,7 @@ export class CrearUsuarioComponent {
 
   crearUsuario(): void {
     this.loading.set(true);
-    this.creaUsuario = this.crearUsuarioForm.value;
+    this.creaUsuario = this.crearUsuarioForm().value;
     this.creaUsuario.idProyecto = this.selectedProyectos.map((proyecto) => proyecto.id);
     this.usuarioService.crearUsuario(this.creaUsuario).subscribe({
       next: (response) => {
@@ -143,14 +145,14 @@ export class CrearUsuarioComponent {
         next: (response) => {
           if (response) {
             this.errorMessage.set('');
-            this.crearUsuarioForm.patchValue({ nombreUsuario: response.nombre });
+            this.crearUsuarioForm().patchValue({ nombreUsuario: response.nombre });
           } else {
-            this.crearUsuarioForm.patchValue({ nombreUsuario: 'Usuario no encontrado' });
+            this.crearUsuarioForm().patchValue({ nombreUsuario: 'Usuario no encontrado' });
           }
         },
         error: (error) => {
           this.errorMessage.set('Usuario no encontrado');
-          this.crearUsuarioForm.patchValue({ nombreUsuario: '' });
+          this.crearUsuarioForm().patchValue({ nombreUsuario: '' });
         },
       });
   }
@@ -158,7 +160,7 @@ export class CrearUsuarioComponent {
   cerrarModal(): void {
     this.visible = false;
     this.errorMessage.set('');
-    this.crearUsuarioForm.reset();
+    this.crearUsuarioForm().reset();
     this.selectedProyectos = [];
     this.availableProyectos = [];
     this.obtenerProyectos();

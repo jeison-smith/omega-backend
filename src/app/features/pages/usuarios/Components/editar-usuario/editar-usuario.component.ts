@@ -1,4 +1,4 @@
-import { Component, HostListener, signal } from '@angular/core';
+import { Component, HostListener, WritableSignal, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
@@ -19,7 +19,7 @@ import { ToastService } from '../../../../../Core/Service/Toast/toast.service';
   templateUrl: './editar-usuario.component.html',
 })
 export class EditarUsuarioComponent {
-  crearUsuarioForm!: FormGroup;
+  crearUsuarioForm!: WritableSignal<FormGroup>;
   creaUsuario!: CrearUsuario;
   id: number = -1;
   loading = signal(false);
@@ -41,15 +41,18 @@ export class EditarUsuarioComponent {
     private usuarioService: UsuarioService,
     private proyectoService: ProyectoService,
     private toastMessage: ToastService
-  ) {}
+  ) {
+    this.crearUsuarioForm = signal(
+      this.fb.group({
+        id: [{ value: this.id, disabled: true }],
+        nombreUsuario: [{ value: '', disabled: true }],
+        idRol: [0, Validators.required],
+        searchTerm: [''],
+      })
+    );
+  }
 
   ngOnInit(): void {
-    this.crearUsuarioForm = this.fb.group({
-      id: [{ value: this.id, disabled: true }],
-      nombreUsuario: [{ value: '', disabled: true }],
-      idRol: [0, Validators.required],
-      searchTerm: [''],
-    });
     this.obtenerProyectos();
   }
 
@@ -61,7 +64,7 @@ export class EditarUsuarioComponent {
   }
 
   proyectosFiltrados() {
-    const searchTerm = this.crearUsuarioForm.get('searchTerm')?.value?.toLowerCase() || '';
+    const searchTerm = this.crearUsuarioForm().get('searchTerm')?.value?.toLowerCase() || '';
     return this.availableProyectos.filter((proyecto) =>
       proyecto.nombre.toLowerCase().includes(searchTerm)
     );
@@ -96,7 +99,7 @@ export class EditarUsuarioComponent {
 
   // Mostrar los proyectos seleccionados
   getSelectedProyectos() {
-    const proyectosSeleccionadosGroup = this.crearUsuarioForm.get(
+    const proyectosSeleccionadosGroup = this.crearUsuarioForm().get(
       'proyectosSeleccionados'
     ) as FormGroup;
 
@@ -116,9 +119,9 @@ export class EditarUsuarioComponent {
         next: (response) => {
           if (response) {
             this.errorMessage.set('');
-            this.crearUsuarioForm.patchValue({ id: response.id });
-            this.crearUsuarioForm.patchValue({ nombreUsuario: response.nombre });
-            this.crearUsuarioForm.patchValue({ idRol: response.idRol });
+            this.crearUsuarioForm().patchValue({ id: response.id });
+            this.crearUsuarioForm().patchValue({ nombreUsuario: response.nombre });
+            this.crearUsuarioForm().patchValue({ idRol: response.idRol });
             response.idProyecto.forEach((id: string) => {
               const proyecto = this.availableProyectos.find((proyecto) => proyecto.id == id);
               if (proyecto) {
@@ -126,21 +129,21 @@ export class EditarUsuarioComponent {
               }
             });
           } else {
-            this.crearUsuarioForm.patchValue({ nombreUsuario: 'Usuario no encontrado' });
+            this.crearUsuarioForm().patchValue({ nombreUsuario: 'Usuario no encontrado' });
           }
           this.loading.set(false);
         },
         error: (error) => {
           this.loading.set(false);
           this.errorMessage.set('Usuario no encontrado');
-          this.crearUsuarioForm.patchValue({ nombreUsuario: '' });
+          this.crearUsuarioForm().patchValue({ nombreUsuario: '' });
         },
       });
   }
 
   cerrarModal(): void {
     this.visible = false;
-    this.crearUsuarioForm.reset();
+    this.crearUsuarioForm().reset();
     this.selectedProyectos = [];
     this.availableProyectos = [];
     this.obtenerProyectos();
@@ -180,8 +183,8 @@ export class EditarUsuarioComponent {
     this.loading.set(true);
     this.creaUsuario = {
       id: this.id.toString(),
-      nombre: this.crearUsuarioForm.get('nombreUsuario')?.value,
-      idRol: this.crearUsuarioForm.get('idRol')?.value,
+      nombre: this.crearUsuarioForm().get('nombreUsuario')?.value,
+      idRol: this.crearUsuarioForm().get('idRol')?.value,
       idProyecto: this.selectedProyectos.map((proyecto) => proyecto.id),
     };
     //this.crearUsuarioForm.disable();

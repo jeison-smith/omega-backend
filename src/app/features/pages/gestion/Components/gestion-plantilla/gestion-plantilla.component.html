@@ -1,4 +1,4 @@
-<form [formGroup]="plantillaForm" class="flex justify-content-center mt-6">
+<form [formGroup]="plantillaForm()" class="flex justify-content-center mt-6">
    <div class="col-12 grid">
 
       <!-- LEFT COLUMN: Main Form -->
@@ -118,7 +118,7 @@
                class="inline-flex items-center gap-2 rounded-lg bg-sky-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-sky-600 disabled:cursor-not-allowed disabled:bg-slate-300"
                type="button"
                (click)="guardarFormulario()"
-               [disabled]="!plantillaForm.valid || loading"
+               [disabled]="!plantillaForm().valid || loading"
             >
                @if (loading) {
                  <i
@@ -217,3 +217,4 @@
    </div>
 
 </p-dialog>
+

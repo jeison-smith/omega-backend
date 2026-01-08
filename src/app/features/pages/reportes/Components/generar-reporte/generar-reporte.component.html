@@ -1,5 +1,5 @@
 <div class="card" style="height: 97px;">
-    <form [formGroup]="crearExcelPlantillaForm" (ngSubmit)="descargarExcel()">
+    <form [formGroup]="crearExcelPlantillaForm()" (ngSubmit)="descargarExcel()">
         <div class="formgrid grid" style="display: flex; align-items: center; gap: 10px;">
             <div class="field col" style="flex: 1;">
                 <label class="label-text">Plantilla</label>
@@ -18,7 +18,7 @@
                         name="fechaInicio"
                         id="fechaInicio"
                         formControlName="fechaInicio"
-                        [max]="crearExcelPlantillaForm.get('fechaFin')?.value"
+                        [max]="crearExcelPlantillaForm().get('fechaFin')?.value"
                         class="w-full text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round-xl outline-none focus:border-primary"
                     />
                 </div>
@@ -29,7 +29,7 @@
                         name="fechaFin"
                         id="fechaFin"
                         formControlName="fechaFin"
-                        [min]="crearExcelPlantillaForm.get('fechaInicio')?.value"
+                        [min]="crearExcelPlantillaForm().get('fechaInicio')?.value"
                         class="w-full text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round-xl outline-none focus:border-primary"
                     />
                 </div>
@@ -47,7 +47,7 @@
             </div>
             <button type="submit" (click)="descargarExcel()" class="btn-excel" 
         style="height: 40px; margin-top: 7px;" 
-        [disabled]="!crearExcelPlantillaForm.valid || loading()">
+        [disabled]="!crearExcelPlantillaForm().valid || loading()">
     @if (!(loading())) {
       <span class="material-symbols mr-2">file_download</span>
     } @else {

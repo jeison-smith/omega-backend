@@ -1,4 +1,4 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit, WritableSignal, signal } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 //import { CrearCategoria } from '../../../../Core/Interfaces/Categoria/categoria';
@@ -20,7 +20,7 @@ import { ToastService } from '../../../../../Core/Service/Toast/toast.service';
   templateUrl: './crear-categoria.component.html',
 })
 export class CrearCategoriaComponent implements OnInit {
-  formCategoria!: FormGroup;
+  formCategoria!: WritableSignal<FormGroup>;
   proyectosDisponibles: any[] = [];
   categorias: any[] = [];
   usuarios: any[] = [];
@@ -43,7 +43,16 @@ export class CrearCategoriaComponent implements OnInit {
     private toast: ToastService,
     private authService: AuthService,
     private router: Router
-  ) {}
+  ) {
+    this.formCategoria = signal(
+      this.fb.group({
+        nombreCategoria: ['', Validators.required],
+        idProyecto: ['', Validators.required],
+        //idUsuario: ['', Validators.required],
+        estado: [true, Validators.required],
+      })
+    );
+  }
 
   ngOnInit(): void {
     this.crearFormulario();
@@ -72,12 +81,14 @@ export class CrearCategoriaComponent implements OnInit {
   // FORMULARIO
   // ======================================================
   crearFormulario() {
-    this.formCategoria = this.fb.group({
-      nombreCategoria: ['', Validators.required],
-      idProyecto: ['', Validators.required],
-      //idUsuario: ['', Validators.required],
-      estado: [true, Validators.required],
-    });
+    this.formCategoria.set(
+      this.fb.group({
+        nombreCategoria: ['', Validators.required],
+        idProyecto: ['', Validators.required],
+        //idUsuario: ['', Validators.required],
+        estado: [true, Validators.required],
+      })
+    );
   }
 
   // BUSCAR CATEGORÍAS
@@ -239,8 +250,8 @@ export class CrearCategoriaComponent implements OnInit {
   // GUARDAR CATEGORÍA
   // ======================================================
   guardarCategoria() {
-    if (!this.formCategoria.valid) {
-      this.formCategoria.markAllAsTouched();
+    if (!this.formCategoria().valid) {
+      this.formCategoria().markAllAsTouched();
       return;
     }
 
@@ -271,10 +282,10 @@ export class CrearCategoriaComponent implements OnInit {
 
     this.estaGuardando = true;
     const body = {
-      nombre: this.formCategoria.value.nombreCategoria,
-      idProyecto: this.formCategoria.value.idProyecto,
+      nombre: this.formCategoria().value.nombreCategoria,
+      idProyecto: this.formCategoria().value.idProyecto,
       idUsuario: idUsuarioFinal, // Usar el ID encontrado
-      estado: Boolean(this.formCategoria.value.estado),
+      estado: Boolean(this.formCategoria().value.estado),
     };
 
     console.log('Guardando categoría con usuario ID:', idUsuarioFinal);

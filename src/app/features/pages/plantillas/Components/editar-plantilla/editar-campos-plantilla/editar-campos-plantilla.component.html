@@ -1,5 +1,5 @@
 <div class="camposPlantilla">
-    <form [formGroup]="camposForm">
+    <form [formGroup]="camposForm()">
         <div formArrayName="campos">
             <ng-container *ngFor="let campo of camposArray.controls; let i = index" [formGroupName]="i">
                 @if(campo.get('estado')?.value === true){

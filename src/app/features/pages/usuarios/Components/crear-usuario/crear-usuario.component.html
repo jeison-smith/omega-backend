@@ -19,7 +19,7 @@
         <label for="documento" class="label-subtext">ID del usuario</label>
         <input
           id="documento"
-          [value]="crearUsuarioForm?.get('id')?.value"
+          [value]="crearUsuarioForm()?.get('id')?.value"
           (input)="validarUsuario($any($event.target).value)"
           type="text"
           class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round-xl appearance-none outline-none focus:border-primary w-full"
@@ -29,7 +29,7 @@
         <label for="nombreUsuario" class="label-subtext">Nombre de usuario</label>
         <input
           id="nombreUsuario"
-          [value]="crearUsuarioForm?.get('nombreUsuario')?.value"
+          [value]="crearUsuarioForm()?.get('nombreUsuario')?.value"
           type="text"
           disabled
           class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round-xl appearance-none outline-none focus:border-primary w-full"
@@ -43,12 +43,12 @@
         <select
           name=""
           id=""
-          [value]="crearUsuarioForm?.get('idRol')?.value"
+          [value]="crearUsuarioForm()?.get('idRol')?.value"
           class="w-full text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round-xl outline-none focus:border-primary"
           style="appearance: auto"
           (change)="
             $any($event.target).value &&
-              crearUsuarioForm?.patchValue({ idRol: $any($event.target).value })
+              crearUsuarioForm()?.patchValue({ idRol: $any($event.target).value })
           "
         >
           <option value="" disabled>Selecciona</option>
@@ -92,10 +92,10 @@
               <input
                 type="text"
                 placeholder="Selecciona"
-                [value]="crearUsuarioForm?.get('searchTerm')?.value"
+                [value]="crearUsuarioForm()?.get('searchTerm')?.value"
                 (input)="
                   $any($event.target).value &&
-                    crearUsuarioForm?.patchValue({ searchTerm: $any($event.target).value })
+                    crearUsuarioForm()?.patchValue({ searchTerm: $any($event.target).value })
                 "
                 style="width: 100%; padding: 4px; border-radius: 7px; border: 1px solid #ccc"
               />
@@ -140,7 +140,7 @@
     </div>
     <div class="flex justify-content-end gap-2 mt-5">
       <button type="button" class="btn-outline-blue1" (click)="cerrarModal()">Cancelar</button>
-      <button [disabled]="!crearUsuarioForm?.valid" type="submit" class="btn-primary">
+      <button [disabled]="!crearUsuarioForm()?.valid" type="submit" class="btn-primary">
         @if (loading()) {
           <div class="spinner-black"></div>
         }
@@ -164,14 +164,14 @@
   [style]="{ width: '40rem' }"
   (onHide)="cerrarModal()"
 >
-  <form [formGroup]="crearUsuarioForm" (ngSubmit)="crearUsuario()">
+  <form [formGroup]="crearUsuarioForm()" (ngSubmit)="crearUsuario()">
     <div class="formgrid grid">
       <div class="field col-6">
         <label for="documento" class="label-subtext">ID del usuario</label>
         <input
           id="documento"
           formControlName="id"
-          (input)="validarUsuario(crearUsuarioForm.get('id')?.value)"
+          (input)="validarUsuario(crearUsuarioForm().get('id')?.value)"
           type="text"
           class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round-xl appearance-none outline-none focus:border-primary w-full"
         />
@@ -283,7 +283,7 @@
     </div>
     <div class="flex justify-content-end gap-2 mt-5">
       <button type="button" class="btn-outline-blue1" (click)="cerrarModal()">Cancelar</button>
-      <button [disabled]="!crearUsuarioForm.valid" type="submit" class="btn-primary">
+      <button [disabled]="!crearUsuarioForm().valid" type="submit" class="btn-primary">
         @if (loading()) {
           <div class="spinner-black"></div>
         }
@@ -292,3 +292,4 @@
     </div>
   </form>
 </p-dialog>
+

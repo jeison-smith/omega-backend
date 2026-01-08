@@ -1,23 +1,22 @@
-import { Component, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, Signal, signal } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import { identifierName } from '@angular/compiler';
 import { CrearProyecto } from '../../../../../Core/Interfaces/Proyecto/crear-proyecto';
 import { ProyectoService } from '../../../../../Core/Service/Proyecto/proyecto.service';
 import { ToastService } from '../../../../../Core/Service/Toast/toast.service';
 import { AuthService } from '../../../../../Core/Service/Auth/auth.service';
 import { UsuarioService } from '../../../../../Core/Service/Usuario/usuario.service';
+import { Dialog } from 'primeng/dialog';
 
 @Component({
   selector: 'crear-proyecto',
   standalone: true,
-  imports: [RouterModule],
+  imports: [RouterModule,Dialog],
   templateUrl: './crear-proyecto.component.html',
 })
 export class CrearProyectoComponent {
-  crearProyectoForm!: FormGroup;
+  crearProyectoForm!: Signal<FormGroup>;
   creaProyecto!: CrearProyecto;
   errorMessage = signal('');
   visible: boolean = false;
@@ -31,15 +30,18 @@ export class CrearProyectoComponent {
     private toastMessage: ToastService,
     private authService: AuthService,
     private usuarioService: UsuarioService
-  ) {}
+  ) {
+    this.crearProyectoForm = signal(
+      this.fb.group({
+        nombre: ['', Validators.required],
+        estado: [''],
+      })
+    );
+  }
 
   ngOnInit(): void {
     this.obtenerUsuarioActual();
     this.cargarUsuarios(); // Cargar usuarios por si necesitamos buscar el ID
-    this.crearProyectoForm = this.fb.group({
-      nombre: ['', Validators.required],
-      estado: [''],
-    });
   }
 
   // Obtener usuario actual de la sesión
@@ -83,12 +85,12 @@ export class CrearProyectoComponent {
 
     this.loading.set(true);
     this.creaProyecto = {
-      ...this.crearProyectoForm.value,
+      ...this.crearProyectoForm().value,
       idUsuario: idUsuarioFinal, // Usar el ID encontrado o de sesión
     };
 
     console.log('Creando proyecto con usuario ID:', idUsuarioFinal);
-    this.crearProyectoForm.disable();
+    this.crearProyectoForm().disable();
 
     this.proyectoService.crearProyecto(this.creaProyecto).subscribe({
       next: (response) => {
@@ -104,7 +106,7 @@ export class CrearProyectoComponent {
       error: (error) => {
           this.loading.set(false);
         this.toastMessage.showError(error);
-        this.crearProyectoForm.enable();
+        this.crearProyectoForm().enable();
         console.error('Error al crear proyecto:', error);
       },
     });
@@ -113,7 +115,7 @@ export class CrearProyectoComponent {
   cerrarModal(): void {
     this.visible = false;
     this.errorMessage.set('');
-    this.crearProyectoForm.reset();
+    this.crearProyectoForm().reset();
   }
 
   validarProyectoDuplicado(nombre: string) {
@@ -136,3 +138,4 @@ export class CrearProyectoComponent {
     this.visible = true;
   }
 }
+

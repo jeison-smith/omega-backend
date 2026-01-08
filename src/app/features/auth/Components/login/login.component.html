@@ -13,7 +13,7 @@
           AMBIENTE DE PRE-PRODUCCION
         </div>
       }
-      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="space-y-5">
+      <form [formGroup]="loginForm()" (ngSubmit)="onSubmit()" class="space-y-5">
         <div class="space-y-1.5">
           <label for="usuario" class="text-sm font-medium text-slate-700">Usuario</label>
           <input
@@ -22,7 +22,7 @@
             formControlName="usuario"
             class="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-200"
           />
-          @if (loginForm.get('usuario')?.invalid && loginForm.get('usuario')?.touched) {
+          @if (loginForm().get('usuario')?.invalid && loginForm().get('usuario')?.touched) {
             <div class="text-xs text-red-600">Este campo es obligatorio.</div>
           }
         </div>
@@ -34,7 +34,7 @@
             formControlName="password"
             class="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-200"
           />
-          @if (loginForm.get('password')?.invalid && loginForm.get('password')?.touched) {
+          @if (loginForm().get('password')?.invalid && loginForm().get('password')?.touched) {
             <div class="text-xs text-red-600">Este campo es obligatorio.</div>
           }
         </div>

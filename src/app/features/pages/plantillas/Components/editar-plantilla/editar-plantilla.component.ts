@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ViewChild, WritableSignal, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { RouterModule } from '@angular/router';
@@ -27,7 +27,7 @@ export class EditarPlantillaComponent {
   //@ViewChild(EditarSeccionesPlantillaComponent) editarSeccionesPlantilla!: EditarSeccionesPlantillaComponent;
   @ViewChild(EditarCamposPlantillaComponent) editarCamposPlantilla!: EditarCamposPlantillaComponent;
 
-  camposForm!: FormGroup;
+  camposForm!: WritableSignal<FormGroup>;
   campos: any[] = [];
   restricciones: Restriccion[] = [];
   plantilla!: Plantilla;
@@ -47,12 +47,14 @@ export class EditarPlantillaComponent {
     private ref: ChangeDetectorRef,
     private location: Location
   ) {
-    this.camposForm = this.fb.group({
-      campos: this.fb.array([]),
-      idPlantilla: ['', Validators.required],
-      nombrePlantilla: ['', Validators.required],
-      estado: ['', Validators.required],
-    });
+    this.camposForm() = signal(
+      this.fb.group({
+        campos: this.fb.array([]),
+        idPlantilla: ['', Validators.required],
+        nombrePlantilla: ['', Validators.required],
+        estado: ['', Validators.required],
+      })
+    );
   }
 
   ngOnInit() {
@@ -77,7 +79,7 @@ export class EditarPlantillaComponent {
   }
 
   get camposArray(): FormArray {
-    return this.camposForm.get('campos') as FormArray;
+    return this.camposForm()().get('campos') as FormArray;
   }
 
   camposActivos(): any[] {
@@ -127,7 +129,7 @@ export class EditarPlantillaComponent {
 
   estadoPlantilla(event: any) {
     const isChecked = event.target.checked;
-    const campo = this.camposForm;
+    const campo = this.camposForm()();
     campo.get('estado')?.setValue(isChecked);
     this.preguntaService.actualizarEstadoPlantilla(isChecked);
   }
@@ -139,7 +141,7 @@ export class EditarPlantillaComponent {
   }
 
   cargarPlantilla() {
-    this.camposForm.patchValue({
+    this.camposForm()().patchValue({
       idPlantilla: this.plantilla.id,
       nombrePlantilla: this.plantilla.nombrePlantilla,
       estado: this.plantilla.estado,
@@ -218,7 +220,7 @@ export class EditarPlantillaComponent {
     this.plantilla.nombrePlantilla = this.nombreTemporal;
     this.editandoNombre = false;
 
-    const campo = this.camposForm;
+    const campo = this.camposForm()();
     campo.get('nombrePlantilla')?.setValue(this.nombreTemporal);
     this.preguntaService.actualizarNombrePlantilla(this.nombreTemporal);
   }
@@ -268,3 +270,4 @@ export class EditarPlantillaComponent {
     return actualizarPlantilla;
   }
 }
+

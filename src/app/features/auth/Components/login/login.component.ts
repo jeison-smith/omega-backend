@@ -18,18 +18,20 @@ export class LoginComponent {
   private readonly authService = inject(AuthService);
   private readonly toastMessage = inject(ToastService);
 
-  readonly loginForm = new FormGroup({
-    usuario: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
-    password: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
-  });
+  readonly loginForm = signal(
+    new FormGroup({
+      usuario: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
+      password: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
+    })
+  );
 
   readonly loading = signal(false);
   readonly preproduccion = signal(
     window.location.hostname === 'falconpreprod.atlanticqi.com'
   );
 
-  private readonly formStatus = toSignal(this.loginForm.statusChanges, {
-    initialValue: this.loginForm.status,
+  private readonly formStatus = toSignal(this.loginForm().statusChanges, {
+    initialValue: this.loginForm().status,
   });
   readonly canSubmit = computed(
     () => this.formStatus() === 'VALID' && !this.loading()
@@ -46,11 +48,11 @@ export class LoginComponent {
   }
 
   onSubmit(): void {
-    if (this.loginForm.valid) {
+    if (this.loginForm().valid) {
       this.loading.set(true); //activamos el loading...
-      this.loginForm.disable();
+      this.loginForm().disable();
 
-      const { usuario, password } = this.loginForm.getRawValue();
+      const { usuario, password } = this.loginForm().getRawValue();
 
       this.authService
         .autenticar({ usuario, password })
@@ -63,8 +65,8 @@ export class LoginComponent {
           },
           error: (error) => {
             this.toastMessage.showError(error.message); // Mostrar mensaje en el toast
-            this.loginForm.reset();
-            this.loginForm.enable();
+            this.loginForm().reset();
+            this.loginForm().enable();
             this.loading.set(false);
           },
         });

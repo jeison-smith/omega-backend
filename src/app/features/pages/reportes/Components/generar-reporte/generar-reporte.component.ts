@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, NgZone, OnInit, signal } from '@angular/core';
+import { ChangeDetectorRef, Component, NgZone, OnInit, WritableSignal, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { saveAs } from 'file-saver';
@@ -22,7 +22,7 @@ import { ToastService } from '../../../../../Core/Service/Toast/toast.service';
 })
 export class GenerarReporteComponent implements OnInit {
   listaPlantilla: { id: number; nombre: string }[] = [];
-  crearExcelPlantillaForm!: FormGroup;
+  crearExcelPlantillaForm!: WritableSignal<FormGroup>;
   loading = signal(false);
 
   constructor(
@@ -31,16 +31,18 @@ export class GenerarReporteComponent implements OnInit {
     private plantillaService: PlantillaService,
     private toastMessage: ToastService,
     private ref: ChangeDetectorRef
-  ) {}
+  ) {
+    this.crearExcelPlantillaForm = signal(
+      this.fb.group({
+        idPlantilla: ['', Validators.required],
+        fechaInicio: ['', Validators.required],
+        fechaFin: ['', Validators.required],
+        estado: ['', Validators.required],
+      })
+    );
+  }
 
   ngOnInit(): void {
-    this.crearExcelPlantillaForm = this.fb.group({
-      idPlantilla: ['', Validators.required],
-      fechaInicio: ['', Validators.required],
-      fechaFin: ['', Validators.required],
-      estado: ['', Validators.required],
-    });
-
     this.obtenerPlantillas();
   }
 
@@ -70,10 +72,10 @@ export class GenerarReporteComponent implements OnInit {
     this.ref.detectChanges();
     this.gestionService
       .exportarExcel(
-        this.crearExcelPlantillaForm.get('idPlantilla')?.value,
-        this.crearExcelPlantillaForm.get('fechaInicio')?.value,
-        this.crearExcelPlantillaForm.get('fechaFin')?.value,
-        this.crearExcelPlantillaForm.get('estado')?.value
+        this.crearExcelPlantillaForm().get('idPlantilla')?.value,
+        this.crearExcelPlantillaForm().get('fechaInicio')?.value,
+        this.crearExcelPlantillaForm().get('fechaFin')?.value,
+        this.crearExcelPlantillaForm().get('estado')?.value
       )
       .subscribe(
         (response: Blob) => {
@@ -83,7 +85,7 @@ export class GenerarReporteComponent implements OnInit {
             this.ref.detectChanges();
             saveAs(
               response,
-              this.nombreReporte(this.crearExcelPlantillaForm.get('idPlantilla')?.value)
+              this.nombreReporte(this.crearExcelPlantillaForm().get('idPlantilla')?.value)
             );
           }, 1500);
         },

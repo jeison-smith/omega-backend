@@ -1,6 +1,6 @@
 <!-- Modal Editar Usuario -->
 <p-dialog header="Editar usuario" [modal]="true" [(visible)]="visible" [style]="{ width: '40rem' }" (onHide)="cerrarModal()">
-    <form [formGroup]="crearUsuarioForm" (ngSubmit)="editarUsuario()">
+    <form [formGroup]="crearUsuarioForm()" (ngSubmit)="editarUsuario()">
         <div class="formgrid grid">
             <div class="field col-6">
                 <label for="documento" class="label-subtext">ID del usuario</label>
@@ -67,7 +67,7 @@
         </div>
         <div class="flex justify-content-end gap-2 mt-5">
             <button type="button" class="btn-outline-blue1" (click)="cerrarModal()">Cancelar</button>
-            <button [disabled]="!crearUsuarioForm.valid" type="submit" class="btn-primary">
+            <button [disabled]="!crearUsuarioForm().valid" type="submit" class="btn-primary">
                 @if (loading()) {
                   <div class="spinner"></div> 
                 }
@@ -77,3 +77,4 @@
     
     
 </p-dialog>
+

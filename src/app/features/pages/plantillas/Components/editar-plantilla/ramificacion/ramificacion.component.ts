@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, Input, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnInit, ViewChild, WritableSignal, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, ChildActivationStart, Router, RouterModule } from '@angular/router';
@@ -16,7 +16,7 @@ import { ToastService } from '../../../../../../Core/Service/Toast/toast.service
 export class RamificacionComponent implements OnInit {
   @ViewChild(EditarCamposPlantillaComponent) editarCamposPlantilla!: EditarCamposPlantillaComponent;
 
-  camposForm!: FormGroup;
+  camposForm!: WritableSignal<FormGroup>;
   pregunta: string = 'Pregunta';
   opcion: string = 'Opcion';
   id: number = 0;
@@ -30,15 +30,23 @@ export class RamificacionComponent implements OnInit {
     private fb: FormBuilder,
     private cdf: ChangeDetectorRef,
     private router: Router
-  ) {}
+  ) {
+    this.camposForm = signal(
+      this.fb.group({
+        campos: this.fb.array([]),
+      })
+    );
+  }
 
   ngOnInit() {
     this.route.paramMap.subscribe((params) => {
       var idOpcionCampo = params.get('id')!;
 
-      this.camposForm = this.fb.group({
-        campos: this.fb.array([]),
-      });
+      this.camposForm.set(
+        this.fb.group({
+          campos: this.fb.array([]),
+        })
+      );
 
       try {
         var navegacion = this.preguntaService.navegar(Number(idOpcionCampo));
@@ -63,7 +71,7 @@ export class RamificacionComponent implements OnInit {
   }
 
   goBack() {
-    if (this.camposForm.valid) {
+    if (this.camposForm().valid) {
       this.guardarRamificacion();
       this.location.back();
     } else {
@@ -72,7 +80,7 @@ export class RamificacionComponent implements OnInit {
   }
 
   guardarRamificacion() {
-    const camposDelFormulario = this.camposForm.get('campos')?.value;
+    const camposDelFormulario = this.camposForm().get('campos')?.value;
 
     const camposMapeados = camposDelFormulario.map((campo: any, index: number) => ({
       id: campo.id,
@@ -152,7 +160,7 @@ export class RamificacionComponent implements OnInit {
   }
 
   get camposArray(): FormArray {
-    return this.camposForm.get('campos') as FormArray;
+    return this.camposForm().get('campos') as FormArray;
   }
 
   get opcionesArray(): FormArray {

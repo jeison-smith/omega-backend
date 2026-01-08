@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, signal } from '@angular/core';
+import { ChangeDetectorRef, Component, WritableSignal, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { RouterModule } from '@angular/router';
@@ -14,7 +14,7 @@ import { ToastService } from '../../../../../Core/Service/Toast/toast.service';
   templateUrl: './eliminar-gestion.component.html',
 })
 export class EliminarGestionComponent {
-  eliminarGestionForm!: FormGroup;
+  eliminarGestionForm!: WritableSignal<FormGroup>;
 
   visible: boolean = false;
   loading = signal(false);
@@ -26,17 +26,20 @@ export class EliminarGestionComponent {
     private router: Router,
     private toastMessage: ToastService,
     private ref: ChangeDetectorRef
-  ) {}
+  ) {
+    this.eliminarGestionForm = signal(
+      this.fb.group({
+        motivo: ['', Validators.required],
+      })
+    );
+  }
 
   ngOnInit(): void {
-    this.eliminarGestionForm = this.fb.group({
-      motivo: ['', Validators.required],
-    });
   }
 
   cancelar() {
     this.idGestion = -1;
-    this.eliminarGestionForm.reset();
+    this.eliminarGestionForm().reset();
     this.visible = false;
   }
 
@@ -50,7 +53,7 @@ export class EliminarGestionComponent {
     this.ref.detectChanges();
     const eliminarGestion = {
       idRespuestaPlantilla: this.idGestion,
-      motivo: this.eliminarGestionForm.get('motivo')?.value,
+      motivo: this.eliminarGestionForm().get('motivo')?.value,
     };
     this.gestionService
       .eliminarGestion(eliminarGestion)
