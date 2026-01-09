@@ -2,10 +2,12 @@ import { Component, Input, signal } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import 'primeicons/primeicons.css';
 import { Select } from 'primeng/select';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-header',
   imports: [ButtonModule, Select],
+  providers: [MessageService],
 
   template: `
     <header

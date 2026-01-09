@@ -8,11 +8,12 @@ import { ProyectoService } from '../../../../../Core/Service/Proyecto/proyecto.s
 import { ToastService } from '../../../../../Core/Service/Toast/toast.service';
 import { ModalService } from '../../../../../Core/Service/Modal/modal.service';
 import { PaginacionComponent } from '../../../../../shared/components/paginacion/paginacion.component';
+import { DatePipe, TitleCasePipe } from '@angular/common';
 
 @Component({
   selector: 'listar-proyecto',
   standalone: true,
-  imports: [RouterModule, PaginacionComponent],
+  imports: [RouterModule, PaginacionComponent, TitleCasePipe, DatePipe],
   templateUrl: './listar-proyecto.component.html',
 })
 export class ListarProyectoComponent {

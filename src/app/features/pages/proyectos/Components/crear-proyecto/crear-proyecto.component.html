@@ -11,12 +11,12 @@
 <!-- Modal crear proyecto -->
 <p-dialog header="Crear proyecto" [modal]="true" [(visible)]="visible" [style]="{ width: '40rem' }"
     (onHide)="cerrarModal()">
-    <form [formGroup]="crearProyectoForm" (ngSubmit)="crearProyecto()">
+    <form [formGroup]="crearProyectoForm()" (ngSubmit)="crearProyecto()">
         <div class="formgrid grid">
             <div class="field col">
                 <label for="nombreProyecto" class="label-text">Nombre del proyecto*</label>
                 <input id="nombreProyecto" formControlName="nombre"
-                    (input)="validarProyectoDuplicado(crearProyectoForm.get('nombre')?.value)" type="text"
+                    (input)="validarProyectoDuplicado(crearProyectoForm().get('nombre')?.value)" type="text"
                     class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round-xl appearance-none outline-none focus:border-primary w-full"
                     [ngClass]="{'border-red-500': errorMessage(), 'focus:border-red-500':errorMessage()}">
                 @if (errorMessage()) {
@@ -36,7 +36,7 @@
         <div class="flex justify-content-end gap-2 mt-5">
             <button type="button" class="btn-outline-purple1" (click)="cerrarModal()">Cancelar</button>
 
-            <button [disabled]="!crearProyectoForm.valid || errorMessage() !== ''" type="submit" class="btn-primary">
+            <button [disabled]="!crearProyectoForm().valid || errorMessage() !== ''" type="submit" class="btn-primary">
                 @if (loading()) {
                   <div class="spinner-black"></div>
                 }

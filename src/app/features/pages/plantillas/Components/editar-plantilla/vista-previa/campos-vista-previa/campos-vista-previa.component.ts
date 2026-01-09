@@ -20,12 +20,13 @@ import {
 } from '@angular/forms';
 
 import { Toast } from 'primeng/toast';
+import { ObligatorioGestionComponent } from '../obligatorio-gestion/obligatorio-gestion.component';
 
 @Component({
   selector: 'campos-vista-previa',
   standalone: true,
-  imports: [ReactiveFormsModule],
-  templateUrl: './campos-vista-previa.component.html',
+  imports: [ReactiveFormsModule, ObligatorioGestionComponent],
+  templateUrl: 'campos-vista-previa.component.html',
 })
 export class CamposVistaPreviaComponent {
   @Input() campo!: FormGroup;

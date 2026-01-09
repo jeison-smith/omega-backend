@@ -5,6 +5,8 @@ import {
   Input,
   Output,
   SimpleChanges,
+  WritableSignal,
+  signal,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormArray, FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
@@ -34,7 +36,7 @@ import { ToastService } from '../../../../../../Core/Service/Toast/toast.service
 })
 export class EditarCamposPlantillaComponent {
   menuVisible: boolean = false;
-  camposForm: FormGroup;
+  camposForm: WritableSignal<FormGroup>;
   campos: any[] = [];
   @Input() camposs!: FormArray;
   @Input() esRamificacion = false;
@@ -47,15 +49,19 @@ export class EditarCamposPlantillaComponent {
     private cdf: ChangeDetectorRef,
     private toastService: ToastService
   ) {
-    this.camposForm = this.fb.group({
-      campos: this.fb.array([]),
-    });
+    this.camposForm = signal(
+      this.fb.group({
+        campos: this.fb.array([]),
+      })
+    );
   }
 
   ngOnInit() {
-    this.camposForm = this.fb.group({
-      campos: this.camposs,
-    });
+    this.camposForm.set(
+      this.fb.group({
+        campos: this.camposs,
+      })
+    );
 
     this.menuVisible = false;
   }

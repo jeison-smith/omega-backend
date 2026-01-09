@@ -28,10 +28,10 @@ const menuItems = [
             <span class="text-white font-bold text-sm">A</span>
           </div>
           @if (!collapsed()) {
-            <div class="animate-fade-in">
-              <h1 class="font-bold text-sidebar-foreground text-lg leading-tight">atlantic</h1>
-              <p class="text-[10px] text-sidebar-muted leading-none">Quantum Innovations</p>
-            </div>
+          <div class="animate-fade-in">
+            <h1 class="font-bold text-sidebar-foreground text-lg leading-tight">atlantic</h1>
+            <p class="text-[10px] text-sidebar-muted leading-none">Quantum Innovations</p>
+          </div>
           }
         </div>
       </div>
@@ -39,7 +39,7 @@ const menuItems = [
       <nav class="flex-1 py-4 px-2 overflow-y-auto">
         <ul class="space-y-1">
           @for (item of menuItems; track item.url) {
-            <li>
+          <li>
             <a
               [routerLink]="item.url"
               routerLinkActive="bg-primary text-primary-foreground shadow-md"
@@ -52,7 +52,7 @@ const menuItems = [
             >
               <i [class]="'pi pi-' + item.icon + ' w-5 h-5 flex-shrink-0'"></i>
               @if (!collapsed()) {
-                <span class="font-medium text-sm animate-fade-in">{{ item.title }}</span>
+              <span class="font-medium text-sm animate-fade-in">{{ item.title }}</span>
               }
             </a>
           </li>
@@ -70,7 +70,7 @@ const menuItems = [
             [class]="'pi ' + (collapsed() ? 'pi-chevron-right' : 'pi-chevron-left') + ' w-5 h-5'"
           ></i>
           @if (!collapsed()) {
-            <span class="text-sm">Colapsar</span>
+          <span class="text-sm">Colapsar</span>
           }
         </button>
       </div>
@@ -87,6 +87,6 @@ export class AppSidebarComponent {
   }
 
   isActive(url: string) {
-    return this.router.url === url || (url === '/proyectos' && this.router.url === '/');
+    return this.router.url === url;
   }
 }

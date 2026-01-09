@@ -16,11 +16,21 @@ import {
   ValidationErrors,
   ValidatorFn,
   Validators,
+  ReactiveFormsModule,
 } from '@angular/forms';
 import { Toast } from 'primeng/toast';
+import { ObligatorioGestionComponent } from '../obligatorio-gestion/obligatorio-gestion.component';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'preguntas-gestion',
+  standalone: true,
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    ObligatorioGestionComponent,
+    PreguntasGestionComponent,
+  ],
   templateUrl: './preguntas-gestion.component.html',
 })
 export class PreguntasGestionComponent {

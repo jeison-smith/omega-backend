@@ -7,6 +7,8 @@ import {
   QueryList,
   ViewChild,
   ViewChildren,
+  WritableSignal,
+  signal,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { EditarCamposPlantillaComponent } from '../editar-campos-plantilla/editar-campos-plantilla.component';
@@ -26,8 +28,8 @@ export class EditarSeccionesPlantillaComponent {
   @ViewChildren(EditarCamposPlantillaComponent)
   editarCamposPlantilla!: QueryList<EditarCamposPlantillaComponent>;
 
-  seccionesForm: FormGroup;
-  camposForm: FormGroup;
+  seccionesForm: WritableSignal<FormGroup>;
+  camposForm: WritableSignal<FormGroup>;
   seccionColapsada: boolean[] = [];
   @Input() campos$: Observable<any[]> = new Observable();
   @Output() actualizarCampos = new EventEmitter<void>();
@@ -38,16 +40,20 @@ export class EditarSeccionesPlantillaComponent {
     private cdf: ChangeDetectorRef,
     private toastService: ToastService
   ) {
-    this.seccionesForm = this.fb.group({
-      campos: this.fb.array([]),
-    });
-    this.camposForm = this.fb.group({
-      campos: this.fb.array([]),
-    });
+    this.seccionesForm = signal(
+      this.fb.group({
+        campos: this.fb.array([]),
+      })
+    );
+    this.camposForm = signal(
+      this.fb.group({
+        campos: this.fb.array([]),
+      })
+    );
   }
 
   get seccionesArray(): FormArray {
-    return this.seccionesForm.get('campos') as FormArray;
+    return this.seccionesForm().get('campos') as FormArray;
   }
 
   getCamposArray(i: number): FormArray {
@@ -115,3 +121,4 @@ export class EditarSeccionesPlantillaComponent {
     this.seccionColapsada[index] = !this.seccionColapsada[index];
   }
 }
+

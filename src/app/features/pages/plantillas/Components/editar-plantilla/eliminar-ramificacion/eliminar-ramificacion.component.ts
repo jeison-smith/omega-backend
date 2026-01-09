@@ -3,12 +3,13 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Dialog } from 'primeng/dialog';
 
 @Component({
   selector: 'eliminar-ramificacion',
   standalone: true,
-  imports: [CommonModule, RouterModule],
-  templateUrl: './eliminar-ramificacion.component.html',
+  imports: [CommonModule, RouterModule, Dialog],
+  templateUrl: 'eliminar-ramificacion.component.html',
 })
 export class EliminarRamificacionComponent {
   @Output() eliminarRamificacion = new EventEmitter<void>();

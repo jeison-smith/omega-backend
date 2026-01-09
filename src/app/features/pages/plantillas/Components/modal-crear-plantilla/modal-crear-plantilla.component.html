@@ -1,10 +1,10 @@
 <!-- Modal crear plantilla -->
 <p-dialog header="Crear plantilla" [modal]="true" [(visible)]="visible" [style]="{ width: '40rem' }" (onHide)="cerrarModal()">
-    <form [formGroup]="crearPlantillaForm" (ngSubmit)="crearPlantilla()">
+    <form [formGroup]="crearPlantillaForm()" (ngSubmit)="crearPlantilla()">
         <div class="formgrid grid">
             <div class="field col">
                 <label for="nombre" class="label-text">Nombre de la plantilla*</label>
-                <input id="nombre" type="text" formControlName="nombre" (input)="validarPlantillaDuplicada(crearPlantillaForm.get('nombre')?.value)" class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round-xl appearance-none outline-none focus:border-primary w-full" [ngClass]="{'border-red-500': errorMessage(), 'focus:border-red-500':errorMessage()}">
+                <input id="nombre" type="text" formControlName="nombre" (input)="validarPlantillaDuplicada(crearPlantillaForm().get('nombre')?.value)" class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round-xl appearance-none outline-none focus:border-primary w-full" [ngClass]="{'border-red-500': errorMessage(), 'focus:border-red-500':errorMessage()}">
                 @if (errorMessage()) {
                   <p class="mt-2 text-xs text-red-600">{{ errorMessage() }}</p>
                 }
@@ -37,7 +37,7 @@
         </div>
         <div class="flex justify-content-end gap-2 mt-5">
             <button type="button" class="btn-outline-purple1" (click)="cerrarModal()">Cancelar</button>
-            <button [disabled]="!crearPlantillaForm.valid || errorMessage() !== ''"  type="submit" class="btn-primary">
+            <button [disabled]="!crearPlantillaForm().valid || errorMessage() !== ''"  type="submit" class="btn-primary">
                 @if (loading()) {
                   <div class="spinner-black"></div> 
                 }

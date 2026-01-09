@@ -1,4 +1,11 @@
-import { ActivatedRouteSnapshot, CanActivate, Route, Router, RouterStateSnapshot, UrlSegment } from '@angular/router';
+import {
+  ActivatedRouteSnapshot,
+  CanActivate,
+  Route,
+  Router,
+  RouterStateSnapshot,
+  UrlSegment,
+} from '@angular/router';
 import { Injectable } from '@angular/core';
 import { AuthService } from '../Service/Auth/auth.service';
 import { map, Observable, of, switchMap, take, tap } from 'rxjs';
@@ -6,24 +13,20 @@ import { map, Observable, of, switchMap, take, tap } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
-
 export class publicGuard implements CanActivate {
   constructor(private authService: AuthService, private router: Router) {
-   // console.log('PublicGuard: Constructor initialized');
+    // console.log('PublicGuard: Constructor initialized');
   }
 
-
   private isAuthenticated(): Observable<boolean> {
-
-
-    return this.authService.userInfo$.pipe(
+    return this.authService.userInfo.pipe(
       switchMap((user) => {
         if (user) {
           const role = user.rol?.toLowerCase();
           if (role === 'administrativo') {
-            this.router.navigate(['/home/usuarios']);
+            this.router.navigate(['/usuarios']);
           } else if (role === 'operativo') {
-            this.router.navigate(['/home/gestion']);
+            this.router.navigate(['/gestion']);
           }
           return of(false); // Impide la navegación a rutas públicas si está autenticado
         }
@@ -41,10 +44,7 @@ export class publicGuard implements CanActivate {
   }
 
   // Implementación de canMatch
-  canMatch(
-    route: Route,
-    segments: UrlSegment[]
-  ): Observable<boolean> | Promise<boolean> | boolean {
+  canMatch(route: Route, segments: UrlSegment[]): Observable<boolean> | Promise<boolean> | boolean {
     return this.isAuthenticated();
   }
 }

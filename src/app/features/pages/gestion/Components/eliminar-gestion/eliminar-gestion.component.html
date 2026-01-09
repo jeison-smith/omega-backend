@@ -3,7 +3,7 @@
     <p>Esta acción eliminará permanentemente toda su información relacionada y no se podrá deshacer.</p>
     </div>
     <div>
-        <form [formGroup]="eliminarGestionForm">
+        <form [formGroup]="eliminarGestionForm()">
         <label for="motivo" class="label-subtext">Motivo de la eliminación*</label>
         <textarea id="motivo" formControlName="motivo" placeholder="Indique la razón por la cual está eliminando este registro"
         class="textarea-reasoning"></textarea>
@@ -11,7 +11,7 @@
     </div>
     <div class="flex justify-content-end gap-2 mt-5">
         <button type="button" class="btn-outline-blue1" (click)="cancelar()">Cancelar</button>
-        <button [disabled]="loading() || !this.eliminarGestionForm.valid" type="submit" class="btn-danger" (click)="eliminarGestion()">
+        <button [disabled]="loading() || !eliminarGestionForm().valid" type="submit" class="btn-danger" (click)="eliminarGestion()">
             @if (loading()) {
               <div class="spinner"></div> 
             }

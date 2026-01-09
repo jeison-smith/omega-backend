@@ -1,7 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, WritableSignal, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Restriccion } from '../../../../../../Core/Interfaces/Plantilla/restriccion';
+import { Restriccion } from '../../../../../../../../Core/Interfaces/Plantilla/restriccion';
 
 @Component({
   selector: 'restriccion',
@@ -23,19 +23,21 @@ export class RestriccionComponent implements OnInit {
     { Id: 8, IdTipoRestriccion: 1, Descripcion: 'diferente de', Campos: 1 },
   ];
 
-  restriccionForm!: FormGroup;
+  restriccionForm!: WritableSignal<FormGroup>;
   BaseId: number = 0;
   estadoRestriccion: boolean = true;
   camposDisponibles: number = 0;
   listaRestricciones: any[] = [];
 
   constructor(private fb: FormBuilder) {
-    this.restriccionForm = this.fb.group({
-      tipoRestriccion: [0],
-      idRestriccion: [0],
-      campo1: [''],
-      campo2: [''],
-    });
+    this.restriccionForm = signal(
+      this.fb.group({
+        tipoRestriccion: [0],
+        idRestriccion: [0],
+        campo1: [''],
+        campo2: [''],
+      })
+    );
   }
 
   ngOnInit(): void {
@@ -47,13 +49,13 @@ export class RestriccionComponent implements OnInit {
         this.restricciones.find((rest) => rest.Id == restriccionId.idRestriccion) || null;
 
       if (restriccionInfo) {
-        this.restriccionForm.patchValue({
+        this.restriccionForm().patchValue({
           tipoRestriccion: restriccionInfo.IdTipoRestriccion ?? 0,
         });
 
         this.listaRestricciones = this.listarRestricciones();
 
-        this.restriccionForm.patchValue({
+        this.restriccionForm().patchValue({
           idRestriccion: restriccionInfo.Id ?? 0,
         });
 
@@ -71,13 +73,13 @@ export class RestriccionComponent implements OnInit {
     return [
       { Id: 0, IdTipoRestriccion: 0, Descripcion: 'Selecciona', Campos: 0 },
       ...this.restricciones.filter(
-        (r) => r.IdTipoRestriccion == this.restriccionForm.get('tipoRestriccion')?.value
+        (r) => r.IdTipoRestriccion == this.restriccionForm().get('tipoRestriccion')?.value
       ),
     ];
   }
 
   activarCampos(): void {
-    var campos = this.restriccionForm.get('idRestriccion')?.value;
+    var campos = this.restriccionForm().get('idRestriccion')?.value;
     var campo = this.restricciones.find((rest) => rest.Id === Number(campos));
 
     if (campo) {
@@ -88,7 +90,7 @@ export class RestriccionComponent implements OnInit {
   }
 
   llenarCampos(restriccion: any) {
-    this.restriccionForm.patchValue({
+    this.restriccionForm().patchValue({
       campo1: restriccion.campo1,
       campo2: restriccion.campo2,
     });
@@ -113,8 +115,8 @@ export class RestriccionComponent implements OnInit {
 
     if (restriccionControl) {
       // Obtener los valores de campo1 y campo2
-      var campo1 = this.restriccionForm.get('campo1')?.value;
-      var campo2 = this.restriccionForm.get('campo2')?.value;
+      var campo1 = this.restriccionForm().get('campo1')?.value;
+      var campo2 = this.restriccionForm().get('campo2')?.value;
 
       // Solo ordenamos cuando BaseId es 6
       if (this.BaseId == 6) {
@@ -129,7 +131,7 @@ if ((this.BaseId !== 1 && campo1 === '') || (this.BaseId === 6 && (campo1 === ''
 */
       restriccionControl.patchValue({
         id: this.BaseId,
-        idRestriccion: parseInt(this.restriccionForm.get('idRestriccion')?.value),
+        idRestriccion: parseInt(this.restriccionForm().get('idRestriccion')?.value),
         campo1: campo1?.toString() || '',
         campo2: campo2?.toString() || '',
         estado: this.estadoRestriccion,

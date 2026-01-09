@@ -1,5 +1,6 @@
-import { ChangeDetectorRef, Component, signal } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ChangeDetectorRef, Component, WritableSignal, signal } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { Router } from '@angular/router';
 import { take } from 'rxjs';
@@ -10,11 +11,12 @@ import { PlantillaService } from '../../../../../Core/Service/Plantilla/plantill
 import { CategoriaService } from '../../../../../Core/Service/categoria/categoria.service';
 import { ModalService } from '../../../../../Core/Service/Modal/modal.service';
 import { ToastService } from '../../../../../Core/Service/Toast/toast.service';
+import { Dialog } from 'primeng/dialog';
 
 @Component({
   selector: 'modal-crear-plantilla',
   standalone: true,
-  imports: [],
+  imports: [CommonModule, ReactiveFormsModule, Dialog],
   templateUrl: './modal-crear-plantilla.component.html',
 })
 export class ModalCrearPlantillaComponent {
@@ -25,7 +27,7 @@ export class ModalCrearPlantillaComponent {
   listaProyectos: ProyectoDisponible[] = [];
   listaCategorias: any[] = [];
 
-  crearPlantillaForm!: FormGroup;
+  crearPlantillaForm!: WritableSignal<FormGroup>;
   creaPlantilla!: CrearPlantilla;
 
   constructor(
@@ -37,14 +39,23 @@ export class ModalCrearPlantillaComponent {
     private router: Router,
     private toastMessage: ToastService,
     private cdRef: ChangeDetectorRef
-  ) {}
+  ) {
+    this.crearPlantillaForm = signal(
+      this.fb.group({
+        nombre: ['', Validators.required],
+        idProyecto: ['', Validators.required],
+      })
+    );
+  }
 
   ngOnInit() {
-    this.crearPlantillaForm = this.fb.group({
-      nombre: ['', Validators.required],
-      idProyecto: ['', Validators.required],
-      //idCategoria: ['', Validators.required]
-    });
+    this.crearPlantillaForm.set(
+      this.fb.group({
+        nombre: ['', Validators.required],
+        idProyecto: ['', Validators.required],
+        //idCategoria: ['', Validators.required]
+      })
+    );
 
     //escuchar servicio de abrir el modal
     this.modalService.modalEvent$.subscribe((isVisible) => {
@@ -58,11 +69,13 @@ export class ModalCrearPlantillaComponent {
     this.listarCategorias();
 
     // Inicializar formulario
-    this.crearPlantillaForm = this.fb.group({
-      nombre: ['', Validators.required],
-      idProyecto: ['', Validators.required],
-      idCategoria: ['', Validators.required], // <-- Nuevo campo obligatorio
-    });
+    this.crearPlantillaForm.set(
+      this.fb.group({
+        nombre: ['', Validators.required],
+        idProyecto: ['', Validators.required],
+        idCategoria: ['', Validators.required], // <-- Nuevo campo obligatorio
+      })
+    );
 
     this.modalService.modalEvent$.subscribe((isVisible) => {
       this.visible = isVisible;
@@ -115,8 +128,8 @@ export class ModalCrearPlantillaComponent {
   // Crear plantilla
   crearPlantilla() {
     this.loading.set(true);
-    this.creaPlantilla = this.crearPlantillaForm.value;
-    this.crearPlantillaForm.disable();
+    this.creaPlantilla = this.crearPlantillaForm().value;
+    this.crearPlantillaForm().disable();
     var suscripcion = this.plantillaService
       .crearPlantilla(this.creaPlantilla)
       .pipe(take(1))
@@ -133,7 +146,7 @@ export class ModalCrearPlantillaComponent {
         },
         error: (error) => {
           this.loading.set(false);
-          this.crearPlantillaForm.enable();
+          this.crearPlantillaForm().enable();
           this.toastMessage.showError(error);
         },
       });
@@ -156,7 +169,7 @@ export class ModalCrearPlantillaComponent {
   cerrarModal(): void {
     this.visible = false;
     this.errorMessage.set('');
-    this.crearPlantillaForm.reset();
+    this.crearPlantillaForm().reset();
   }
 
   showDialog(): void {

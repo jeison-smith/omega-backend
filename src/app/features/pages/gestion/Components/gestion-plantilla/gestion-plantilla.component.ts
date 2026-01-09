@@ -6,8 +6,10 @@ import {
   QueryList,
   ViewChild,
   ViewChildren,
+  WritableSignal,
+  signal,
 } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import {
   AbstractControl,
   FormArray,
@@ -17,7 +19,10 @@ import {
   ValidationErrors,
   ValidatorFn,
   Validators,
+  ReactiveFormsModule,
+  FormsModule,
 } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 import { take } from 'rxjs';
 import { Plantilla } from '../../../../../Core/Interfaces/Plantilla/plantilla';
@@ -26,13 +31,24 @@ import { RespuestaCampo } from '../../../../../Core/Interfaces/Gestion/respuesta
 import { ToastService } from '../../../../../Core/Service/Toast/toast.service';
 import { PlantillaService } from '../../../../../Core/Service/Plantilla/plantilla.service';
 import { GestionService } from '../../../../../Core/Service/Gestion/gestion.service';
+import { DialogModule } from 'primeng/dialog';
+import { PreguntasGestionComponent } from './view-preguntas/preguntas-gestion/preguntas-gestion.component';
 
 @Component({
   selector: 'gestion-plantilla',
+  standalone: true,
+  imports: [
+    ReactiveFormsModule,
+    CommonModule,
+    RouterModule,
+    DialogModule,
+    PreguntasGestionComponent,
+    FormsModule,
+  ],
   templateUrl: './gestion-plantilla.component.html',
 })
 export class GestionPlantillaComponent {
-  plantillaForm!: FormGroup;
+  plantillaForm!: WritableSignal<FormGroup>;
   plantilla!: Plantilla;
   guardarGestionPlantilla!: GestionPlantilla;
   respuestaPlantilla!: RespuestaCampo[];
@@ -57,15 +73,16 @@ export class GestionPlantillaComponent {
     private route: ActivatedRoute,
     private cdRef: ChangeDetectorRef
   ) {
+    this.plantillaForm = signal(
+      this.fb.group({
+        secciones: this.fb.array([]),
+        resumen: [''],
+      })
+    );
     this.loading = false;
   }
 
-  ngOnInit() {
-    this.plantillaForm = this.fb.group({
-      secciones: this.fb.array([]),
-      resumen: [''],
-    });
-  }
+  ngOnInit() {}
 
   ngAfterViewInit() {
     const idPlantilla = this.route.snapshot.paramMap.get('id');
@@ -79,7 +96,7 @@ export class GestionPlantillaComponent {
   }
 
   // get camposArray(): FormArray {
-  //   return this.plantillaForm.get('campos') as FormArray;
+  //   return this.plantillaForm().get('campos') as FormArray;
   // }
 
   get todosLosCampos(): AbstractControl[] {
@@ -120,7 +137,7 @@ export class GestionPlantillaComponent {
   }
 
   get seccionesArray(): FormArray {
-    return this.plantillaForm.get('secciones') as FormArray;
+    return this.plantillaForm().get('secciones') as FormArray;
   }
 
   castToFormGroup(control: AbstractControl): FormGroup {
@@ -373,7 +390,7 @@ export class GestionPlantillaComponent {
     this.loading = true;
     this.cdRef.detectChanges();
 
-    if (this.plantillaForm.valid) {
+    if (this.plantillaForm().valid) {
       this.respuestaPlantilla = this.respuestaRecursiva(this.todosLosCampos);
       console.log('Respuestas recopiladas:', this.respuestaPlantilla);
 
@@ -567,9 +584,9 @@ export class GestionPlantillaComponent {
   }
 
   resumen() {
-    // const qFlowID = this.plantillaForm.get('qFlowID')?.value;
-    // const observacion = this.plantillaForm.get('observacion')?.value;
-    // const estado = this.plantillaForm.get('estado')?.value ? 'Abierto' : 'Cerrado';
+    // const qFlowID = this.plantillaForm().get('qFlowID')?.value;
+    // const observacion = this.plantillaForm().get('observacion')?.value;
+    // const estado = this.plantillaForm().get('estado')?.value ? 'Abierto' : 'Cerrado';
 
     const respuestas = this.respuestaRecursivaConOpciones(this.todosLosCamposFlat);
 
@@ -594,14 +611,14 @@ export class GestionPlantillaComponent {
     }
 
     this.mostrarResumen = true;
-    this.plantillaForm.get('resumen')?.setValue(resumen);
+    this.plantillaForm().get('resumen')?.setValue(resumen);
 
     // Auto-copy to clipboard as per requirement
     this.copiarResumen();
   }
 
   copiarResumen() {
-    const resumenControl = this.plantillaForm.get('resumen');
+    const resumenControl = this.plantillaForm().get('resumen');
     if (resumenControl) {
       const resumenText = resumenControl.value;
       navigator.clipboard

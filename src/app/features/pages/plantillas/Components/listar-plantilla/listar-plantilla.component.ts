@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { CommonModule, DatePipe, TitleCasePipe } from '@angular/common';
+import { RouterLink, RouterModule } from '@angular/router';
 
 import { MenuItem } from 'primeng/api';
 import { Router } from '@angular/router';
@@ -14,8 +14,8 @@ import { PaginacionComponent } from '../../../../../shared/components/paginacion
 @Component({
   selector: 'listar-plantilla',
   standalone: true,
-  imports: [ReactiveFormsModule, PaginacionComponent],
-  templateUrl: './listar-plantilla.component.html',
+  imports: [ReactiveFormsModule, PaginacionComponent, TitleCasePipe, DatePipe, RouterLink],
+  templateUrl: 'listar-plantilla.component.html',
 })
 export class ListarPlantillaComponent {
   listaPlantillas: Plantilla[] = [];

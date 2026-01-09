@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, signal } from '@angular/core';
+import { ChangeDetectorRef, Component, WritableSignal, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { RouterModule } from '@angular/router';
@@ -6,19 +6,19 @@ import { Router } from '@angular/router';
 import { take } from 'rxjs';
 import { GestionService } from '../../../../../Core/Service/Gestion/gestion.service';
 import { ToastService } from '../../../../../Core/Service/Toast/toast.service';
+import { DialogModule } from 'primeng/dialog';
 
 @Component({
   selector: 'eliminar-gestion',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule, DialogModule],
   templateUrl: './eliminar-gestion.component.html',
 })
 export class EliminarGestionComponent {
-  eliminarGestionForm!: FormGroup;
-
+  eliminarGestionForm!: WritableSignal<FormGroup>;
+  idGestion: number = -1;
   visible: boolean = false;
   loading = signal(false);
-  idGestion: number = -1;
 
   constructor(
     private fb: FormBuilder,
@@ -26,17 +26,19 @@ export class EliminarGestionComponent {
     private router: Router,
     private toastMessage: ToastService,
     private ref: ChangeDetectorRef
-  ) {}
-
-  ngOnInit(): void {
-    this.eliminarGestionForm = this.fb.group({
-      motivo: ['', Validators.required],
-    });
+  ) {
+    this.eliminarGestionForm = signal(
+      this.fb.group({
+        motivo: ['', Validators.required],
+      })
+    );
   }
+
+  ngOnInit(): void {}
 
   cancelar() {
     this.idGestion = -1;
-    this.eliminarGestionForm.reset();
+    this.eliminarGestionForm().reset();
     this.visible = false;
   }
 
@@ -50,7 +52,7 @@ export class EliminarGestionComponent {
     this.ref.detectChanges();
     const eliminarGestion = {
       idRespuestaPlantilla: this.idGestion,
-      motivo: this.eliminarGestionForm.get('motivo')?.value,
+      motivo: this.eliminarGestionForm().get('motivo')?.value,
     };
     this.gestionService
       .eliminarGestion(eliminarGestion)

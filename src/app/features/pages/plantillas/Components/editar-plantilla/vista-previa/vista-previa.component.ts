@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectorRef, Component, WritableSignal, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   AbstractControl,
@@ -22,15 +22,16 @@ import { ToastService } from '../../../../../../Core/Service/Toast/toast.service
 import { PlantillaService } from '../../../../../../Core/Service/Plantilla/plantilla.service';
 import { GestionService } from '../../../../../../Core/Service/Gestion/gestion.service';
 import { PreguntaService } from '../../../../../../Core/Service/Preguntas/pregunta.service';
+import { CamposVistaPreviaComponent } from './campos-vista-previa/campos-vista-previa.component';
 
 @Component({
   selector: 'vista-previa',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterModule],
-  templateUrl: './vista-previa.component.html',
+  imports: [CommonModule, ReactiveFormsModule, RouterModule, CamposVistaPreviaComponent],
+  templateUrl: 'vista-previa.component.html',
 })
 export class VistaPreviaComponent {
-  plantillaForm!: FormGroup;
+  plantillaForm!: WritableSignal<FormGroup>;
   plantilla!: Plantilla;
   guardarGestionPlantilla!: GestionPlantilla;
   respuestaPlantilla!: RespuestaCampo[];
@@ -48,15 +49,15 @@ export class VistaPreviaComponent {
     private cdRef: ChangeDetectorRef,
     private location: Location
   ) {
+    this.plantillaForm = signal(
+      this.fb.group({
+        campos: this.fb.array([]),
+      })
+    );
     this.loading = false;
   }
 
-  ngOnInit() {
-    // Eliminamos qFlowID, observacion y estado
-    this.plantillaForm = this.fb.group({
-      campos: this.fb.array([]),
-    });
-  }
+  ngOnInit() {}
 
   ngAfterViewInit() {
     const idPlantilla = this.route.snapshot.paramMap.get('id')!;
@@ -66,7 +67,7 @@ export class VistaPreviaComponent {
   }
 
   get camposArray(): FormArray {
-    return this.plantillaForm.get('campos') as FormArray;
+    return this.plantillaForm().get('campos') as FormArray;
   }
 
   castToFormGroup(control: AbstractControl): FormGroup {
@@ -288,7 +289,7 @@ export class VistaPreviaComponent {
     this.cdRef.detectChanges();
 
     // opcional: validar manualmente controles inválidos
-    if (this.plantillaForm.invalid) {
+    if (this.plantillaForm().invalid) {
       this.toastMessage.showError('Por favor completa los campos requeridos.');
       this.loading = false;
       return;
