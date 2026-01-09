@@ -1,64 +1,63 @@
 <div class="flex justify-content-center mt-6">
-   <div class="col-10">
-      <div class="card-edit">
-         <div class="card-header">
-            <div class="card-back">
-               <span class="material-symbols m-1 mr-2" style="font-size: 30px;" (click)="goBack()">arrow_back</span>
-            </div>
-         </div>
-         <div class="card-body__gestion">
-            <div class="table-container__plantilla">
-               <table class="table-plantilla">
-                  <thead>
-                     <tr>
-                        <th>N° Plantilla</th>
-                        <th>{{plantilla?.proyecto}}</th>
-                        <th>Creador</th>
-                        <th>Fecha de creación</th>
-                        <th>Fecha de inicio</th>
-                     </tr>
-                  </thead>
-                  <tbody>
-                     <tr>
-                        <td>{{plantilla?.id}}</td>
-                        <td>{{plantilla?.nombrePlantilla}}</td>
-                        <td>{{plantilla?.nombreCreador | titlecase}}</td>
-                        <td>{{plantilla?.fechaCreacion | date:"dd/MM/yyyy"}}</td>
-                        <td>{{plantilla?.fechaModificacion| date:"dd/MM/yyyy"}}</td>
-                     </tr>
-                  </tbody>
-               </table>
-            </div>
-         </div>
+  <div class="col-10">
+    <div class="card-edit">
+      <div class="card-header">
+        <div class="card-back">
+          <span class="material-symbols m-1 mr-2" style="font-size: 30px" (click)="goBack()"
+            >arrow_back</span
+          >
+        </div>
       </div>
-   </div>
+      <div class="card-body__gestion">
+        <div class="table-container__plantilla">
+          <table class="table-plantilla">
+            <thead>
+              <tr>
+                <th>N° Plantilla</th>
+                <th>{{ plantilla?.proyecto }}</th>
+                <th>Creador</th>
+                <th>Fecha de creación</th>
+                <th>Fecha de inicio</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>{{ plantilla?.id }}</td>
+                <td>{{ plantilla?.nombrePlantilla }}</td>
+                <td>{{ plantilla?.nombreCreador | titlecase }}</td>
+                <td>{{ plantilla?.fechaCreacion | date : 'dd/MM/yyyy' }}</td>
+                <td>{{ plantilla?.fechaModificacion | date : 'dd/MM/yyyy' }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 <div class="flex justify-content-center">
-   <div class="col-10">
-      <div class="gestion-plantilla">
-         <form [formGroup]="plantillaForm()">
-
-
-            <div formArrayName="campos">
-               <div *ngFor="let campo of camposArray.controls; let i=index">
-                  <div [formGroupName]="i">
-                     <campos-vista-previa [campo]="castToFormGroup(campo)"
-                        [idVisualRamificado]="(i+1).toString()"></campos-vista-previa>
-                  </div>
-               </div>
+  <div class="col-10">
+    <div class="gestion-plantilla">
+      <form [formGroup]="plantillaForm()">
+        <div formArrayName="campos">
+          <div *ngFor="let campo of camposArray.controls; let i = index">
+            <div [formGroupName]="i">
+              <campos-vista-previa
+                [campo]="castToFormGroup(campo)"
+                [idVisualRamificado]="(i + 1).toString()"
+              ></campos-vista-previa>
             </div>
-
-
-         </form>
-      </div>
-   </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
 </div>
 <div class="flex justify-content-center mt-1 mb-2">
-   <div class="col-10">
-      <div class="card flex justify-content-end">
-         <button type="button" class="btn-outline-secondary mr-4" [disabled]="true">Cancelar</button>
-         <button class="btn-primary" type="button" [disabled]="true">
-            Guardar</button>
-      </div>
-   </div>
+  <div class="col-10">
+    <div class="card flex justify-content-end">
+      <button type="button" class="btn-outline-secondary mr-4" [disabled]="true">Cancelar</button>
+      <button class="btn-primary" type="button" [disabled]="true">Guardar</button>
+    </div>
+  </div>
 </div>

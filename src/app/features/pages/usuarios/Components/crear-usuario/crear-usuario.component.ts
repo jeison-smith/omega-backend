@@ -16,7 +16,7 @@ import { Dialog } from 'primeng/dialog';
   selector: 'crear-usuario',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, RouterModule, Dialog],
-  templateUrl: './crear-usuario.component.html',
+  templateUrl: 'crear-usuario.component.html',
 })
 export class CrearUsuarioComponent {
   crearUsuarioForm!: WritableSignal<FormGroup>;

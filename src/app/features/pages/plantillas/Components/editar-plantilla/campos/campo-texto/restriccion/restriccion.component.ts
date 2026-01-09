@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, WritableSignal, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Restriccion } from '../../../../../../Core/Interfaces/Plantilla/restriccion';
+import { Restriccion } from '../../../../../../../../Core/Interfaces/Plantilla/restriccion';
 
 @Component({
   selector: 'restriccion',

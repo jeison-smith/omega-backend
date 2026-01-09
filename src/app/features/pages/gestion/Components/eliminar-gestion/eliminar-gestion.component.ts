@@ -6,19 +6,19 @@ import { Router } from '@angular/router';
 import { take } from 'rxjs';
 import { GestionService } from '../../../../../Core/Service/Gestion/gestion.service';
 import { ToastService } from '../../../../../Core/Service/Toast/toast.service';
+import { DialogModule } from 'primeng/dialog';
 
 @Component({
   selector: 'eliminar-gestion',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule, DialogModule],
   templateUrl: './eliminar-gestion.component.html',
 })
 export class EliminarGestionComponent {
   eliminarGestionForm!: WritableSignal<FormGroup>;
-
+  idGestion: number = -1;
   visible: boolean = false;
   loading = signal(false);
-  idGestion: number = -1;
 
   constructor(
     private fb: FormBuilder,
@@ -34,8 +34,7 @@ export class EliminarGestionComponent {
     );
   }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   cancelar() {
     this.idGestion = -1;

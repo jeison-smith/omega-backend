@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { AppShellComponent } from './shared/layout/app-shell.component';
+import { falconGuard } from './Core/Guards/falcon.guard';
 
 export const routes: Routes = [
   {
@@ -10,8 +11,13 @@ export const routes: Routes = [
   {
     path: '',
     component: AppShellComponent,
+    canActivate: [falconGuard],
+    canMatch: [falconGuard],
     children: [
-      { path: '', pathMatch: 'full', redirectTo: 'proyectos' },
+      {
+        path: 'home',
+        redirectTo: 'proyectos',
+      },
       {
         path: 'proyectos',
         loadComponent: () =>

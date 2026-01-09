@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup } from '@angular/forms';
-import { Restriccion } from '../../../../../../Core/Interfaces/Plantilla/restriccion';
 import { RestriccionComponent } from './restriccion/restriccion.component';
 
 @Component({

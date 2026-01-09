@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 
 import { take } from 'rxjs';
 import { Plantilla } from '../../../../../Core/Interfaces/Plantilla/plantilla';
@@ -7,6 +9,8 @@ import { ToastService } from '../../../../../Core/Service/Toast/toast.service';
 
 @Component({
   selector: 'plantilla-disponible',
+  standalone: true,
+  imports: [CommonModule, RouterModule],
   templateUrl: './plantilla-disponible.component.html',
 })
 export class PlantillaDisponibleComponent {

@@ -1,5 +1,6 @@
 import { ChangeDetectorRef, Component, WritableSignal, signal } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { Router } from '@angular/router';
 import { take } from 'rxjs';
@@ -10,11 +11,12 @@ import { PlantillaService } from '../../../../../Core/Service/Plantilla/plantill
 import { CategoriaService } from '../../../../../Core/Service/categoria/categoria.service';
 import { ModalService } from '../../../../../Core/Service/Modal/modal.service';
 import { ToastService } from '../../../../../Core/Service/Toast/toast.service';
+import { Dialog } from 'primeng/dialog';
 
 @Component({
   selector: 'modal-crear-plantilla',
   standalone: true,
-  imports: [],
+  imports: [CommonModule, ReactiveFormsModule, Dialog],
   templateUrl: './modal-crear-plantilla.component.html',
 })
 export class ModalCrearPlantillaComponent {

@@ -1,6 +1,7 @@
 import { Component, Signal, signal } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { CrearProyecto } from '../../../../../Core/Interfaces/Proyecto/crear-proyecto';
 import { ProyectoService } from '../../../../../Core/Service/Proyecto/proyecto.service';
@@ -12,7 +13,7 @@ import { Dialog } from 'primeng/dialog';
 @Component({
   selector: 'crear-proyecto',
   standalone: true,
-  imports: [RouterModule,Dialog],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule, Dialog],
   templateUrl: './crear-proyecto.component.html',
 })
 export class CrearProyectoComponent {

@@ -1,4 +1,12 @@
-import { ChangeDetectorRef, Component, Input, OnInit, ViewChild, WritableSignal, signal } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  Input,
+  OnInit,
+  ViewChild,
+  WritableSignal,
+  signal,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, ChildActivationStart, Router, RouterModule } from '@angular/router';
@@ -6,12 +14,19 @@ import { Location } from '@angular/common';
 import { EditarCamposPlantillaComponent } from '../editar-campos-plantilla/editar-campos-plantilla.component';
 import { PreguntaService } from '../../../../../../Core/Service/Preguntas/pregunta.service';
 import { ToastService } from '../../../../../../Core/Service/Toast/toast.service';
+import { EliminarRamificacionComponent } from '../eliminar-ramificacion/eliminar-ramificacion.component';
 
 @Component({
   selector: 'ramificacion',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterModule, EditarCamposPlantillaComponent],
-  templateUrl: './ramificacion.component.html',
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    RouterModule,
+    EditarCamposPlantillaComponent,
+    EliminarRamificacionComponent,
+  ],
+  templateUrl: 'ramificacion.component.html',
 })
 export class RamificacionComponent implements OnInit {
   @ViewChild(EditarCamposPlantillaComponent) editarCamposPlantilla!: EditarCamposPlantillaComponent;

@@ -6,12 +6,14 @@ import { Router, RouterModule } from '@angular/router';
 import { take } from 'rxjs';
 import { AuthService } from '../../../../Core/Service/Auth/auth.service';
 import { ToastService } from '../../../../Core/Service/Toast/toast.service';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-login',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, RouterModule],
   templateUrl: './login.component.html',
+  providers: [MessageService],
 })
 export class LoginComponent {
   private readonly router = inject(Router);
@@ -26,16 +28,12 @@ export class LoginComponent {
   );
 
   readonly loading = signal(false);
-  readonly preproduccion = signal(
-    window.location.hostname === 'falconpreprod.atlanticqi.com'
-  );
+  readonly preproduccion = signal(window.location.hostname === 'falconpreprod.atlanticqi.com');
 
   private readonly formStatus = toSignal(this.loginForm().statusChanges, {
     initialValue: this.loginForm().status,
   });
-  readonly canSubmit = computed(
-    () => this.formStatus() === 'VALID' && !this.loading()
-  );
+  readonly canSubmit = computed(() => this.formStatus() === 'VALID' && !this.loading());
 
   private redireccionRol(infoUser: any): void {
     const rol = infoUser.rol?.toLowerCase();

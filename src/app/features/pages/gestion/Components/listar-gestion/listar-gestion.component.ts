@@ -2,20 +2,21 @@ import { Component, ElementRef, HostListener, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { EliminarGestionComponent } from '../eliminar-gestion/eliminar-gestion.component';
-import { GestionService } from '../../../../Core/Service/Gestion/gestion.service';
-import { ToastService } from '../../../../Core/Service/Toast/toast.service';
-import { Gestion } from '../../../../Core/Interfaces/Gestion/gestion';
-import { EliminarGestionComponent } from '../eliminar-gestion/eliminar-gestion.component';
-import { AuthService } from '../../../../Core/Service/Auth/auth.service';
-import { PlantillaService } from '../../../../Core/Service/Plantilla/plantilla.service';
+
 import { Router } from '@angular/router';
 import { take } from 'rxjs';
+import { Gestion } from '../../../../../Core/Interfaces/Gestion/gestion';
+import { GestionService } from '../../../../../Core/Service/Gestion/gestion.service';
+import { ToastService } from '../../../../../Core/Service/Toast/toast.service';
+import { AuthService } from '../../../../../Core/Service/Auth/auth.service';
+import { PlantillaService } from '../../../../../Core/Service/Plantilla/plantilla.service';
+import { PaginacionComponent } from '../../../../../shared/components/paginacion/paginacion.component';
 
 @Component({
   selector: 'listar-gestion',
   standalone: true,
-  imports: [CommonModule, RouterModule, EliminarGestionComponent],
-  templateUrl: './listar-gestion.component.html',
+  imports: [CommonModule, RouterModule, EliminarGestionComponent, PaginacionComponent],
+  templateUrl: 'listar-gestion.component.html',
 })
 export class ListarGestionComponent {
   listaRespuestas: Gestion[] = [];

@@ -3,12 +3,12 @@ import { RouterLink, RouterLinkActive, Router } from '@angular/router';
 import { NgClass } from '@angular/common';
 
 const menuItems = [
-  { title: 'Usuarios', url: '/usuarios', icon: 'users' },
-  { title: 'Proyectos', url: '/proyectos', icon: 'folder' },
-  { title: 'Categorías', url: '/categorias', icon: 'tags' },
-  { title: 'Plantillas', url: '/plantillas', icon: 'file-text' },
-  { title: 'Gestión', url: '/gestion', icon: 'settings' },
-  { title: 'Reportes', url: '/reportes', icon: 'bar-chart' },
+  { title: 'Usuarios', url: '/home/usuarios', icon: 'users' },
+  { title: 'Proyectos', url: '/home/proyectos', icon: 'folder' },
+  { title: 'Categorías', url: '/home/categorias', icon: 'tags' },
+  { title: 'Plantillas', url: '/home/plantillas', icon: 'file-text' },
+  { title: 'Gestión', url: '/home/gestion', icon: 'settings' },
+  { title: 'Reportes', url: '/home/reportes', icon: 'bar-chart' },
 ];
 
 @Component({
@@ -28,10 +28,10 @@ const menuItems = [
             <span class="text-white font-bold text-sm">A</span>
           </div>
           @if (!collapsed()) {
-            <div class="animate-fade-in">
-              <h1 class="font-bold text-sidebar-foreground text-lg leading-tight">atlantic</h1>
-              <p class="text-[10px] text-sidebar-muted leading-none">Quantum Innovations</p>
-            </div>
+          <div class="animate-fade-in">
+            <h1 class="font-bold text-sidebar-foreground text-lg leading-tight">atlantic</h1>
+            <p class="text-[10px] text-sidebar-muted leading-none">Quantum Innovations</p>
+          </div>
           }
         </div>
       </div>
@@ -39,7 +39,7 @@ const menuItems = [
       <nav class="flex-1 py-4 px-2 overflow-y-auto">
         <ul class="space-y-1">
           @for (item of menuItems; track item.url) {
-            <li>
+          <li>
             <a
               [routerLink]="item.url"
               routerLinkActive="bg-primary text-primary-foreground shadow-md"
@@ -52,7 +52,7 @@ const menuItems = [
             >
               <i [class]="'pi pi-' + item.icon + ' w-5 h-5 flex-shrink-0'"></i>
               @if (!collapsed()) {
-                <span class="font-medium text-sm animate-fade-in">{{ item.title }}</span>
+              <span class="font-medium text-sm animate-fade-in">{{ item.title }}</span>
               }
             </a>
           </li>
@@ -70,7 +70,7 @@ const menuItems = [
             [class]="'pi ' + (collapsed() ? 'pi-chevron-right' : 'pi-chevron-left') + ' w-5 h-5'"
           ></i>
           @if (!collapsed()) {
-            <span class="text-sm">Colapsar</span>
+          <span class="text-sm">Colapsar</span>
           }
         </button>
       </div>

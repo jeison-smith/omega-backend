@@ -40,7 +40,8 @@
   <div class="col-10">
     <div class="gestion-plantilla">
       <form (submit)="$event.preventDefault()">
-        @if (seccionesArray.length > 0) { @for (let seccion of seccionesArray; let i = index) {
+        @if (seccionesArray.length > 0) { @for (seccion of seccionesArray; track i; let i = $index)
+        {
         <div class="card__section">
           @if (seccion.id) {
           <div class="card__section-header">
@@ -60,7 +61,7 @@
           }
 
           <div class="card__seccion-body" [class.hidden]="!isSeccionColapsada(i)">
-            @for (let campo of seccion.campos; let j = index) {
+            @for (campo of seccion.campos; track j; let j = $index) {
             <div>
               <app-respuesta-campo
                 [campo]="campo"

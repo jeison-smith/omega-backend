@@ -9,7 +9,7 @@ import {
   WritableSignal,
   signal,
 } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import {
   AbstractControl,
   FormArray,
@@ -19,7 +19,10 @@ import {
   ValidationErrors,
   ValidatorFn,
   Validators,
+  ReactiveFormsModule,
+  FormsModule,
 } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 import { take } from 'rxjs';
 import { Plantilla } from '../../../../../Core/Interfaces/Plantilla/plantilla';
@@ -28,9 +31,20 @@ import { RespuestaCampo } from '../../../../../Core/Interfaces/Gestion/respuesta
 import { ToastService } from '../../../../../Core/Service/Toast/toast.service';
 import { PlantillaService } from '../../../../../Core/Service/Plantilla/plantilla.service';
 import { GestionService } from '../../../../../Core/Service/Gestion/gestion.service';
+import { DialogModule } from 'primeng/dialog';
+import { PreguntasGestionComponent } from './view-preguntas/preguntas-gestion/preguntas-gestion.component';
 
 @Component({
   selector: 'gestion-plantilla',
+  standalone: true,
+  imports: [
+    ReactiveFormsModule,
+    CommonModule,
+    RouterModule,
+    DialogModule,
+    PreguntasGestionComponent,
+    FormsModule,
+  ],
   templateUrl: './gestion-plantilla.component.html',
 })
 export class GestionPlantillaComponent {
@@ -68,8 +82,7 @@ export class GestionPlantillaComponent {
     this.loading = false;
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   ngAfterViewInit() {
     const idPlantilla = this.route.snapshot.paramMap.get('id');
@@ -716,4 +729,3 @@ export class GestionPlantillaComponent {
     }
   }
 }
-

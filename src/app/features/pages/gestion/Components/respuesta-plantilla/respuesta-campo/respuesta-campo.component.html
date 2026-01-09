@@ -26,13 +26,13 @@
 
           @if (!campo.multirespuesta) {
           <div class="mt-5">
-            @for (let opcion of campo.opciones; let i = index) {
+            @for (opcion of campo.opciones; track opcion.id) {
             <div class="field-checkbox">
               <input
                 type="radio"
                 name="radio-{{ campo.id }}"
                 [checked]="campo.valor == opcion.id"
-                (change)="campo.valor = opcion.id; opcion.campos?.forEach((c: any)=> c.disabled = false); campo.opciones?.forEach((o: any)=> { if (o.id !== opcion.id) (o.campos||[]).forEach((c:any)=> c.disabled = true); })"
+                (change)="onRadioChange(opcion)"
               />
               <label>{{ opcion.etiqueta }}</label>
             </div>
@@ -40,12 +40,12 @@
           </div>
           }@else {
           <div class="mt-5">
-            @for (let opcion of campo.opciones; let i = index) {
+            @for (opcion of campo.opciones; track opcion.id) {
             <div class="field-checkbox">
               <input
                 type="checkbox"
                 [checked]="opcion.seleccionado"
-                (change)="opcion.seleccionado = !opcion.seleccionado; opcion.campos?.forEach((c:any)=> c.disabled = !opcion.seleccionado)"
+                (change)="onCheckboxChange(opcion)"
               />
               <label>{{ opcion.etiqueta }}</label>
             </div>
@@ -86,11 +86,11 @@
           ><br />
           <select
             [value]="campo.valor"
-            (change)="campo.valor = $any($event.target).value; campo.opciones?.forEach(o=> (o.campos||[]).forEach((c:any)=> c.disabled = true)); const sel = campo.opciones?.find((o:any)=> o.id == campo.valor); if (sel) (sel.campos||[]).forEach((c:any)=> c.disabled = false)"
+            (change)="onChangeSelect($event)"
             class="w-3 text-base text-color surface-overlay p-2 mt-5 border-1 border-solid surface-border border-round-xl outline-none focus:border-primary"
           >
             <option value="" disabled>Selecciona</option>
-            @for (let opcion of campo.opciones) {
+            @for (opcion of campo.opciones; track opcion.id) {
             <option [value]="opcion.id">{{ opcion.etiqueta }}</option>
             }
           </select>
@@ -100,11 +100,11 @@
     </div>
   </div>
 
-  @for (let opcion of opciones) {
+  @for (opcion of opciones; track opcion.id) {
   <div>
-    @for (let campoHijo of opcion.campos || []; let j = index) { @if ( (opcion.seleccionado) ||
-    (campo.tipo !== 2 && campo.valor == opcion.id) || (campo.tipo === 4 && campo.valor == opcion.id)
-    ) {
+    @for (campoHijo of opcion.campos || []; track campoHijo.id; let j = $index) { @if (
+    (opcion.seleccionado) || (campo.tipo !== 2 && campo.valor == opcion.id) || (campo.tipo === 4 &&
+    campo.valor == opcion.id) ) {
     <div>
       <app-respuesta-campo
         [campo]="campoHijo"

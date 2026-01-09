@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, ViewChild, signal, WritableSignal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Location } from '@angular/common';
+import { Location, CommonModule } from '@angular/common';
 import { Plantilla } from '../../../../../Core/Interfaces/Plantilla/plantilla';
 import { Observacion } from '../../../../../Core/Interfaces/Gestion/observacion';
 import { take } from 'rxjs';
@@ -10,23 +10,30 @@ import { RespuestaCampoComponent } from './respuesta-campo/respuesta-campo.compo
 import { ToastService } from '../../../../../Core/Service/Toast/toast.service';
 import { PlantillaService } from '../../../../../Core/Service/Plantilla/plantilla.service';
 import { GestionService } from '../../../../../Core/Service/Gestion/gestion.service';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'respuesta-plantilla',
   standalone: true,
-  imports: [RespuestaCampoComponent],
+  imports: [RespuestaCampoComponent, ReactiveFormsModule, CommonModule],
   templateUrl: './respuesta-plantilla.component.html',
 })
 export class RespuestaPlantillaComponent {
   // Use signals for form state
   plantilla = signal({
     qFlowID: '',
-    idRespuestaPlantilla: '',
+    idRespuestaPlantilla: 0,
     observaciones: [] as any[],
     estado: true,
     estadoInicial: true,
     observacionAgregar: '',
     secciones: [] as any[],
+    id: 0,
+    nombrePlantilla: '',
+    nombreCreador: '',
+    fechaCreacion: '',
+    fechaModificacion: '',
+    proyecto: '',
   });
 
   plantillaObj!: Plantilla;
@@ -127,12 +134,18 @@ export class RespuestaPlantillaComponent {
     // initialize signal
     this.plantilla.set({
       qFlowID: '',
-      idRespuestaPlantilla: '',
+      idRespuestaPlantilla: 0,
       observaciones: [],
       estado: true,
       estadoInicial: true,
       observacionAgregar: '',
       secciones: [],
+      id: 0,
+      nombrePlantilla: '',
+      nombreCreador: '',
+      fechaCreacion: '',
+      fechaModificacion: '',
+      proyecto: '',
     });
 
     const idRespuestaPlantilla = this.route.snapshot.paramMap.get('id')!;
@@ -167,11 +180,7 @@ export class RespuestaPlantillaComponent {
   }
 
   cargarEstado(estado: boolean) {
-    // Accede al FormControl directamente
-    this.plantillaForm.get('estado')?.setValue(estado); // Establece el valor del FormControl
-
-    // Verificar si el valor se asignó correctamente
-    //console.log('Estado asignado:', this.plantillaForm.get('estado')?.value);
+    this.plantilla.update((p) => ({ ...p, estado }));
   }
 
   regreso(): void {
@@ -195,7 +204,7 @@ export class RespuestaPlantillaComponent {
           id: seccion?.id ?? null,
           descripcion: seccion?.descripcion ?? '',
           nombre: seccion?.nombre ?? '',
-          campos: [],
+          campos: [] as any[],
         };
 
         if (Array.isArray(seccion?.campos)) {
@@ -208,7 +217,12 @@ export class RespuestaPlantillaComponent {
         secciones.push(seccionObj);
       });
     } else {
-      const defaultSection = { id: null, descripcion: '', nombre: 'Detalle', campos: [] };
+      const defaultSection: any = {
+        id: null,
+        descripcion: '',
+        nombre: 'Detalle',
+        campos: [] as any[],
+      };
       for (const campo of data) {
         if (campo.id || campo.etiqueta) {
           const fieldObj = this.crearFieldObject(campo);
@@ -238,6 +252,12 @@ export class RespuestaPlantillaComponent {
             qFlowID: respuesta.qFlowID,
             estadoInicial: respuesta.estado,
             idRespuestaPlantilla: respuesta.id,
+            id: response.id,
+            nombrePlantilla: response.nombrePlantilla,
+            nombreCreador: response.nombreCreador,
+            fechaCreacion: response.fechaCreacion,
+            fechaModificacion: response.fechaModificacion,
+            proyecto: response.proyecto,
           }));
 
           this.cargarEstado(respuesta.estado);

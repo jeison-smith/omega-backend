@@ -1,5 +1,11 @@
 import { Component, OnInit, WritableSignal, signal } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  ReactiveFormsModule,
+  FormsModule,
+} from '@angular/forms';
 import { CommonModule } from '@angular/common';
 //import { CrearCategoria } from '../../../../Core/Interfaces/Categoria/categoria';
 
@@ -12,11 +18,20 @@ import { UsuarioService } from '../../../../../Core/Service/Usuario/usuario.serv
 import { MessageService } from 'primeng/api';
 import { AuthService } from '../../../../../Core/Service/Auth/auth.service';
 import { ToastService } from '../../../../../Core/Service/Toast/toast.service';
+import { DialogModule } from 'primeng/dialog';
+import { PaginacionComponent } from '../../../../../shared/components/paginacion/paginacion.component';
 
 @Component({
   selector: 'crear-categoria',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, HttpClientModule],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    HttpClientModule,
+    DialogModule,
+    PaginacionComponent,
+    FormsModule,
+  ],
   templateUrl: './crear-categoria.component.html',
 })
 export class CrearCategoriaComponent implements OnInit {

@@ -1,19 +1,30 @@
-import { ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, Output, signal } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { Select } from 'primeng/select'; // Keeping it if they really use it, but template uses <select> logic?
 
 @Component({
   selector: 'app-respuesta-campo',
   standalone: true,
-  imports: [],
-  templateUrl: './respuesta-campo.component.html',
+  imports: [CommonModule, FormsModule], // Removed Select if we use native <select>, otherwise keep it. User had it.
+  templateUrl: 'respuesta-campo.component.html',
 })
 export class RespuestaCampoComponent {
-  @Input() campo!: any; // plain JS object provided by parent signal
+  @Input() campo!: any;
   @Input() idVisualRamificado!: string;
   @Output() onDatosCargados = new EventEmitter<void>();
   isLoading: boolean = false;
 
   selectedOptions: Set<number> = new Set();
+  readonly respuesta = signal<string>('');
+  @Input()
+  set valor(v: string | null | undefined) {
+    this.respuesta.set(v ?? '');
+  }
 
+  get valor(): string {
+    return this.respuesta();
+  }
   constructor(private cdRef: ChangeDetectorRef) {}
 
   ngOnInit() {
@@ -101,6 +112,31 @@ export class RespuestaCampoComponent {
     if (value !== event.target.value) {
       event.target.value = value;
       event.target.dispatchEvent(new Event('input'));
+    }
+  }
+
+  onRadioChange(opcion: any) {
+    this.campo.valor = opcion.id;
+    opcion.campos?.forEach((c: any) => (c.disabled = false));
+    this.campo.opciones?.forEach((o: any) => {
+      if (o.id !== opcion.id) (o.campos || []).forEach((c: any) => (c.disabled = true));
+    });
+  }
+
+  onCheckboxChange(opcion: any) {
+    opcion.seleccionado = !opcion.seleccionado;
+    opcion.campos?.forEach((c: any) => (c.disabled = !opcion.seleccionado));
+  }
+
+  onChangeSelect(event: any) {
+    const val = (event.target as HTMLSelectElement).value;
+    this.campo.valor = val;
+    this.campo.opciones?.forEach((o: any) =>
+      (o.campos || []).forEach((c: any) => (c.disabled = true))
+    );
+    const sel = this.campo.opciones?.find((o: any) => o.id == val);
+    if (sel) {
+      (sel.campos || []).forEach((c: any) => (c.disabled = false));
     }
   }
 }
