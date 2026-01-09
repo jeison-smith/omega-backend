@@ -27,7 +27,6 @@ export class AuthService {
 
   // Signals para almacenar tokens y estado de sesión
   private falconToken = signal<string | null>(localStorage.getItem('FalconToken'));
-  private falconUserInfo = signal<string | null>(localStorage.getItem('FalconUserInfo'));
 
   // Signal que mantiene el estado de login
   isAuthenticated = signal<boolean>(this.falconToken() !== null);
