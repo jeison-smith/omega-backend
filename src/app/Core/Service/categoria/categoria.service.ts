@@ -1,21 +1,19 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, catchError, throwError } from 'rxjs';
 import { environment } from '../../../Environments/environments';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class CategoriaService {
-
+  private http = inject(HttpClient);
   private baseUrl = environment.apiUrl + 'api/Categorias/';
   private projectUrl = environment.apiUrl + 'Project/';
 
-  constructor(private http: HttpClient) {}
-
   // Crear categoría
   crearCategoria(body: any): Observable<any> {
-    return this.http.post(`${this.baseUrl}crear`, body);
+    return this.http.post(`${this.baseUrl}crear`, body).pipe(catchError(this.handleError));
   }
 
   // Listar categorías (paginado + búsqueda)
@@ -24,43 +22,43 @@ export class CategoriaService {
     tamanoPagina: number = 20,
     entrada: string = ''
   ): Observable<any> {
-
     const params = new HttpParams()
       .set('page', pagina)
       .set('pageSize', tamanoPagina)
       .set('search', entrada);
 
-    return this.http.get(`${this.baseUrl}listar`, { params });
+    return this.http.get(`${this.baseUrl}listar`, { params }).pipe(catchError(this.handleError));
   }
 
   // Obtener una categoría por ID
   obtenerCategoria(id: number): Observable<any> {
-    return this.http.get(`${this.baseUrl}${id}`);
+    return this.http.get(`${this.baseUrl}${id}`).pipe(catchError(this.handleError));
   }
 
   // Cambiar estado
   cambiarEstado(id: number, estado: boolean, usuario: number): Observable<any> {
-    const params = new HttpParams()
-      .set('estado', estado)
-      .set('usuario', usuario);
+    const params = new HttpParams().set('estado', estado).set('usuario', usuario);
 
-    return this.http.put(`${this.baseUrl}estado/${id}`, null, { params });
+    return this.http
+      .put(`${this.baseUrl}estado/${id}`, null, { params })
+      .pipe(catchError(this.handleError));
   }
 
   // Listado de proyectos
-  
-   obtenerProyectos(paginacion: any): Observable<any> {
 
+  obtenerProyectos(paginacion: any): Observable<any> {
     const params = new HttpParams()
       .set('pagina', paginacion.pagina.toString())
       .set('tamanoPagina', paginacion.tamanoPagina.toString())
       .set('entrada', paginacion.entrada);
 
-    return this.http.get(`${this.projectUrl}list`, { params });
+    return this.http.get(`${this.projectUrl}list`, { params }).pipe(catchError(this.handleError));
   }
 
-
+  private handleError(error: any) {
+    if (error.status === 401) {
+      return throwError(() => new Error('Sesión no autorizada'));
+    }
+    return throwError(() => new Error(error.error?.response || 'Error desconocido'));
+  }
 }
-
-  
-

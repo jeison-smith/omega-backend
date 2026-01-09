@@ -253,7 +253,7 @@ export class ListarGestionComponent {
 
   obtenerRol(): void {
     this.authService
-      .getInfoUsuario()
+      .getUserInfo()
       .pipe(take(1))
       .subscribe({
         next: (response) => {

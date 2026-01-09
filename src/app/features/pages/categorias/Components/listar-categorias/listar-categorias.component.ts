@@ -59,19 +59,18 @@ export class ListarCategoriasComponent {
       .listarCategorias(this.paginaActual, this.registrosPorPagina, this.filtro)
       .subscribe({
         next: (response) => {
-          const categorias = response.categorias || response.data || [];
-
+          const categorias = response.items || [];
           // Resolver nombre del creador según su ID
           this.listaCategorias = categorias.map((cat: any) => {
-            const usuario = this.usuarios.find((u) => u.id === cat.creadorId);
+            const usuario = this.usuarios.find((u) => u.idUsuario === cat.usuarioCreador);
             return {
               ...cat,
-              creadorNombre: usuario ? usuario.nombreCompleto : 'Sin nombre',
+              creadorNombre: usuario ? usuario.nombre : 'Sin nombre',
             };
           });
 
           this.registrosPaginados = this.listaCategorias;
-          this.totalRegistros = response.totalCount || 0;
+          this.totalRegistros = response.total || 0;
         },
         error: (error) => {
           this.showError(error);
@@ -115,7 +114,7 @@ export class ListarCategoriasComponent {
   // Navegar a crear categoría
   // =============================================================
   navegarACrearCategoria() {
-    this.router.navigate(['/home/categorias/crear-categoria']);
+    this.router.navigate(['/categorias/crear-categoria']);
   }
 
   // =============================================================
@@ -123,7 +122,7 @@ export class ListarCategoriasComponent {
   // =============================================================
   navegarACrearPlantilla(idCategoria: number) {
     // Navegar a crear plantilla pasando el ID de la categoría como parámetro
-    this.router.navigate(['/home/plantillas/crear-plantilla'], {
+    this.router.navigate(['/plantillas/crear-plantilla'], {
       queryParams: { categoriaId: idCategoria },
     });
   }

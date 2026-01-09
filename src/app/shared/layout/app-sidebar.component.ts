@@ -3,12 +3,12 @@ import { RouterLink, RouterLinkActive, Router } from '@angular/router';
 import { NgClass } from '@angular/common';
 
 const menuItems = [
-  { title: 'Usuarios', url: '/home/usuarios', icon: 'users' },
-  { title: 'Proyectos', url: '/home/proyectos', icon: 'folder' },
-  { title: 'Categorías', url: '/home/categorias', icon: 'tags' },
-  { title: 'Plantillas', url: '/home/plantillas', icon: 'file-text' },
-  { title: 'Gestión', url: '/home/gestion', icon: 'settings' },
-  { title: 'Reportes', url: '/home/reportes', icon: 'bar-chart' },
+  { title: 'Usuarios', url: '/usuarios', icon: 'users' },
+  { title: 'Proyectos', url: '/proyectos', icon: 'folder' },
+  { title: 'Categorías', url: '/categorias', icon: 'tags' },
+  { title: 'Plantillas', url: '/plantillas', icon: 'file-text' },
+  { title: 'Gestión', url: '/gestion', icon: 'settings' },
+  { title: 'Reportes', url: '/reportes', icon: 'bar-chart' },
 ];
 
 @Component({
@@ -87,6 +87,6 @@ export class AppSidebarComponent {
   }
 
   isActive(url: string) {
-    return this.router.url === url || (url === '/proyectos' && this.router.url === '/');
+    return this.router.url === url;
   }
 }

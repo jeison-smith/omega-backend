@@ -26,11 +26,11 @@ export class falconGuard implements CanActivate, CanMatch {
       return of(false); // Si no hay token, no está autenticado
     }
 
-    return this.authService.userInfo$.pipe(
+    return this.authService.userInfo.pipe(
       map((user) => {
         // Primero verificamos si está autenticado
         if (!user) {
-          this.router.navigate(['/auth/login']);
+          this.router.navigate(['/login']);
           return false;
         }
 
@@ -41,11 +41,11 @@ export class falconGuard implements CanActivate, CanMatch {
         if (allowedRoles.length === 0) return true;
 
         // Verificamos si el rol del usuario está en los roles permitidos
-        const hasAccess = allowedRoles.includes(user.rol?.toLowerCase());
+        const hasAccess = allowedRoles.includes(user?.rol?.toLowerCase());
 
         if (!hasAccess) {
           // Si no tiene acceso, redirigimos a una página de no autorizado o al login
-          this.router.navigate(['/home/accesoDenegado']);
+          this.router.navigate(['/accesoDenegado']);
         }
 
         return hasAccess;
@@ -54,11 +54,11 @@ export class falconGuard implements CanActivate, CanMatch {
   }
 
   private isAuthenticated(): Observable<boolean> {
-    return this.authService.userInfo$.pipe(
+    return this.authService.userInfo.pipe(
       map((user) => !!user),
       tap((isAuthenticated) => {
         if (!isAuthenticated) {
-          this.router.navigate(['/auth/login']); // Redirige al login si no está autenticado
+          this.router.navigate(['/login']); // Redirige al login si no está autenticado
         }
       })
     );

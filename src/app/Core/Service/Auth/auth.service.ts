@@ -14,7 +14,7 @@ export class AuthService {
   //observable para compartir info del usuario logueado
   private currentUserSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   private userInfoSubject = new BehaviorSubject<Usuario | null>(null);
-  public userInfo$ = this.userInfoSubject.asObservable();
+  userInfo = this.userInfoSubject.asObservable();
   private apiUrl = environment.apiUrl;
 
   constructor(private http: HttpClient, private router: Router) {
@@ -22,7 +22,7 @@ export class AuthService {
     const initialUser = savedUser ? JSON.parse(savedUser) : null;
 
     this.userInfoSubject = new BehaviorSubject<Usuario | null>(initialUser);
-    this.userInfo$ = this.userInfoSubject.asObservable();
+    this.userInfo = this.userInfoSubject.asObservable();
   }
 
   // Signals para almacenar tokens y estado de sesión
@@ -41,7 +41,7 @@ export class AuthService {
       })
     );
   }
-  private getUserInfo(): Observable<Usuario> {
+  getUserInfo(): Observable<Usuario> {
     const token = localStorage.getItem('FalconToken');
     if (!token) {
       return throwError(() => new Error('No se encontro token'));
@@ -63,16 +63,16 @@ export class AuthService {
         })
       );
   }
-  getInfoUsuario(): Observable<Usuario> {
-    return this.http.get<Usuario>(`${this.apiUrl}user/info`).pipe(
-      catchError((error) => {
-        if (error.status === 401) {
-          return throwError(() => new Error('Sesión no autorizada, por favor ingrese nuevamente'));
-        }
-        return throwError(() => new Error(error.error?.response || 'Error desconocido'));
-      })
-    );
-  }
+  // getInfoUsuario(): Observable<Usuario> {
+  //   return this.http.get<Usuario>(`${this.apiUrl}user/info`).pipe(
+  //     catchError((error) => {
+  //       if (error.status === 401) {
+  //         return throwError(() => new Error('Sesión no autorizada, por favor ingrese nuevamente'));
+  //       }
+  //       return throwError(() => new Error(error.error?.response || 'Error desconocido'));
+  //     })
+  //   );
+  // }
 
   //metodo para manejar login completo
   autenticar(credenciales: Login): Observable<{ token: string; infoUser: Usuario }> {

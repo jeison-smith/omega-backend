@@ -19,7 +19,7 @@ export class publicGuard implements CanActivate {
   }
 
   private isAuthenticated(): Observable<boolean> {
-    return this.authService.userInfo$.pipe(
+    return this.authService.userInfo.pipe(
       switchMap((user) => {
         if (user) {
           const role = user.rol?.toLowerCase();
