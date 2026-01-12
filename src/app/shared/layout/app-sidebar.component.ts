@@ -1,5 +1,5 @@
 import { Component, signal, computed, inject } from '@angular/core';
-import { RouterLink, RouterLinkActive, Router } from '@angular/router';
+import { RouterLink, Router } from '@angular/router';
 import { NgClass } from '@angular/common';
 
 const menuItems = [
@@ -14,23 +14,23 @@ const menuItems = [
 @Component({
   selector: 'app-sidebar',
   standalone: true,
-  imports: [RouterLink, RouterLinkActive, NgClass],
+  imports: [RouterLink, NgClass],
   template: `
     <aside
-      class="h-screen bg-sidebar flex flex-col transition-all duration-300 ease-in-out sticky top-0"
-      [ngClass]="{ 'w-16': collapsed(), 'w-64': !collapsed() }"
+      class="h-screen bg-slate-900 flex flex-col transition-all duration-300 ease-in-out sticky top-0 z-20"
+      [ngClass]="{ 'w-20': collapsed(), 'w-60': !collapsed() }"
     >
-      <div class="flex items-center h-16 px-4 border-b border-sidebar-border">
+      <div class="flex items-center h-16 px-4 border-b border-slate-800">
         <div class="flex items-center gap-3 overflow-hidden">
           <div
-            class="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-blue-400 flex items-center justify-center flex-shrink-0"
+            class="w-9 h-9 rounded-lg bg-gradient-to-br from-blue-600 to-blue-500 flex items-center justify-center flex-shrink-0 shadow-lg"
           >
             <span class="text-white font-bold text-sm">A</span>
           </div>
           @if (!collapsed()) {
-          <div class="animate-fade-in">
-            <h1 class="font-bold text-sidebar-foreground text-lg leading-tight">atlantic</h1>
-            <p class="text-[10px] text-sidebar-muted leading-none">Quantum Innovations</p>
+          <div>
+            <h1 class="font-bold text-white text-base leading-tight">atlantic</h1>
+            <p class="text-[10px] text-slate-400 leading-none">Quantum Innovations</p>
           </div>
           }
         </div>
@@ -42,17 +42,15 @@ const menuItems = [
           <li>
             <a
               [routerLink]="item.url"
-              routerLinkActive="bg-primary text-primary-foreground shadow-md"
-              [routerLinkActiveOptions]="{ exact: true }"
-              class="flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-150 hover:bg-sidebar-accent"
+              class="flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-150 cursor-pointer"
               [ngClass]="{
-                'text-sidebar-foreground/80 hover:text-sidebar-foreground': !isActive(item.url),
-                'text-primary-foreground': isActive(item.url)
+                'bg-blue-600 text-white shadow-md': isActive(item.url),
+                'text-slate-300 hover:text-white hover:bg-slate-800': !isActive(item.url)
               }"
             >
               <i [class]="'pi pi-' + item.icon + ' w-5 h-5 flex-shrink-0'"></i>
               @if (!collapsed()) {
-              <span class="font-medium text-sm animate-fade-in">{{ item.title }}</span>
+              <span class="font-medium text-sm">{{ item.title }}</span>
               }
             </a>
           </li>
@@ -60,11 +58,11 @@ const menuItems = [
         </ul>
       </nav>
 
-      <div class="p-2 border-t border-sidebar-border">
+      <div class="p-2 border-t border-slate-800">
         <button
           type="button"
           (click)="toggleCollapsed()"
-          class="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-sidebar-foreground/60 hover:text-sidebar-foreground hover:bg-sidebar-accent transition-colors"
+          class="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
         >
           <i
             [class]="'pi ' + (collapsed() ? 'pi-chevron-right' : 'pi-chevron-left') + ' w-5 h-5'"

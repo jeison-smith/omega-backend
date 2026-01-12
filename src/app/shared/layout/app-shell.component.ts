@@ -10,13 +10,15 @@ import { toSignal } from '@angular/core/rxjs-interop';
   standalone: true,
   imports: [RouterOutlet, AppSidebarComponent, AppHeaderComponent],
   template: `
-    <div class="min-h-screen flex w-full">
+    <div class="min-h-screen flex w-full bg-gray-50">
       <app-sidebar />
       <div class="flex-1 flex flex-col min-h-screen">
         <div class="env-banner">AMBIENTE DE PRE-PRODUCCIÓN</div>
         <app-header [title]="pageTitle()" />
-        <main class="flex-1 p-6 overflow-auto">
-          <router-outlet />
+        <main class="flex-1 overflow-auto">
+          <div class="p-6 max-w-7xl mx-auto">
+            <router-outlet />
+          </div>
         </main>
       </div>
     </div>

@@ -1,63 +1,80 @@
-<div class="card-table">
-    <div class="btn__group--red">
-        <input type="text" placeholder="Filtra aquí" #filterInput>
-        <button (click)="valorFiltro(filterInput.value)">
-            <span class="material-symbols mr-2">
-                search
-            </span>
-            Buscar</button>
+<div class="space-y-6">
+  <div class="flex items-center justify-between">
+    <h2 class="text-xl font-semibold text-gray-900">Proyectos</h2>
+    <button class="btn-primary" (click)="redirigircategoria(0)">
+      <i class="pi pi-plus w-4 h-4"></i>
+      Crear proyecto
+    </button>
+  </div>
+
+  <div class="flex gap-3">
+    <div class="flex-1 relative">
+      <i class="pi pi-search absolute left-3 top-3 text-gray-400"></i>
+      <input
+        type="text"
+        placeholder="Filtrar aquí"
+        #filterInput
+        class="w-full h-10 pl-10 pr-4 rounded-lg border border-gray-300 text-gray-700 placeholder-gray-400 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition"
+      >
     </div>
-</div>
-<div class="table-container">
+    <button class="btn-primary" (click)="valorFiltro(filterInput.value)">
+      <i class="pi pi-search w-4 h-4"></i>
+      Buscar
+    </button>
+  </div>
+
+  <div class="table-container">
     <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Nombre</th>
-                <th>Creador</th>
-                <th>Fecha de creación</th>
-                <th>Ult. actualización</th>
-                <th>Estado</th>
-                <th>Acción</th>
-            </tr>
-
-        </thead>
-        <tbody>
-            @for (proyecto of registrosPaginados; track $index) {
-            <tr>
-                <td>{{ proyecto.id }}</td>
-                <td>{{ proyecto.nombre }}</td>
-                <td>{{ proyecto.nombreCreador | titlecase}}</td>
-                <td>{{ proyecto.fechaCreacion | date:"dd/MM/yyyy" }}</td>
-                <td>{{ proyecto.fechaModificacion | date:"dd/MM/yyyy"}}</td>
-                <td class="flex align-items-center">
-                    @if (proyecto.estado == true) {
-                    <span class="badge_succses mr-2">Activo</span>
-                    }@else {
-                    <span class="badge_error mr-2">Inactivo</span>
-                    }
-                    <label class="switch mr-2">
-                        <input type="checkbox" [checked]="proyecto?.estado"
-                            (change)="estadoProyecto($event, proyecto.id)">
-                        <span class="slider round"></span>
-                    </label> Activar o desactivar proyecto
-                </td>
-                <!-- ACCIÓN -->
-                <td>
-                    <button class="p-button p-button-sm p-button-info" (click)="redirigircategoria(proyecto.id)">
-                        <i class="pi pi-file-edit mr-1"></i>
-                        Crear Categoria
-                    </button>
-                </td>
-
-
-            </tr>
-            }
-
-        </tbody>
+      <thead>
+        <tr>
+          <th class="text-left">ID</th>
+          <th class="text-left">NOMBRE</th>
+          <th class="text-left">CREADOR</th>
+          <th class="text-left">FECHA DE CREACIÓN</th>
+          <th class="text-left">ULT. ACTUALIZACIÓN</th>
+          <th class="text-left">ESTADO</th>
+          <th class="text-left">ACCIÓN</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (proyecto of registrosPaginados; track $index) {
+        <tr class="hover:bg-gray-50 transition">
+          <td class="text-left">{{ proyecto.id }}</td>
+          <td class="text-left font-medium text-blue-600">{{ proyecto.nombre }}</td>
+          <td class="text-left">{{ proyecto.nombreCreador | titlecase}}</td>
+          <td class="text-left">{{ proyecto.fechaCreacion | date:"dd/MM/yyyy" }}</td>
+          <td class="text-left">{{ proyecto.fechaModificacion | date:"dd/MM/yyyy"}}</td>
+          <td class="text-left">
+            <div class="flex items-center gap-3">
+              @if (proyecto.estado == true) {
+              <span class="badge_succses">Activo</span>
+              }@else {
+              <span class="badge_error">Inactivo</span>
+              }
+              <label class="switch">
+                <input type="checkbox" [checked]="proyecto?.estado"
+                  (change)="estadoProyecto($event, proyecto.id)">
+                <span class="slider round"></span>
+              </label>
+              <span class="text-xs text-gray-500">Activar o desactivar</span>
+            </div>
+          </td>
+          <td class="text-left">
+            <button class="btn-primary" (click)="redirigircategoria(proyecto.id)">
+              <i class="pi pi-plus w-4 h-4"></i>
+              Crear Categoría
+            </button>
+          </td>
+        </tr>
+        }
+      </tbody>
     </table>
 
-    <shared-paginacion [datos]="listaProyectos" [totalRegistros]="totalRegistros" [registrosPorPagina]="10"
-        (cambioPagina)="onPaginaCambiada($event)">
-        >
+    <shared-paginacion
+      [datos]="listaProyectos"
+      [totalRegistros]="totalRegistros"
+      [registrosPorPagina]="10"
+      (cambioPagina)="onPaginaCambiada($event)">
     </shared-paginacion>
+  </div>
+</div>

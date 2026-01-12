@@ -1,64 +1,42 @@
 import { Component, Input, signal } from '@angular/core';
-import { ButtonModule } from 'primeng/button';
-import 'primeicons/primeicons.css';
-import { Select } from 'primeng/select';
-import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-header',
-  imports: [ButtonModule, Select],
-  providers: [MessageService],
+  imports: [],
 
   template: `
     <header
-      class="h-16 bg-card border-b border-border flex items-center justify-between px-6 sticky top-0 z-10"
+      class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 sticky top-0 z-10 shadow-sm"
     >
       <div class="flex items-center gap-4">
-        <h1 class="text-xl font-semibold text-foreground">{{ title }}</h1>
+        <h1 class="text-2xl font-bold text-gray-900">{{ title }}</h1>
       </div>
 
-      <div class="flex items-center gap-3">
+      <div class="flex items-center gap-4">
         <div class="hidden md:flex items-center relative">
           <i
             class="pi pi-search"
-            name="search"
-            [className]="'w-4 h-4 absolute left-3 text-muted-foreground'"
+            [className]="'w-4 h-4 absolute left-3 text-gray-400'"
           ></i>
           <input type="text" placeholder="Buscar..." class="input-search pl-9 w-64" />
         </div>
 
-        <p-button class="relative">
-          <i class="pi pi-user" name="bell" [className]="'w-5 h-5 text-muted-foreground'"></i>
-          <span class="absolute top-1 right-1 w-2 h-2 bg-destructive rounded-full"></span>
-        </p-button>
+        <button class="relative p-2 hover:bg-gray-100 rounded-lg transition">
+          <i class="pi pi-bell w-5 h-5 text-gray-600"></i>
+          <span class="absolute top-1 right-1 w-2.5 h-2.5 bg-red-500 rounded-full"></span>
+        </button>
 
-        <p-select>
+        <div class="flex items-center gap-3 pl-4 border-l border-gray-200 hover:bg-gray-50 rounded-lg px-2 py-1.5 transition cursor-pointer">
           <div
-            dropdown-trigger
-            class="flex items-center gap-3 hover:bg-muted rounded-lg px-2 py-1.5 transition-colors cursor-pointer"
+            class="h-9 w-9 rounded-full bg-blue-600 text-white text-sm font-semibold flex items-center justify-center"
           >
-            <div
-              class="h-8 w-8 rounded-full bg-primary text-primary-foreground text-sm font-medium flex items-center justify-center"
-            >
-              JP
-            </div>
-            <div class="hidden md:block text-left">
-              <p class="text-sm font-medium text-foreground">Jeison Parada</p>
-              <p class="text-xs text-muted-foreground">Administrador</p>
-            </div>
+            JP
           </div>
-          <div dropdown-content class="w-56">
-            <p class="px-3 py-2 text-xs uppercase tracking-wide text-muted-foreground">Mi cuenta</p>
-            <div class="border-t border-border/70"></div>
-            <button class="dropdown-item">Perfil</button>
-            <button class="dropdown-item">Configuración</button>
-            <div class="border-t border-border/70"></div>
-            <button class="dropdown-item text-destructive flex items-center gap-2">
-              <i class="pi pi-user" -icon name="log-out" [className]="'w-4 h-4'"></i>
-              Cerrar sesión
-            </button>
+          <div class="hidden md:block text-left">
+            <p class="text-sm font-medium text-gray-900">Jeison Parada</p>
+            <p class="text-xs text-gray-500">Administrador</p>
           </div>
-        </p-select>
+        </div>
       </div>
     </header>
   `,

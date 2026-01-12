@@ -3,6 +3,33 @@
 @import 'tailwindcss';
 @import 'primeicons/primeicons.css';
 
+* {
+  @apply scroll-smooth;
+}
+
+html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
+    Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  @apply bg-gray-50;
+}
+
+.env-banner {
+  @apply h-12 bg-gradient-to-r from-blue-600 to-blue-500 text-white font-semibold text-center flex items-center justify-center text-sm tracking-wide;
+}
+
+.input-search {
+  @apply h-10 rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 placeholder-gray-400 transition focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500;
+}
+
+.dropdown-item {
+  @apply block w-full px-3 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 transition cursor-pointer;
+}
+
 @layer components {
   .card-table {
     @apply mb-6 flex justify-end rounded-lg bg-white p-4 shadow-sm;
@@ -13,11 +40,11 @@
   }
 
   .btn__group--red input {
-    @apply h-10 min-w-[250px] rounded-l-lg border border-slate-300 border-r-0 px-4 text-sm text-slate-700 outline-none;
+    @apply h-10 min-w-[250px] rounded-l-lg border border-gray-300 border-r-0 px-4 text-sm text-gray-700 outline-none;
   }
 
   .btn__group--red button {
-    @apply inline-flex h-10 items-center gap-2 rounded-r-lg border border-purple-200 bg-purple-100 px-4 text-sm font-semibold text-slate-900 transition hover:bg-purple-200;
+    @apply inline-flex h-10 items-center gap-2 rounded-r-lg border border-blue-200 bg-blue-100 px-4 text-sm font-semibold text-gray-900 transition hover:bg-blue-200;
   }
 
   .table-container {
@@ -29,51 +56,47 @@
   }
 
   .table th {
-    @apply bg-slate-50 px-4 py-3 text-center text-sm font-semibold text-slate-700;
+    @apply bg-gray-50 px-4 py-3 text-center text-sm font-semibold text-gray-600 uppercase tracking-wider;
   }
 
   .table td {
-    @apply px-4 py-3 text-center text-sm text-slate-700;
+    @apply px-4 py-3 text-center text-sm text-gray-700 border-t border-gray-200;
   }
 
   .table tbody tr:hover {
-    @apply bg-slate-50;
+    @apply bg-gray-50;
   }
 
   .badge_succses {
-    @apply inline-flex items-center rounded-full bg-emerald-100 px-2.5 py-1 text-xs font-semibold text-emerald-700;
+    @apply inline-flex items-center rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-700;
   }
 
   .badge_error {
-    @apply inline-flex items-center rounded-full bg-rose-100 px-2.5 py-1 text-xs font-semibold text-rose-700;
+    @apply inline-flex items-center rounded-full bg-rose-100 px-3 py-1 text-xs font-semibold text-rose-700;
   }
 
   .badge_secondary {
-    @apply inline-flex items-center rounded-full bg-slate-100 px-2.5 py-1 text-xs font-semibold text-slate-600;
+    @apply inline-flex items-center rounded-full bg-gray-100 px-3 py-1 text-xs font-semibold text-gray-600;
   }
 
   .btn-primary {
-    @apply inline-flex items-center gap-2 rounded-lg bg-sky-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-sky-600 disabled:cursor-not-allowed disabled:bg-slate-300;
+    @apply inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-gray-300;
   }
 
   .btn-outline-secondary {
-    @apply inline-flex items-center gap-2 rounded-lg border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-600 transition hover:bg-slate-100;
+    @apply inline-flex items-center gap-2 rounded-lg border border-gray-300 px-4 py-2 text-sm font-semibold text-gray-600 transition hover:bg-gray-100;
   }
 
   .btn-outline-blue1 {
-    @apply inline-flex items-center gap-2 rounded-lg border border-sky-200 px-4 py-2 text-sm font-semibold text-sky-700 transition hover:bg-sky-50;
-  }
-
-  .btn-outline-purple1 {
-    @apply inline-flex items-center gap-2 rounded-lg border border-purple-200 px-4 py-2 text-sm font-semibold text-purple-700 transition hover:bg-purple-50;
+    @apply inline-flex items-center gap-2 rounded-lg border border-blue-200 px-4 py-2 text-sm font-semibold text-blue-700 transition hover:bg-blue-50;
   }
 
   .btn-primary-icon {
-    @apply inline-flex items-center gap-2 rounded-lg bg-sky-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-sky-600;
+    @apply inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-blue-700;
   }
 
   .btn-small {
-    @apply inline-flex items-center rounded-lg border border-slate-300 px-3 py-1.5 text-xs font-semibold text-slate-600 transition hover:bg-slate-100;
+    @apply inline-flex items-center rounded-lg border border-gray-300 px-3 py-1.5 text-xs font-semibold text-gray-600 transition hover:bg-gray-100;
   }
 
   .btn-outline-danger-secondary {
@@ -81,7 +104,7 @@
   }
 
   .btn-outline-secondary-branch {
-    @apply inline-flex items-center gap-2 rounded-lg border border-slate-300 px-3 py-1.5 text-xs font-semibold text-slate-600 transition hover:bg-slate-100;
+    @apply inline-flex items-center gap-2 rounded-lg border border-gray-300 px-3 py-1.5 text-xs font-semibold text-gray-600 transition hover:bg-gray-100;
   }
 
   .card-edit {
@@ -89,7 +112,7 @@
   }
 
   .card-header {
-    @apply flex flex-wrap items-center gap-3 border-b border-slate-100 p-4;
+    @apply flex flex-wrap items-center gap-3 border-b border-gray-100 p-4;
   }
 
   .card-body__gestion {
@@ -105,7 +128,7 @@
   }
 
   .table-container__plantilla {
-    @apply overflow-hidden rounded-lg border border-slate-200 bg-white;
+    @apply overflow-hidden rounded-lg border border-gray-200 bg-white;
   }
 
   .table-plantilla {
@@ -113,19 +136,19 @@
   }
 
   .table-plantilla th {
-    @apply bg-slate-50 px-4 py-3 text-left text-sm font-semibold text-slate-700;
+    @apply bg-gray-50 px-4 py-3 text-left text-sm font-semibold text-gray-700;
   }
 
   .table-plantilla td {
-    @apply px-4 py-3 text-left text-sm text-slate-700;
+    @apply px-4 py-3 text-left text-sm text-gray-700;
   }
 
   .card__section {
-    @apply rounded-xl border border-slate-200 bg-white shadow-sm;
+    @apply rounded-xl border border-gray-200 bg-white shadow-sm;
   }
 
   .card__section-header {
-    @apply flex items-center justify-between gap-3 border-b border-slate-100 px-4 py-3;
+    @apply flex items-center justify-between gap-3 border-b border-gray-100 px-4 py-3;
   }
 
   .card__seccion-body {
@@ -133,7 +156,7 @@
   }
 
   .card__icon {
-    @apply cursor-pointer text-slate-400 transition hover:text-slate-600;
+    @apply cursor-pointer text-gray-400 transition hover:text-gray-600;
   }
 
   .rotate {
@@ -141,19 +164,19 @@
   }
 
   .card__plantilla {
-    @apply rounded-xl border border-slate-200 bg-white shadow-sm;
+    @apply rounded-xl border border-gray-200 bg-white shadow-sm;
   }
 
   .card__plantilla-header {
-    @apply flex items-center justify-between border-b border-slate-100 px-4 py-3 text-sm font-semibold text-slate-700;
+    @apply flex items-center justify-between border-b border-gray-100 px-4 py-3 text-sm font-semibold text-gray-700;
   }
 
   .card__plantilla-body {
-    @apply p-4 text-sm text-slate-700;
+    @apply p-4 text-sm text-gray-700;
   }
 
   .link-like {
-    @apply inline-flex items-center text-slate-500 transition hover:text-slate-700;
+    @apply inline-flex items-center text-gray-500 transition hover:text-gray-700;
   }
 }
 
